@@ -978,9 +978,6 @@ begin
       Halt(99);
     end;
 
-      // For some Opencv functions Freepascal require to set
-      // Floating Point Unit exception mask to disable some exceptions generated
-      // from C++
       pCvDefaultMat:=pCvMatCreateEmpty();
       pCvDefaultSize:=pCvSizeCreate();
       pCvDefaultPoint:=pCvPointCreate();
@@ -993,6 +990,9 @@ begin
   end;
 
 {$IFDEF FPC}
+    // For some Opencv functions Freepascal require to set
+    // Floating Point Unit exception mask, to disable some exceptions generated
+    // from C++
     SetExceptionMask(GetExceptionMask + [exOverflow,exZeroDivide,exInvalidOp]);
 {$ENDIF}
 
