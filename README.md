@@ -1,4 +1,4 @@
-![OCV46LOGO](OCV46-LOGO.png)
+![OCV46LOGO](ocv46-logo.png)
 # ocvWrapper46 v 0.9
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
