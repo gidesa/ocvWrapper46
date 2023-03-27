@@ -1,4 +1,4 @@
-{ ocvWrapper: wrapper for C++ API  Opencv interface
+{ ocvWrapper46: wrapper for Opencv 4.6 C++ API interface
 
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
@@ -40,7 +40,7 @@ const
   define DEBUGDLL, and the program will load the debug dll
   Note: only for Delphi }
 
-{$DEFINE DEBUGDLL}
+{...$DEFINE DEBUGDLL}
 
 
 {$IFDEF  DEBUG}
@@ -572,12 +572,13 @@ PCvMomentsS = ^CvMomentsS;
 
 
 {------------- Pascal helpers ---------------}
-  function CvSize_(width, height: Integer; pcvsize: PCvSize_t = nil): PCvSize_t;
-  function CvScalar_(v0, v1, v2, v3: Double; pcvscalar: PCvScalar_t = nil): PCvScalar_t;
-  function CvPoint_(x, y: Integer; pcvpoint: PCvPoint_t = nil): PCvPoint_t;
-  function CvVec3b_(v0, v1, v2: byte; pcvvec3b: PCvVec3b_t = nil): PCvVec3b_t;
-  function CvTermCriteria_(tcType: integer; max_iter: Integer; epsilon: Double;
+  function  CvSize_(width, height: Integer; pcvsize: PCvSize_t = nil): PCvSize_t;
+  function  CvScalar_(v0, v1, v2, v3: Double; pcvscalar: PCvScalar_t = nil): PCvScalar_t;
+  function  CvPoint_(x, y: Integer; pcvpoint: PCvPoint_t = nil): PCvPoint_t;
+  function  CvVec3b_(v0, v1, v2: byte; pcvvec3b: PCvVec3b_t = nil): PCvVec3b_t;
+  function  CvTermCriteria_(tcType: integer; max_iter: Integer; epsilon: Double;
                            pcvtermcrit: PCvTermCriteria_t = nil): PCvTermCriteria_t;
+  function  CvRect2d_(x, y, width, height: Double; pcvrect2d: PCvRect2d_t = nil): PCvRect2d_t;
   function  pCvMorphologyDefaultBordeValue(): PCvScalar_t;
   procedure MatImage2Bitmap(matImg: PCvMat_t; var bitmap: TBitmap);
   procedure Bitmap2MatImage(matImage: PCvMat_t;  bitmap: TBitmap);
@@ -592,15 +593,18 @@ PCvMomentsS = ^CvMomentsS;
   procedure  pCvStringDelete(const cvstr: PCvString_t);  cdecl;
 
 { Opencv Mat class }
-  function   pCvMatCreate(const ndims: Integer; const dims: PInteger; const mtype: integer): PCvMat_t; cdecl;
+  function   pCvMatCreate(const ndims: Integer; const dims: PInteger; const mtype: integer; dataptr: UInt64 = 0): PCvMat_t; cdecl;
   function   pCvMatCreateEmpty (): PCvMat_t  ; cdecl;
-  function   pCvMat2dCreate (const rows: Integer; const cols: Integer; mtype: integer): PCvMat_t ; cdecl;
-  function   pCvMatImageCreate(const width: Integer; height: Integer; mtype: Integer): PCvMat_t; cdecl;
+  function   pCvMat2dCreate (const rows: Integer; const cols: Integer; const mtype: integer): PCvMat_t ; cdecl;
+  function   pCvMatImageCreate(const width: Integer; height: Integer; const mtype: Integer): PCvMat_t; cdecl;
   procedure  pCvMatDelete (const mat: PCvMat_t); cdecl;
   function   pCvMatROI(const mat: PCvMat_t; const roi: PCvRectS): PCvMat_t; cdecl;
-  procedure  pCvMatFill(const wrapper: PCvMat_t; const val: PCvScalar_t); cdecl;
+  procedure  pCvMatFill(const wrapper: PCvMat_t; const val: PCvScalar_t; const mask: PCvMat_t = nil); cdecl;
+  procedure  pCvMatScalarOp(const wrapper: PCvMat_t; const op: AnsiChar; val: Double); cdecl;
   procedure  pCvMatCopy(const src: PCvMat_t; const dst: PCvMat_t); cdecl;
   function   pCvMatClone (const mat: PCvMat_t): PCvMat_t; cdecl;
+  procedure  pCvMatConvertTo(const src: PCvMat_t; const dst: PCvMat_t; dstType: Integer; alpha: Double = 1.0; beta: Double = 0); cdecl;
+  procedure  pCvMatExtractChannel(const src: PCvMat_t; const dst: PCvMat_t; channelId: integer); cdecl;
   procedure  pCvMatCopyToUmat (const mat: PCvMat_t; const dest: PCvUMat_t); cdecl;
   function   pCvMatToUmat (const mat: PCvMat_t): PCvUMat_t; cdecl;
   function   pCvMatFromUmat (const mat: PCvUMat_t): PCvMat_t; cdecl;
@@ -620,8 +624,10 @@ PCvMomentsS = ^CvMomentsS;
   function   pCvMatGetHeight(const mat: PCvMat_t): Integer ; cdecl;
   function   pCvMatGetChannels(const mat: PCvMat_t): Integer ; cdecl;
   function   pCvMatGetType(const mat: PCvMat_t): Integer ; cdecl;
-  function   pCvMatGetDims(const mat: PCvMat_t): Integer ; cdecl;
-  function   pCvMatGetData(const mat: PCvMat_t): Pointer ; cdecl;
+  function   pCvMatGetDimsNum(const mat: PCvMat_t): Integer ; cdecl;
+  procedure  pCvMatGetDims(const mat: PCvMat_t; dimArr: PInteger); cdecl;
+  function   pCvMatGetDimPtr(const mat: PCvMat_t; const ind1: Integer; const ind2: integer): UInt64; cdecl;
+  function   pCvMatGetData(const mat: PCvMat_t): UInt64 ; cdecl;
   function   pCvMatGetDepth(const mat: PCvMat_t): Integer ; cdecl;
 
   function   pCvMatToIplImage(const mat: PCvMat_t): PIplImage; cdecl;
@@ -679,11 +685,14 @@ implementation
  procedure  pCvMatDelete;                 external ocvWrapper  name 'pCvMatDelete';
  function   pCvMatROI;                    external ocvWrapper  name 'pCvMatROI';
  procedure  pCvMatCopy;                   external ocvWrapper  name 'pCvMatCopy';
+ procedure  pCvMatConvertTo;              external ocvWrapper  name 'pCvMatConvertTo';
+ procedure  pCvMatExtractChannel;         external ocvWrapper  name 'pCvMatExtractChannel';
  function   pCvMatClone;                  external ocvWrapper  name 'pCvMatClone';
  procedure  pCvMatCopyToUmat;             external ocvWrapper  name 'pCvMatCopyToUmat';
  function   pCvMatToUmat;                 external ocvWrapper  name 'pCvMatToUmat';
  function   pCvMatFromUmat;               external ocvWrapper  name 'pCvMatFromUmat';
  procedure  pCvMatFill;                   external ocvWrapper  name 'pCvMatFill';
+ procedure  pCvMatScalarOp;               external ocvWrapper  name 'pCvMatScalarOp';
  function   pCvMatGetByte;                external ocvWrapper  name 'pCvMatGetByte';
  function   pCvMatSetByte;                external ocvWrapper  name 'pCvMatSetByte';
  function   pCvMatGetInt;                 external ocvWrapper  name 'pCvMatGetInt';
@@ -700,7 +709,9 @@ implementation
  function   pCvMatGetHeight;              external ocvWrapper  name 'pCvMatGetHeight';
  function   pCvMatGetChannels;            external ocvWrapper  name 'pCvMatGetChannels';
  function   pCvMatGetType;                external ocvWrapper  name 'pCvMatGetType';
- function   pCvMatGetDims;                external ocvWrapper  name 'pCvMatGetDims';
+ function   pCvMatGetDimsNum;             external ocvWrapper  name 'pCvMatGetDimsNum';
+ procedure  pCvMatGetDims;                external ocvWrapper  name 'pCvMatGetDims';
+ function   pCvMatGetDimPtr;              external ocvWrapper  name 'pCvMatGetDimPtr';
  function   pCvMatGetData;                external ocvWrapper  name 'pCvMatGetData';
  function   pCvMatGetDepth;               external ocvWrapper  name 'pCvMatGetDepth';
  procedure  pCvIplImageToMat;             external ocvWrapper  name 'pCvIplImageToMat';
@@ -793,6 +804,21 @@ begin
   pCvTermCriteriaFromStruct(Result, @ctermcrit);
 end;
 
+function CvRect2d_(x, y, width, height: Double; pcvrect2d: PCvRect2d_t): PCvRect2d_t;
+var
+  crect2d: CvRect2dS;
+begin
+  crect2d.x:=x;
+  crect2d.y:=y;
+  crect2d.width:=width;
+  crect2d.height:=height;
+  if pcvrect2d = nil then
+        Result:=pCvrect2dCreate()
+  else
+     result:=pcvrect2d;
+  pCvRect2dFromStruct(Result, @crect2d);
+end;
+
 {-----------------------------------------------------------------------------
   Procedure:  MatImage2Bitmap
   Author:     G. De Sanctis
@@ -802,8 +828,8 @@ end;
 -----------------------------------------------------------------------------}
 procedure MatImage2Bitmap(matImg: PCvMat_t; var bitmap: TBitmap);
   VAR
-    j        :  longint;
-    offset   :  longint;
+    j        :  Integer;
+    offset   :  UInt64;
     dataByte :  PByteArray;
     RowIn    :  pByteArray;
 
@@ -837,7 +863,7 @@ BEGIN
         and (iplimg.Origin = IPL_ORIGIN_BL) then
     begin
 {$ifdef LCL}
-        offset := longint(iData) - iWidthStep;
+        offset := UInt64(iData) - iWidthStep;
         FOR j := 0 TO Bitmap.Height-1 DO
         BEGIN
           RowIn  := lazImg.GetDataLineStart(bitmap.Height -1 - j);
@@ -856,7 +882,7 @@ BEGIN
       FOR j := 0 TO Bitmap.Height-1 DO
       BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
-        offset := longint(iData) + iWidthStep * j;
+        offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         CopyMemory(rowin, dataByte, iWidthStep);
       END;
@@ -902,7 +928,7 @@ procedure Bitmap2MatImage(matImage: PCvMat_t;  bitmap: TBitmap);
     j        :  Integer;
     dataByte :  PByteArray;
     RowIn    :  pByteArray;
-    offset   :  longint;
+    offset   :  UInt64;
     iplImg   :  PIplImage;
     iWidthstep: Integer;
     iData    :  Pointer;
@@ -929,7 +955,7 @@ BEGIN
       FOR j := 0 TO Bitmap.Height-1 DO
       BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
-        offset := longint(iData) + iWidthStep * j;
+        offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         CopyMemory(dataByte, rowin, iWidthStep);
       END;
