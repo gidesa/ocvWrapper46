@@ -163,18 +163,25 @@ So IDE cannot help in code suggestion, and compiler cannot catch wrong use.
 
 - testSVM: a Delphi/Lazarus program for testing CvSVM class from ML module
 
-- motionTest: a Delphi/Lazarus demo program for motion tracking
-
 - featureTest: a Delphi/Lazarus demo program for ORB feature detector class and matching between images
 
 - cascadeTest: a Delphi/Lazarus demo program for face recognition on webcam, by cascade classifier class
-
-- datamatrixTest: a Delphi/Lazarus demo program for Datamatrix code recognition on webcam
 
 - skeletonize: a Delphi/Lazarus demo program that reduces an image to its more basic contours ("skeleton")
 
 - camshiftdemo: a Delphi/Lazarus demo program, adapted from a classical Opencv example; the program tracks
   movements of a selected area in real time on webcam, for example the face of person in front of webcam 
+  
+- qrcodeTest: a Delphi/Lazarus demo that identify and decode QR-CODEs on webcam
+
+- testGPU: a Delphi/Lazarus demo that measures the performances improvement using GPU capable Opencv UMat
+
+- dnnObjectDetection: a Delphi/Lazarus demo program for the DNN module with Yolo object detection neural net
+
+- dnnOpenPose: a Delphi/Lazarus demo program for the DNN module with Coco human pose detection neural net
+
+- dnnRecolorize: a Delphi/Lazarus demo program for the DNN module with a neural net that colorize gray images
+
 
 
 # Build from sources
