@@ -1,0 +1,57 @@
+object Form7: TForm7
+  Left = 694
+  Height = 133
+  Top = 205
+  Width = 413
+  Caption = 'Colorize gray image with DNN'
+  ClientHeight = 133
+  ClientWidth = 413
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poDesktopCenter
+  LCLVersion = '2.2.0.4'
+  object lbl1: TLabel
+    Left = 16
+    Height = 13
+    Top = 16
+    Width = 65
+    AutoSize = False
+    Caption = 'Input image'
+  end
+  object btn1: TButton
+    Left = 176
+    Height = 25
+    Top = 80
+    Width = 75
+    Caption = 'Start '
+    OnClick = btn1Click
+    TabOrder = 0
+  end
+  object txImg1: TEdit
+    Left = 16
+    Height = 21
+    Top = 35
+    Width = 358
+    TabOrder = 1
+    Text = '..\..\grayimg.jpg'
+  end
+  object btnLoad1: TButton
+    Left = 380
+    Height = 25
+    Top = 35
+    Width = 25
+    Caption = '...'
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    OnClick = btnLoad1Click
+    ParentFont = False
+    TabOrder = 2
+  end
+  object dlgOpen1: TOpenDialog
+    Left = 328
+    Top = 80
+  end
+end

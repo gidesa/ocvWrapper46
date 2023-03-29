@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug-x86"/>
+    <Units>
+      <Unit>
+        <Filename Value="camshiftdemo.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="34" Y="12"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fCamShiftDemo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="321"/>
+        <CursorPos Y="324"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmHistogram.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="21"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="625"/>
+        <CursorPos X="40" Y="640"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_extern.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2553"/>
+        <CursorPos X="12" Y="2566"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_const.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="214"/>
+        <CursorPos X="65" Y="236"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_functions.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1930"/>
+        <CursorPos X="29" Y="1946"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\debug_DLL_dir.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="26" Y="9"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <OtherDefines Count="6">
+      <Define0 Value="Borland"/>
+      <Define1 Value="Ver150"/>
+      <Define2 Value="Delphi7"/>
+      <Define3 Value="Compiler6_Up"/>
+      <Define4 Value="PUREPASCAL"/>
+      <Define5 Value="FPC"/>
+    </OtherDefines>
+    <JumpHistory HistoryIndex="12">
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="32" Column="3" TopLine="18"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="4" Column="36"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="185" Column="67" TopLine="182"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="198" Column="49" TopLine="182"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="203" Column="77" TopLine="189"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="225" Column="71" TopLine="210"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="271" Column="64" TopLine="253"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="272" Column="58" TopLine="257"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="198" Column="70" TopLine="183"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="219" Column="53" TopLine="210"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="371" Column="26" TopLine="357"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="371" Column="56" TopLine="357"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCamshiftdemo.pas"/>
+        <Caret Line="378" Column="35" TopLine="339"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default"/>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="WorkingDirectory" Type="File" Count="1"/>
+      <List Name="CommandLineParameters" Count="1"/>
+    </HistoryLists>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="frmCamshiftdemo.pas"/>
+        <Line Value="324"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

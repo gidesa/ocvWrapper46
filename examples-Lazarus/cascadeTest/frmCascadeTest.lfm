@@ -1,0 +1,36 @@
+object Form6: TForm6
+  Left = 492
+  Height = 120
+  Top = 209
+  Width = 220
+  Caption = 'Cascade classifier test'
+  ClientHeight = 120
+  ClientWidth = 220
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poDesktopCenter
+  LCLVersion = '2.2.0.4'
+  object btnStart: TButton
+    Left = 48
+    Height = 25
+    Top = 24
+    Width = 121
+    Caption = 'Start webcam capture'
+    OnClick = btnStartClick
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 32
+    Height = 13
+    Top = 66
+    Width = 162
+    AutoSize = False
+    Caption = 'Type "C" for stop capture'
+    Font.Color = clRed
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    ParentFont = False
+  end
+end

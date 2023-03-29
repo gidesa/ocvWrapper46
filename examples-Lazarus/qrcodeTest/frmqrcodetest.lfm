@@ -1,0 +1,60 @@
+object Form6: TForm6
+  Left = 787
+  Height = 170
+  Top = 448
+  Width = 466
+  Caption = 'QR Code  test'
+  ClientHeight = 170
+  ClientWidth = 466
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  LCLVersion = '2.2.0.4'
+  object lbl1: TLabel
+    Left = 16
+    Height = 16
+    Top = 80
+    Width = 88
+    AutoSize = False
+    Caption = 'Recognized code:'
+    WordWrap = True
+  end
+  object btnStart: TButton
+    Left = 168
+    Height = 25
+    Top = 16
+    Width = 121
+    Caption = 'Start webcam capture'
+    OnClick = btnStartClick
+    TabOrder = 0
+  end
+  object lbQrcode: TLabel
+    Left = 16
+    Height = 48
+    Top = 104
+    Width = 416
+    Alignment = taCenter
+    AutoSize = False
+    Caption = '...'
+    Font.Color = clRed
+    Font.Height = -12
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    WordWrap = True
+  end
+  object lbl2: TLabel
+    Left = 152
+    Height = 16
+    Top = 48
+    Width = 168
+    AutoSize = False
+    Caption = 'For exit type C on image window'
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    WordWrap = True
+  end
+end

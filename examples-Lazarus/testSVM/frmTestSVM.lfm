@@ -1,0 +1,18 @@
+object Form7: TForm7
+  Left = 684
+  Height = 145
+  Top = 206
+  Width = 267
+  ClientHeight = 145
+  ClientWidth = 267
+  LCLVersion = '2.2.0.4'
+  object btn1: TButton
+    Left = 72
+    Height = 25
+    Top = 56
+    Width = 121
+    Caption = 'Start example'
+    OnClick = btn1Click
+    TabOrder = 0
+  end
+end

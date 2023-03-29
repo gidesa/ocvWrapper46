@@ -1,0 +1,26 @@
+object Form7: TForm7
+  Left = 727
+  Height = 155
+  Top = 160
+  Width = 251
+  ClientHeight = 155
+  ClientWidth = 251
+  Position = poDesktopCenter
+  LCLVersion = '2.2.0.4'
+  object lblProcess: TLabel
+    Left = 40
+    Height = 13
+    Top = 104
+    Width = 177
+    AutoSize = False
+  end
+  object btn1: TButton
+    Left = 72
+    Height = 25
+    Top = 48
+    Width = 121
+    Caption = 'Start example'
+    OnClick = btn1Click
+    TabOrder = 0
+  end
+end

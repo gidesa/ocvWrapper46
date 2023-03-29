@@ -1,0 +1,57 @@
+object Form6: TForm6
+  Left = 748
+  Height = 169
+  Top = 153
+  Width = 394
+  Caption = 'Skeletonize an image'
+  ClientHeight = 169
+  ClientWidth = 394
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poDesktopCenter
+  LCLVersion = '2.2.0.4'
+  object lbl1: TLabel
+    Left = 8
+    Height = 13
+    Top = 64
+    Width = 65
+    AutoSize = False
+    Caption = 'Input image'
+  end
+  object btnStart: TButton
+    Left = 136
+    Height = 25
+    Top = 120
+    Width = 121
+    Caption = 'Start'
+    OnClick = btnStartClick
+    TabOrder = 0
+  end
+  object txImg1: TEdit
+    Left = 79
+    Height = 21
+    Top = 56
+    Width = 250
+    TabOrder = 1
+  end
+  object btnLoad1: TButton
+    Left = 347
+    Height = 25
+    Top = 56
+    Width = 25
+    Caption = '...'
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    OnClick = btnLoad1Click
+    ParentFont = False
+    TabOrder = 2
+  end
+  object dlgOpen1: TOpenDialog
+    Filter = 'Jpg|*.jpg|Png|*.png|Bmp|*.bmp|All files|*.*'
+    Left = 328
+    Top = 56
+  end
+end

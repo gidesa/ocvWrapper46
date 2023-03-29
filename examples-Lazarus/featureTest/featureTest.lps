@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release-x86"/>
+    <Units>
+      <Unit>
+        <Filename Value="featureTest.dpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="38" Y="6"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmFeatureTest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form6"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="178"/>
+        <CursorPos Y="216"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="480"/>
+        <CursorPos X="24" Y="487"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_types.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="92"/>
+        <CursorPos X="69" Y="108"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_functions.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="672"/>
+        <CursorPos X="63" Y="686"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="4">
+      <Position>
+        <Filename Value="frmFeatureTest.pas"/>
+        <Caret Line="217" TopLine="199"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFeatureTest.pas"/>
+        <Caret Line="76" Column="3" TopLine="63"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFeatureTest.pas"/>
+        <Caret Line="83" Column="10" TopLine="196"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFeatureTest.pas"/>
+        <Caret Line="217" TopLine="197"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFeatureTest.pas"/>
+        <Caret Line="218" TopLine="197"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Line Value="543"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

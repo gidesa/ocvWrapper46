@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release-x86"/>
+    <Units>
+      <Unit>
+        <Filename Value="qrcodeTest.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="17"/>
+        <UsageCount Value="27"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmqrcodetest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form6"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="frmQrcodeTest"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="16"/>
+        <CursorPos X="28" Y="19"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="16" Y="51"/>
+        <UsageCount Value="14"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_functions.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="679"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <OtherDefines Count="5">
+      <Define0 Value="Borland"/>
+      <Define1 Value="Ver150"/>
+      <Define2 Value="Delphi7"/>
+      <Define3 Value="Compiler6_Up"/>
+      <Define4 Value="PUREPASCAL"/>
+    </OtherDefines>
+    <JumpHistory HistoryIndex="15">
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="410" Column="35" TopLine="394"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="404" Column="40" TopLine="394"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="534" Column="47" TopLine="523"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="409" Column="29" TopLine="402"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="80" Column="63" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="77" Column="40" TopLine="67"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="86" Column="55" TopLine="73"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="66" Column="22" TopLine="52"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="100" Column="89" TopLine="84"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="131" Column="39" TopLine="112"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="93" Column="39" TopLine="77"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="115" Column="32" TopLine="105"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="132" Column="3" TopLine="111"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="108" Column="33" TopLine="91"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="93" Column="34" TopLine="80"/>
+      </Position>
+      <Position>
+        <Filename Value="frmqrcodetest.pas"/>
+        <Caret Line="101" Column="32" TopLine="88"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <WorkingDirectory Value="D:\GDS\progC\ocvWrapper\bin\Release\x86"/>
+          </local>
+          <environment>
+            <UserOverrides Count="1">
+              <Variable0 Name="Path" Value="D:\opencv4.6\build\x86\vc15\bin;C:\ActiveTcl\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\programmi\delphi-XE2\bin;D:\programmi\delphi-XE2\lib;C:\Users\Public\Documents\RAD Studio\9.0\Bpl;D:\programmi\Borland\Delphi6\Bin;D:\programmi\Borland\Delphi6\Projects\Bpl;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;D:\programmi\Microchip\MPLAB C32 Suite\bin;D:\opencv2.4.13.6\build\x86\vc14\bin;C:\Program Files\NVIDIA Corporation\Nsight Compute 2021.1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.3\bin;d:\programmi\Git\cmd;D:\TDM-GCC-64\bin;D:\GDS\progC\ocvWrapper\bin\Release\x86;D:\programmi\Python37\Scripts\;D:\programmi\Python37\;C:\Users\gds\AppData\Local\Microsoft\WindowsApps;C:\Users\gds\.dotnet\tools"/>
+            </UserOverrides>
+          </environment>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="WorkingDirectory" Type="File" Count="2">
+        <Item1 Value="D:\GDS\progC\ocvWrapper\bin\Release\x86"/>
+        <Item2 Value="D:\GDS\pascal\ocvWrapper\examples-Freepascal\datamatrixTest\lib\i386-win32"/>
+      </List>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+</CONFIG>

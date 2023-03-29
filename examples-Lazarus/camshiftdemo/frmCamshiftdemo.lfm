@@ -1,0 +1,150 @@
+object fCamShiftDemo: TfCamShiftDemo
+  Left = 272
+  Height = 589
+  Top = 133
+  Width = 630
+  Caption = 'CAMshift demo'
+  ClientHeight = 589
+  ClientWidth = 630
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -10
+  Font.Name = 'MS Sans Serif'
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyPress = FormKeyPress
+  Position = poDesktopCenter
+  LCLVersion = '2.2.0.4'
+  object Panel2: TPanel
+    Left = 0
+    Height = 118
+    Top = 0
+    Width = 630
+    Align = alTop
+    ClientHeight = 118
+    ClientWidth = 630
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 18
+      Height = 16
+      Top = 18
+      Width = 30
+      Caption = 'Vmin'
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'MS Sans Serif'
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 18
+      Height = 16
+      Top = 50
+      Width = 34
+      Caption = 'Vmax'
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'MS Sans Serif'
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 18
+      Height = 16
+      Top = 87
+      Width = 30
+      Caption = 'Smin'
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'MS Sans Serif'
+      ParentFont = False
+    end
+    object tbVmin: TTrackBar
+      Left = 63
+      Height = 20
+      Top = 18
+      Width = 287
+      Frequency = 16
+      Max = 256
+      PageSize = 8
+      Position = 0
+      TabOrder = 0
+    end
+    object tbVmax: TTrackBar
+      Left = 63
+      Height = 20
+      Top = 50
+      Width = 287
+      Frequency = 16
+      Max = 256
+      PageSize = 8
+      Position = 0
+      TabOrder = 1
+    end
+    object tbSmin: TTrackBar
+      Left = 63
+      Height = 20
+      Top = 83
+      Width = 287
+      Frequency = 16
+      Max = 256
+      PageSize = 8
+      Position = 0
+      TabOrder = 2
+    end
+    object btnStart: TButton
+      Left = 414
+      Height = 25
+      Top = 68
+      Width = 75
+      Caption = 'Start'
+      OnClick = btnStartClick
+      TabOrder = 3
+    end
+    object btnHelp: TButton
+      Left = 574
+      Height = 33
+      Top = 9
+      Width = 33
+      Caption = '?'
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      OnClick = btnHelpClick
+      ParentFont = False
+      TabOrder = 4
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 471
+    Top = 118
+    Width = 630
+    Align = alClient
+    ClientHeight = 471
+    ClientWidth = 630
+    TabOrder = 1
+    object formImage: TImage
+      Left = 18
+      Height = 433
+      Top = 14
+      Width = 589
+      OnMouseDown = formImageMouseDown
+      OnMouseMove = formImageMouseMove
+      OnMouseUp = formImageMouseUp
+      Stretch = True
+    end
+    object me1: TMemo
+      Left = 142
+      Height = 177
+      Top = 126
+      Width = 347
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      ParentFont = False
+      TabOrder = 0
+      Visible = False
+    end
+  end
+end

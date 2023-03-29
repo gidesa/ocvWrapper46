@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release-x86"/>
+    <Units>
+      <Unit>
+        <Filename Value="testPCA.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="14" Y="6"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmTestPCA.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form7"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="38"/>
+        <CursorPos X="24" Y="56"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="853"/>
+        <CursorPos X="64" Y="864"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="7">
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="25" Column="18" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="testPCA.lpr"/>
+        <Caret Line="6" Column="14"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="154" Column="38" TopLine="123"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="64" TopLine="51"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="28" Column="12" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="92" TopLine="79"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="36" Column="25" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="frmTestPCA.pas"/>
+        <Caret Line="33" Column="39" TopLine="15"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release"/>
+    <Units>
+      <Unit>
+        <Filename Value="cascadeTest.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos Y="13"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmCascadeTest.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form6"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="3" Y="29"/>
+        <UsageCount Value="28"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="490"/>
+        <CursorPos Y="543"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <Debugger>
+      <Backend Value="{D26E042D-ECD6-4277-BA52-1B9BD91E91CA}"/>
+    </Debugger>
+    <JumpHistory HistoryIndex="9">
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="79" Column="41" TopLine="72"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="61" Column="32" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="102" Column="3" TopLine="89"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="27" Column="3" TopLine="14"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="104" Column="33" TopLine="92"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="121" Column="40" TopLine="111"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="139" Column="4" TopLine="115"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="46" Column="18" TopLine="107"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="139" TopLine="115"/>
+      </Position>
+      <Position>
+        <Filename Value="frmCascadeTest.pas"/>
+        <Caret Line="95" TopLine="78"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default"/>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="WorkingDirectory" Type="File" Count="1"/>
+      <List Name="CommandLineParameters" Count="1"/>
+    </HistoryLists>
+  </ProjectSession>
+</CONFIG>
