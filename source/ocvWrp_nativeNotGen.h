@@ -374,9 +374,8 @@ CVAPI(struct UMat_t*)  pCvMatToUmat(struct Mat_t* src )
 	try {
 		retval = new UMat_t();
 		retval->v = new cv::UMat();
-		*retval->v = src->v->getUMat(ACCESS_RW);
-		delete src->v;
-		delete src;
+		UMat resumat = src->v->getUMat(ACCESS_RW);
+		UMat_cpy(retval, resumat);
 	}
 	catch (std::exception &e) {
 		exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -390,9 +389,8 @@ CVAPI(struct Mat_t*) pCvMatFromUmat(struct UMat_t* src)
 	try {
 		retval = new Mat_t();
 		retval->v = new cv::Mat();
-		*retval->v = src->v->getMat(ACCESS_RW);
-		delete src->v;
-		delete src;
+		Mat resmat = src->v->getMat(ACCESS_READ);
+		Mat_cpy(retval, resmat);
 	}
 	catch (std::exception &e) {
 		exceptionDisplay((string)__func__ +  ": " + e.what());
