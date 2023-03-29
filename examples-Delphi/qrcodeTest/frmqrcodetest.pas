@@ -99,7 +99,6 @@ var
     qrdet: PCvQRCodeDetector_t;
     pqrcode: PCvString_t;
     qrcode: AnsiString;
-    imgname: CvString_t;
 
     nc: Integer;
     c: Integer;
@@ -139,7 +138,6 @@ try
         Assert((nc=4) and (ty=CV_32FC2), 'Returned corners Mat must be of type CV_32FC2 with 4 columns');
         drawContour(uframe, corners);
         pCvMatDelete(corners);
-        ucorners:=pCvUMatCreate();
      end
      else
          lbQrcode.Caption:='Nothing';
