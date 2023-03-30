@@ -10,8 +10,8 @@
 // Copyright (c) 2022 Giandomenico De Sanctis
 // Converted to use OpenCV 4.6 pure C wrapper library
 
-#define _CRT_SECURE_NO_WARNINGS  1
-
+#define _CRT_SECURE_NO_WARNINGS  1 
+// +
 
 #include <cstdio>
 #include <corecrt_math.h>
