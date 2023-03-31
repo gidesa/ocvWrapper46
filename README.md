@@ -9,12 +9,28 @@
 This project contains a dynamic library (DLL in Windows) that is a wrapper
 around the C++ API of Opencv v 4.6 .
 The library expose a pure C API interface to all C++ classes and functions of Opencv.
-More than 1.100 C wrapper functions cover vast majority of Opencv C++ classes and global
-functions, and some native C++ classes.
+More than 4.000 C wrapper functions, cover vast majority of Opencv C++ classes (more than 300)
+and global functions, and some standard C++ classes (as vectors).
 The library is intended especially for accessing Opencv C++ API from Delphi and Freepascal units.
 So in this repository there are Delphi/Freepascal units with signatures to all the wrapper C API.
 
-# Base library design
+# Opencv version 4.6 main features
+
+This version contains a Deep Neural Network (DNN) module, capable of load and use all main DNN
+formats: Tensorflow, Torch, Caffe, Darknet, ONNX. The neural net can be used to produce prediction
+on a assigned input. Varying on net type, input can be: an image (classification, object detection
+boxes, pose estimation, colorization etc.); a text (classification); and more.
+
+The use of GPU, if any, is totally transparent. The programmer has only to use the class UMat
+instead of Mat, and Opencv will use optimized code for the GPU.
+
+The official Opencv release contains OpenCL backend to address GPU calculations. So any GPU can
+be exploited: NVidia, AMD, Intel, and more.
+
+There is a class to read and decode QR Codes. And many more new functions, plus all the standard
+image processing and general functions found also in older versions. 
+
+# Library base design
 
 The wrapper code is based on the Python Opencv interface. So, all Opencv classes or functions
 exposed to Python are also exposed in wrapper.
@@ -80,6 +96,16 @@ all structs returned from the functions for get elements of some vectors types, 
 
 All structs not properly deleted cause memory leaks.
   
+
+# Default parameter values management
+
+The wrapper library has a complete management of default values for function parameters. Of course Delphi/Freepascal is
+capable of setting default values of simple type (integer, float). But many functions require a C++ object as default value.
+
+In case of class default, the Delphi/Freepascal program has only to pass a nil parameter, the wrapper library internally builds the
+exact C++ class object required by Opencv as default.  
+
+
 # C++ exception handling
 
 The C++ and Opencv exceptions are handled by a special handler function in wrapper. This function always print the exception message
@@ -108,6 +134,35 @@ i.e. the wrapper handler, and this one delete the struct).
 
 By the way, there is a trick also for Windows Delphi applications to open a console window, just insert {$APPTYPE CONSOLE}
 in the project .dpr source: the forms will be displayed normally, plus a console window will be open.
+
+# AutoDestroy utility unit
+
+The wrapper structs, created by the various functions around the C++ objects, have to be deleted to release memory, as noted previously.
+ This is same as Delphi/Freepascal, no difference.
+
+But note that Delphi/Freepascal memory manager does not directly create these objects, so cannot report if some
+C++ object delete is missing.
+
+AutoDestroy unit add a useful mode to create wrapper structs without the need to manually call the corresponding wrapper delete
+function. It exploits the well known reference counting of Delphi/Freepascal interfaces.
+
+For now there is a function to auto destroy the ubiquitous pCvMat_t object.
+Example manual delete:
+try
+   m := pCvMatImageCreate(w, h, CV_8UC3);
+   .............
+finally
+   pCvMatDelete(m);
+end; 
+
+Example auto delete:
+try
+   m := CvMatAuto(pCvMatImageCreate(w, h, CV_8UC3)).AsPtr;
+   .............
+finally
+   // no delete needed
+end; 
+    
 
 
 # Installation (Windows)
