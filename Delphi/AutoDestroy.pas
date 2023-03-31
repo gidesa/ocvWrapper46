@@ -23,18 +23,19 @@
   Boston, MA 02110-1335, USA.
 }
 unit AutoDestroy;
-
+{$mode Delphi}
 interface
 uses
   OpenCvWrapper;
 type
+
       IObjectDestroyer<T> = interface(IInterface)
       ['{4DE81104-08B2-4821-960E-8935AC9B8F5E}']
         function GetPtr: T;
         property AsPtr: T read GetPtr;
       end;
 
-      function CvMatAuto(AObject: PCvMat_t): IObjectDestroyer<PCvMat_t>;
+      function CvMatAuto(AObject: PCvMat_t):  IObjectDestroyer<PCvMat_t>;
 
 
 implementation
