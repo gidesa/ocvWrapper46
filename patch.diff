@@ -1,0 +1,15 @@
+diff --git a/Delphi/AutoDestroy.pas b/Delphi/AutoDestroy.pas
+index 4ac3eb1..e2999d6 100644
+--- a/Delphi/AutoDestroy.pas
++++ b/Delphi/AutoDestroy.pas
+@@ -23,7 +23,9 @@
+   Boston, MA 02110-1335, USA.
+ }
+ unit AutoDestroy;
+-{$mode Delphi}
++{$IFDEF FPC}
++  {$mode Delphi}
++{$ENDIF}
+ interface
+ uses
+   OpenCvWrapper;
