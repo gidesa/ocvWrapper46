@@ -147,27 +147,22 @@ AutoDestroy unit add a useful mode to create wrapper structs without the need to
 function. It exploits the well known reference counting of Delphi/Freepascal interfaces.
 
 For now there is a function to auto destroy the ubiquitous pCvMat_t object.
-Example manual delete:
+Example manual delete:   
 try   
-
    m := pCvMatImageCreate(w, h, CV_8UC3);   
-   
    .............   
-   
 finally   
-
    pCvMatDelete(m);   
-   
 end;   
 
 
 Example auto delete:
-try   
-   m := CvMatAuto(pCvMatImageCreate(w, h, CV_8UC3)).AsPtr;    
-   .............   
-finally   
-   // no delete needed   
-end;    
+try      
+    m := CvMatAuto(pCvMatImageCreate(w, h, CV_8UC3)).AsPtr;      
+    .............   
+finally      
+   // no delete needed     
+end;       
     
 
 
