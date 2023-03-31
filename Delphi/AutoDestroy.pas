@@ -23,7 +23,9 @@
   Boston, MA 02110-1335, USA.
 }
 unit AutoDestroy;
-{$mode Delphi}
+{$IFDEF FPC}
+  {$mode Delphi}
+{$ENDIF}
 interface
 uses
   OpenCvWrapper;
