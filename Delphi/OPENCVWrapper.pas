@@ -40,7 +40,7 @@ const
   define DEBUGDLL, and the program will load the debug dll
   Note: only for Delphi }
 
-{...$DEFINE DEBUGDLL}
+{$DEFINE DEBUGDLL}
 
 
 {$IFDEF  DEBUG}
@@ -869,7 +869,11 @@ BEGIN
           RowIn  := lazImg.GetDataLineStart(bitmap.Height -1 - j);
           offset := offset + iWidthStep;
           dataByte := pbytearray( offset);
+          {$IFDEF LINUX}
+          Move(rowin, dataByte, iWidthStep);
+          {$ELSE}
           CopyMemory(rowin, dataByte, iWidthStep);
+          {$ENDIF}
         END;
 {$else}
         RowIn  := Bitmap.Scanline[bitmap.height -1 ];
@@ -884,7 +888,11 @@ BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
         offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
+        {$IFDEF LINUX}
+        Move(rowin, dataByte, iWidthStep);
+        {$ELSE}
         CopyMemory(rowin, dataByte, iWidthStep);
+        {$ENDIF}
       END;
 {$else}
      FOR j := 0 TO Bitmap.Height-1   DO
@@ -957,7 +965,11 @@ BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
         offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
+        {$IFDEF LINUX}
+        Move(dataByte, rowin, iWidthStep);
+        {$ELSE}
         CopyMemory(dataByte, rowin, iWidthStep);
+        {$ENDIF}
       END;
 {$else}
      FOR j := 0 TO Bitmap.Height-1   DO
