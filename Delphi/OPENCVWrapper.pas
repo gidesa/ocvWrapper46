@@ -40,7 +40,7 @@ const
   define DEBUGDLL, and the program will load the debug dll
   Note: only for Delphi }
 
-{$DEFINE DEBUGDLL}
+{...$DEFINE DEBUGDLL}
 
 
 {$IFDEF  DEBUG}
