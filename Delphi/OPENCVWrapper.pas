@@ -660,8 +660,10 @@ var
   pCvDefaultMat:    PCvMat_t;
   pCvDefaultSize:   PCvSize_t;
   pCvDefaultPoint:  PCvPoint_t;
-  pCvPoint_1_1:     PCvPoint_t;   // Point(-1,-1)
   pCvDefaultScalar: PCvScalar_t;
+  pCvPoint_1_1:     PCvPoint_t;   // Point(-1,-1)
+  StringEmpty:      CvString_t;
+  pCvStringEmpty:   PCvString_t;
 
 
 {-----------------------------------------------------------------------------------------------}
@@ -1021,6 +1023,8 @@ begin
       pCvDefaultPoint:=pCvPointCreate();
       pCvPoint_1_1:=CvPoint_(-1,-1);
       pCvDefaultScalar:=pCvScalarCreate();
+      StringEmpty.pstr:=PAnsiChar('');
+      pCvStringEmpty:=@StringEmpty;
   except
       begin
           Halt(99);
@@ -1043,6 +1047,7 @@ begin
   pCvPointDelete(pCvDefaultPoint);
   pCvPointDelete(pCvPoint_1_1);
   pCvScalarDelete(pCvDefaultScalar);
+  pCvStringDelete(pCvStringEmpty);
 end;
 
 end.

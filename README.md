@@ -1,8 +1,17 @@
 ![OCV46LOGO](ocv46-logo.png)
-# ocvWrapper46 v 0.9
+# ocvWrapper46 v 1.0
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
+# New version - 7/4/2023
+ 
+  * Added scripts and instruction to build on Linux
+  * For Linux, changed CopyMemory to Move in OpencvWrapper.pas
+  * Added fromarray/toarray for vectors with simple types (int, char, float, double, uchar) 
+  * Changed default value from 0 to nil for pointer args in Delphi/Freep. functions signatures
+  * For Delphi extern declarations, added  version with "delayed" option
+  * Added predefinited PCvStringEmpty variable, it can be used when want to pass an empty string as parameter
+ 
 
 # Introduction
 
@@ -243,10 +252,36 @@ So IDE cannot help in code suggestion, and compiler cannot catch wrong use.
 
 
 
-# Build from sources
+# Windows - Build from sources
 
 The library can be rebuilt using the Visual C++ 2017 project in ocvCPPWrapper46 directory.
-Only dependence are the .lib files of Opencv, found in  \build directory inside Opencv
-root directory.
+Only dependence are the headers, from Opencv source directory, and .lib files of Opencv, found in  \build 
+directory of Opencv.
+
+# Linux - Build from sources
+
+Many thanks to Fred "Jurassic Pork", that prepared and tested the build scripts.
+
+  Tested with:  
+  * Ubuntu 20   
+  * Xubuntu 22   
+
+  1) Install minimal prerequisites (Ubuntu 20.04 as reference)   
+     sudo apt update && sudo apt install -y cmake g++ wget unzip    
+  2) Download and unpack Opencv 4.6 sources in your home directory:   
+     wget -O opencv.zip https://github.com/opencv/opencv/archive/4.6.0.zip   
+     unzip opencv.zip    
+  3) Download ocvWrapper46 repository from github in your home      
+  4) in install.sh set your home folder, Opencv source folder and ocvWrapper folder  
+  5) change install.sh permission to executable:   
+     chmod a+x install.sh   
+  6) run install.sh:    
+     ./install.sh    
+
+  At end you will have Opencv libraries and libocvWrapper46.so installed in
+  /usr/lib
+
+
+
 
 

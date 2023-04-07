@@ -48,6 +48,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvMatShapeToArray(MatShape* wrapper, int* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvMatShapeFromArray(MatShape* wrapper, int* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_CameraParams wrapper ---------------------------------
 CVAPI(vector_CameraParams*)   pCvVectordetail_CameraParamsCreate(int n)
 {
@@ -1545,6 +1575,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvVectorcharToArray(vector_char* wrapper, char* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvVectorcharFromArray(vector_char* wrapper, char* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_double wrapper ---------------------------------
 CVAPI(vector_double*)   pCvVectordoubleCreate(int n)
 {
@@ -1594,6 +1654,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvVectordoubleToArray(vector_double* wrapper, double* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvVectordoubleFromArray(vector_double* wrapper, double* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_float wrapper ---------------------------------
 CVAPI(vector_float*)   pCvVectorfloatCreate(int n)
 {
@@ -1643,6 +1733,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvVectorfloatToArray(vector_float* wrapper, float* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvVectorfloatFromArray(vector_float* wrapper, float* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_int wrapper ---------------------------------
 CVAPI(vector_int*)   pCvVectorintCreate(int n)
 {
@@ -1692,6 +1812,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvVectorintToArray(vector_int* wrapper, int* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvVectorintFromArray(vector_int* wrapper, int* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_string wrapper ---------------------------------
 CVAPI(vector_string*)   pCvVector_stringCreate(int n)
 {
@@ -1797,6 +1947,36 @@ try {
      return value;
 }
 
+CVAPI(void)   pCvVectorucharToArray(vector_uchar* wrapper, uchar* outstructs )
+{
+	try {
+		assert(wrapper);
+		assert(outstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+                  outstructs[i] =  (*wrapper).at(i);
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
+CVAPI(void)   pCvVectorucharFromArray(vector_uchar* wrapper, uchar* inpstructs )
+{
+	try {
+		assert(wrapper);
+		assert(inpstructs);
+		int l = (*wrapper).size();
+		for (int i = 0; i < l; i++) {
+			(*wrapper).at(i) = inpstructs[i];
+		};
+	}
+	catch (std::exception &e) {
+		exceptionDisplay((string)__func__ +  ": " + e.what());
+	};
+	return;
+}
 // ---------------------- vector_vector_DMatch wrapper ---------------------------------
 CVAPI(vector_vector_DMatch*)   pCvVectorvector_DMatchCreate(int n)
 {

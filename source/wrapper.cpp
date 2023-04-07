@@ -52,7 +52,7 @@
 #include     "opencv2/imgproc/bindings.hpp"            
 #include     "opencv2/imgproc/segmentation.hpp"        
 #include     "opencv2/ml.hpp"                  
-#ifdef WIN32
+#ifdef _WIN32 
 #include     "kdtree.hpp"
 #else
 #include     "opencv2/kdtree.hpp"
