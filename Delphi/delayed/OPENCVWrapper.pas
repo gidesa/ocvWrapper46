@@ -47,16 +47,16 @@ const
   {$IFDEF DEBUGDLL}
      {$INCLUDE 'debug_DLL_dir.inc'}
   {$ELSE}
-     DLL_DIR = ''  delayed;
+     DLL_DIR = '' ;
   {$ENDIF}
 {$ELSE}
-  DLL_DIR = ''  delayed;
+  DLL_DIR = ''  ;
 {$ENDIF}
 
 {$IFDEF WIN64}
-ocvWrapper = DLL_DIR + 'ocvCPPWrapper46x64'  delayed;
+ocvWrapper = DLL_DIR + 'ocvCPPWrapper46x64' ;
 {$ELSE}
-ocvWrapper = DLL_DIR + 'ocvCPPWrapper46'  delayed;
+ocvWrapper = DLL_DIR + 'ocvCPPWrapper46'  ;
 {$ENDIF}
 
 {$INCLUDE 'unOcvWrapper_const.pas'}
