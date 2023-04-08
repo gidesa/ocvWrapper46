@@ -1047,7 +1047,6 @@ begin
   pCvPointDelete(pCvDefaultPoint);
   pCvPointDelete(pCvPoint_1_1);
   pCvScalarDelete(pCvDefaultScalar);
-  pCvStringDelete(pCvStringEmpty);
 end;
 
 end.
