@@ -32,8 +32,30 @@ There is also a program, createFacesDB, that creates and save on disk a lightwei
  *  Face Detection: Download face_detection_yunet_2022mar.onnx from  
     https://github.com/opencv/opencv_zoo/tree/master/models/face_detection_yunet  
   
- *  Face Reognition: Download face_recognition_sface_2021dec.onnx from  
+ *  Face Recognition: Download face_recognition_sface_2021dec.onnx from  
     https://github.com/opencv/opencv_zoo/tree/master/models/face_recognition_sface  
   
+# How to create a face recognition database
 
+ * prepare a directory with some face images; better if the images are a close-up of face,  
+   as passport photo, where the face is easily recognized from algorithm  
+
+ * the image files can be of every type recognized from Opencv, as JPG, BMP, PNG
+
+ * you can add more images for the same man/woman  
+
+ * prepare a index text file, every line has to be a pair <file name>=<subject name>, for example:   
+   jon1.jpg=John  
+   jon2.jpg=John1  
+   jen3.jpg=Jenny  
+
+   Note that every subject name must unique in the file.  
+
+ * execute the generator program in cmd window createFacesDB.exe, with this parameters:  
+
+   createFacesDB <models directory> <faces images directory> <faces names list file> <saved faces db name>  
+
+ * if all is ok, program will save a json file in Opencv format, containing the "signatures" of every faces;   
+   they are an array of 128 float numbers
+  
 
