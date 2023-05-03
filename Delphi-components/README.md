@@ -1,0 +1,39 @@
+# Delphi VCL components for Opencv 4.6
+
+In this directory there is the package pkpkocvWrapComp.dpk with four components:  
+  *  two as image source, TOcvVideoSource and TOcvImageDirectory;   
+  *  two as image processors, TOCVProcObjectDetector and TOcvProcFaceDetector   
+     (this one can also work as face recognizer)  
+
+
+There is also a program, createFacesDB, that creates and save on disk a lightweight
+    database of faces "signatures". This is needed from the face recognizer class.  
+
+# Installation
+
+ * open package  pkpkocvWrapComp.dpk  
+ * compile and install, a new Opencv palette will be added to components palette  
+ * depending on Delphi version, could be needed to restart Delphi IDE   
+ * IMPORTANT: IDE has to find the ocvCPPWrapper46.dll and corresponding Opencv 4.6  
+   DLL (plus Visual C++ DLL required). So all these libraries have to be in the path.  
+ * open the ProjectGroup1, this contains the package and a demo project  
+
+ IMPORTANT: the object detector and face detector/recognizer components require  
+ some neural network files, that have to be downloaded and accessible to components. These are:  
+
+ *  Object detection: different neural networks can be used. One is Yolo V4 lite, download from:  
+    binary:  
+      https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights  
+    config:  
+      https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg  
+    classes:  
+      https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/coco.names  
+  
+ *  Face Detection: Download face_detection_yunet_2022mar.onnx from  
+    https://github.com/opencv/opencv_zoo/tree/master/models/face_detection_yunet  
+  
+ *  Face Reognition: Download face_recognition_sface_2021dec.onnx from  
+    https://github.com/opencv/opencv_zoo/tree/master/models/face_recognition_sface  
+  
+
+
