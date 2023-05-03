@@ -1,7 +1,20 @@
 ![OCV46LOGO](ocv46-logo.png)
-# ocvWrapper46 v 1.0
+# ocvWrapper46 v 1.1
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
+
+# New version - 3/5/2023
+ 
+  * Added four Delphi VCL components: two as image source, TOcvVideoSource and
+     TOcvImageDirectory; two as image processors, TOCVProcObjectDetector and
+     TOcvProcFaceDetector (also face recognizer)
+  * Added a program, createFacesDB, that creates and save on disk a lightweight
+    database of faces "signatures". This is needed from the face recognizer class
+  * Added unOpencvDelphi46 unit with a class to wrap the Opencv image/Mat class,
+    and other classes that wrap and simplify some Opencv DNN algorithms
+  * Added DELPHIDELAYED define to activate in Delphi the delayed DLL load mechanism
+    (so removed the separate files in Delayed directory)
+     
 
 # New version - 7/4/2023
  
@@ -11,6 +24,7 @@
   * Changed default value from 0 to nil for pointer args in Delphi/Freep. functions signatures
   * For Delphi extern declarations, added  version with "delayed" option
   * Added predefinited PCvStringEmpty variable, it can be used when want to pass an empty string as parameter
+
  
 
 # Introduction
