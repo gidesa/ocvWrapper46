@@ -1,0 +1,12 @@
+[General]
+Name=pkocvWrapComp
+BaseDir=D:\GDS\pascal\ocvWrapper46\Delphi-components\
+Project=1
+[Classes]
+Count=6
+Class0="TOcvCameraProp","TPersistent","ocvWrapComp","41","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"
+Class1="TOcvVideoCapture","TComponent","ocvWrapComp","64","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"
+Class2="TOcvProcessor","TComponent","ocvWrapComp","107","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"
+Class3="TObjDetThread","TCommThread<TOCVImage,TDetectionList>","ocvWrapComp","136","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"
+Class4="TOcvProcObjectDetector","TOcvProcessor","ocvWrapComp","0","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"
+Class5="EOcvVCError","Exception","ocvWrapComp","0","D:\GDS\pascal\ocvWrapper46\Delphi-components\ocvWrapComp.pas"

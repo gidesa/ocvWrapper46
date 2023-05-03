@@ -18,6 +18,8 @@
   Boston, MA 02110-1335, USA.
 }
 unit OPENCVWrapper;
+{$WARN SYMBOL_PLATFORM OFF}
+
 {$IFDEF FPC}
   {$MODE Delphi}
 {$ENDIF}
@@ -29,7 +31,7 @@ uses
 {$ifdef FPC}
      Math{$ifdef LCL},Graphics, FPImage, IntfGraphics{$endif};
 {$else}
-  System.Math, Graphics;
+  System.Math, Vcl.Graphics;
 {$endif}
 
 
@@ -601,6 +603,7 @@ PCvMomentsS = ^CvMomentsS;
   function   pCvMatROI(const mat: PCvMat_t; const roi: PCvRectS): PCvMat_t; cdecl;
   procedure  pCvMatFill(const wrapper: PCvMat_t; const val: PCvScalar_t; const mask: PCvMat_t = nil); cdecl;
   procedure  pCvMatScalarOp(const wrapper: PCvMat_t; const op: AnsiChar; val: Double); cdecl;
+  function   pCvMatGetRow (const mat: PCvMat_t; const rowind: integer): PCvMat_t; cdecl;
   procedure  pCvMatCopy(const src: PCvMat_t; const dst: PCvMat_t); cdecl;
   function   pCvMatClone (const mat: PCvMat_t): PCvMat_t; cdecl;
   procedure  pCvMatConvertTo(const src: PCvMat_t; const dst: PCvMat_t; dstType: Integer; alpha: Double = 1.0; beta: Double = 0); cdecl;
@@ -674,51 +677,55 @@ implementation
  uses System.SysUtils;
  {$ENDIF}
 
+ {$IFNDEF FPC}
+    {$DEFINE DELPHIDELAYED}
+ {$ENDIF}
 
- function   pCvRedirectException;         external ocvWrapper  name 'pCvRedirectException';
+ function   pCvRedirectException;         external ocvWrapper  name 'pCvRedirectException'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
 
- function   pCvStringCreate;              external ocvWrapper  name 'pCvStringCreate';
- procedure  pCvStringDelete;              external ocvWrapper  name 'pCvStringDelete';
+ function   pCvStringCreate;              external ocvWrapper  name 'pCvStringCreate'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvStringDelete;              external ocvWrapper  name 'pCvStringDelete'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
 
- function   pCvMatCreate;                 external ocvWrapper  name 'pCvMatCreate';
+ function   pCvMatCreate;                 external ocvWrapper  name 'pCvMatCreate'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
  function   pCvMat2dCreate;               external ocvWrapper  name 'pCvMat2dCreate';
- function   pCvMatCreateEmpty;            external ocvWrapper  name 'pCvMatCreateEmpty';
- function   pCvMatImageCreate;            external ocvWrapper  name 'pCvMatImageCreate';
- procedure  pCvMatDelete;                 external ocvWrapper  name 'pCvMatDelete';
- function   pCvMatROI;                    external ocvWrapper  name 'pCvMatROI';
- procedure  pCvMatCopy;                   external ocvWrapper  name 'pCvMatCopy';
- procedure  pCvMatConvertTo;              external ocvWrapper  name 'pCvMatConvertTo';
- procedure  pCvMatExtractChannel;         external ocvWrapper  name 'pCvMatExtractChannel';
- function   pCvMatClone;                  external ocvWrapper  name 'pCvMatClone';
- procedure  pCvMatCopyToUmat;             external ocvWrapper  name 'pCvMatCopyToUmat';
- function   pCvMatToUmat;                 external ocvWrapper  name 'pCvMatToUmat';
- function   pCvMatFromUmat;               external ocvWrapper  name 'pCvMatFromUmat';
- procedure  pCvMatFill;                   external ocvWrapper  name 'pCvMatFill';
- procedure  pCvMatScalarOp;               external ocvWrapper  name 'pCvMatScalarOp';
- function   pCvMatGetByte;                external ocvWrapper  name 'pCvMatGetByte';
- function   pCvMatSetByte;                external ocvWrapper  name 'pCvMatSetByte';
- function   pCvMatGetInt;                 external ocvWrapper  name 'pCvMatGetInt';
- function   pCvMatSetInt;                 external ocvWrapper  name 'pCvMatSetInt';
- function   pCvMatGetFloat;               external ocvWrapper  name 'pCvMatGetFloat';
- function   pCvMatSetFloat;               external ocvWrapper  name 'pCvMatSetFloat';
- function   pCvMatGetFloatMultidim;       external ocvWrapper  name 'pCvMatGetFloatMultidim';
- function   pCvMatSetFloatMultidim;       external ocvWrapper  name 'pCvMatSetFloatMultidim';
- function   pCvMatGetDouble;              external ocvWrapper  name 'pCvMatGetDouble';
- function   pCvMatSetDouble;              external ocvWrapper  name 'pCvMatSetDouble';
- function   pCvMatGetPixelC3;             external ocvWrapper  name 'pCvMatGetPixelC3';
- function   pCvMatSetPixelC3;             external ocvWrapper  name 'pCvMatSetPixelC3';
- function   pCvMatGetWidth;               external ocvWrapper  name 'pCvMatGetWidth';
- function   pCvMatGetHeight;              external ocvWrapper  name 'pCvMatGetHeight';
- function   pCvMatGetChannels;            external ocvWrapper  name 'pCvMatGetChannels';
- function   pCvMatGetType;                external ocvWrapper  name 'pCvMatGetType';
- function   pCvMatGetDimsNum;             external ocvWrapper  name 'pCvMatGetDimsNum';
- procedure  pCvMatGetDims;                external ocvWrapper  name 'pCvMatGetDims';
- function   pCvMatGetDimPtr;              external ocvWrapper  name 'pCvMatGetDimPtr';
- function   pCvMatGetData;                external ocvWrapper  name 'pCvMatGetData';
- function   pCvMatGetDepth;               external ocvWrapper  name 'pCvMatGetDepth';
- procedure  pCvIplImageToMat;             external ocvWrapper  name 'pCvIplImageToMat';
- function   pCvMatToIplImage;             external ocvWrapper  name 'pCvMatToIplimage';
- procedure  pCvIplImageDelete;            external ocvWrapper  name 'pCvIplImageDelete';
+ function   pCvMatCreateEmpty;            external ocvWrapper  name 'pCvMatCreateEmpty'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatImageCreate;            external ocvWrapper  name 'pCvMatImageCreate'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatDelete;                 external ocvWrapper  name 'pCvMatDelete'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatROI;                    external ocvWrapper  name 'pCvMatROI'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatCopy;                   external ocvWrapper  name 'pCvMatCopy'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatConvertTo;              external ocvWrapper  name 'pCvMatConvertTo'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatExtractChannel;         external ocvWrapper  name 'pCvMatExtractChannel'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatClone;                  external ocvWrapper  name 'pCvMatClone'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatCopyToUmat;             external ocvWrapper  name 'pCvMatCopyToUmat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatToUmat;                 external ocvWrapper  name 'pCvMatToUmat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatFromUmat;               external ocvWrapper  name 'pCvMatFromUmat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatFill;                   external ocvWrapper  name 'pCvMatFill'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatScalarOp;               external ocvWrapper  name 'pCvMatScalarOp'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetRow;                 external ocvWrapper  name 'pCvMatGetRow'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetByte;                external ocvWrapper  name 'pCvMatGetByte'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetByte;                external ocvWrapper  name 'pCvMatSetByte'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetInt;                 external ocvWrapper  name 'pCvMatGetInt'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetInt;                 external ocvWrapper  name 'pCvMatSetInt'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetFloat;               external ocvWrapper  name 'pCvMatGetFloat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetFloat;               external ocvWrapper  name 'pCvMatSetFloat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetFloatMultidim;       external ocvWrapper  name 'pCvMatGetFloatMultidim'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetFloatMultidim;       external ocvWrapper  name 'pCvMatSetFloatMultidim'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetDouble;              external ocvWrapper  name 'pCvMatGetDouble'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetDouble;              external ocvWrapper  name 'pCvMatSetDouble'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetPixelC3;             external ocvWrapper  name 'pCvMatGetPixelC3'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetPixelC3;             external ocvWrapper  name 'pCvMatSetPixelC3'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetWidth;               external ocvWrapper  name 'pCvMatGetWidth'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetHeight;              external ocvWrapper  name 'pCvMatGetHeight'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetChannels;            external ocvWrapper  name 'pCvMatGetChannels'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetType;                external ocvWrapper  name 'pCvMatGetType'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetDimsNum;             external ocvWrapper  name 'pCvMatGetDimsNum'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvMatGetDims;                external ocvWrapper  name 'pCvMatGetDims'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetDimPtr;              external ocvWrapper  name 'pCvMatGetDimPtr'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetData;                external ocvWrapper  name 'pCvMatGetData'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetDepth;               external ocvWrapper  name 'pCvMatGetDepth'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvIplImageToMat;             external ocvWrapper  name 'pCvIplImageToMat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatToIplImage;             external ocvWrapper  name 'pCvMatToIplimage'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ procedure  pCvIplImageDelete;            external ocvWrapper  name 'pCvIplImageDelete'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
 
 
 {$INCLUDE 'unOcvWrapper_nativeClasses_extern.pas'}

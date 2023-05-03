@@ -1,0 +1,7 @@
+[General]
+Name=Project1
+BaseDir=D:\GDS\pascal\ocvWrapper46\Delphi-components\
+Project=1
+[Classes]
+Count=1
+Class0="TForm7","TForm","Unit1","10","D:\GDS\pascal\ocvWrapper46\Delphi-components\Unit1.pas"
