@@ -1,3 +1,6 @@
+![OCV46COMPONENTS](ocv46-components.png)
+
+
 # Delphi VCL components for Opencv 4.6
 
 In this directory there is the package pkpkocvWrapComp.dpk with four components:  
