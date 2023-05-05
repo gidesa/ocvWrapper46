@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release"/>
+    <Units>
+      <Unit>
+        <Filename Value="createFacesDB.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="62"/>
+        <CursorPos X="65" Y="71"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="unFileIterator.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="80"/>
+        <CursorPos Y="98"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOpenCVDelphi46.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1059"/>
+        <CursorPos X="74" Y="1065"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\AutoDestroy.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos Y="85"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="1">
+      <Position>
+        <Filename Value="createFacesDB.lpr"/>
+        <Caret Line="52" TopLine="38"/>
+      </Position>
+      <Position>
+        <Filename Value="createFacesDB.lpr"/>
+        <Caret Line="52" TopLine="38"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="D:\GDS\pascal\ocvWrapper46\Delphi-components  ..\..\facesImg     ..\..\facesImg\names.txt  ..\..\facesImg\facesDB.json"/>
+          </local>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="WorkingDirectory" Type="File" Count="1"/>
+      <List Name="LaunchingApplication" Type="File" Count="1">
+        <Item1 Value="C:\WINDOWS\system32\cmd.exe /C ${TargetCmdLine}"/>
+      </List>
+      <List Name="CommandLineParameters" Count="2">
+        <Item1 Value="D:\GDS\pascal\ocvWrapper46\Delphi-components  ..\..\facesImg     ..\..\facesImg\names.txt  ..\..\facesImg\facesDB.json   "/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+  <SkipCheckLCLInterfaces Value="True"/>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="createFacesDB.lpr"/>
+        <Line Value="52"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

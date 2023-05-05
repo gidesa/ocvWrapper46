@@ -1,0 +1,118 @@
+object Form7: TForm7
+  Left = 1097
+  Height = 698
+  Top = 231
+  Width = 446
+  Caption = 'Object and faces detection demo'
+  ClientHeight = 698
+  ClientWidth = 446
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  LCLVersion = '2.2.0.4'
+  object img1: TImage
+    Left = 256
+    Height = 104
+    Top = 9
+    Width = 161
+  end
+  object img2: TImage
+    Left = 24
+    Height = 265
+    Top = 416
+    Width = 393
+  end
+  object img3: TImage
+    Left = 24
+    Height = 275
+    Top = 119
+    Width = 393
+  end
+  object btnbitStart: TBitBtn
+    Left = 24
+    Height = 33
+    Top = 80
+    Width = 97
+    Caption = 'Start'
+    Kind = bkOK
+    NumGlyphs = 2
+    OnClick = btnbitStartClick
+    Spacing = 5
+    TabOrder = 0
+  end
+  object btnbitStop: TBitBtn
+    Left = 153
+    Height = 33
+    Top = 80
+    Width = 97
+    Caption = 'Stop'
+    Enabled = False
+    Kind = bkCancel
+    NumGlyphs = 2
+    OnClick = btnbitStopClick
+    TabOrder = 1
+  end
+  object chkObjdet: TCheckBox
+    Left = 24
+    Height = 19
+    Top = 24
+    Width = 90
+    Caption = 'Detect objects'
+    Checked = True
+    State = cbChecked
+    TabOrder = 2
+  end
+  object chkFacedet: TCheckBox
+    Left = 153
+    Height = 19
+    Top = 24
+    Width = 81
+    Caption = 'Detect faces'
+    Checked = True
+    State = cbChecked
+    TabOrder = 3
+  end
+  object ocvcapt1: TOcvVideoCapture
+    DisplayImage = img1
+    Active = False
+    VideoSourceType = vsCamera
+    VideoSource = 0
+    CameraProp.Height = 600
+    CameraProp.Width = 800
+    CameraProp.Brightness = 120
+    CameraProp.Contrast = 5
+    CameraProp.Gamma = -1
+    CameraProp.FPS = 10
+    CameraProp.WhiteBalance = -1
+    CameraProp.AutoWhiteBalance = True
+    Left = 312
+    Top = 40
+  end
+  object ocvobjdet1: TOcvProcObjectDetector
+    DisplayImage = img3
+    VideoCapture = ocvcapt1
+    ImagesBufferLength = 10
+    ModelBinName = '..\..\..\Delphi-components\yolov4-tiny.weights'
+    ModelConfigName = '..\..\..\Delphi-components\yolov4-tiny.cfg'
+    ModelClassesName = '..\..\..\Delphi-components\yolo-tiny-coco-classes.txt'
+    Threshold = 0.800000011920929
+    Left = 208
+    Top = 272
+  end
+  object ocvfacedet1: TOcvProcFaceDetector
+    DisplayImage = img2
+    VideoCapture = ocvcapt1
+    ImagesBufferLength = 20
+    ModelBinName = '..\..\..\Delphi-components\face_detection_yunet_2022mar.onnx'
+    ScoreThreshold = 0.899999976158142
+    NmsThreshold = 0.300000011920929
+    TopK = 5000
+    Recognize = True
+    ReconModelBinName = '..\..\..\Delphi-components\face_recognition_sface_2021dec.onnx'
+    ReconFacesNames = '..\..\createFacesDB\facesImg\names.txt'
+    ReconFeaturesName = '..\..\createFacesDB\facesImg\facesDB.json'
+    Left = 208
+    Top = 504
+  end
+end

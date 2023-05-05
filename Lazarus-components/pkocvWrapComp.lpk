@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="\"/>
+    <Name Value="pkocvWrapComp"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="..\Delphi;..\Delphi\Pascal-classes"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <SyntaxMode Value="Delphi"/>
+        </SyntaxOptions>
+      </Parsing>
+    </CompilerOptions>
+    <Version Major="1"/>
+    <Files Count="4">
+      <Item1>
+        <Filename Value="..\Delphi\Pascal-classes\ocvWrapComp.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ocvWrapComp"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\Delphi\Pascal-classes\CommThread.pas"/>
+        <UnitName Value="CommThread"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\Delphi\Pascal-classes\unOpenCVDelphi46.pas"/>
+        <UnitName Value="unOpenCVDelphi46"/>
+      </Item3>
+      <Item4>
+        <Filename Value="pkocvWrapComp.lrs"/>
+        <Type Value="LRS"/>
+      </Item4>
+    </Files>
+    <CompatibilityMode Value="True"/>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

@@ -1,0 +1,3 @@
+gds1.jpg=Johnny
+mar1.jpg=Jenny
+mar2.jpg=Jenny2

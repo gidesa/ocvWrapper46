@@ -5,7 +5,7 @@
 
 # New version - 3/5/2023
  
-  * Added four Delphi VCL components: two as image source, TOcvVideoSource and
+  * Added four Delphi VCL/Lazarus components: two as image source, TOcvVideoSource and
      TOcvImageDirectory; two as image processors, TOCVProcObjectDetector and
      TOcvProcFaceDetector (also face recognizer)
   * Added a program, createFacesDB, that creates and save on disk a lightweight
@@ -205,7 +205,7 @@ Download Opencv version 4.6 from https://sourceforge.net/projects/opencvlibrary/
 NOTE: the official Opencv version has only 64 bit binaries. In this repository, directory Opencv4.6-x86 contains the
 32 bit binaries
 
-Install Opencv, and add in Windows path the directory with Opencv DLL (for example: C:\opencv4.6\build\x64\vc14\bin):
+Install Opencv, and add in Windows path the directory with Opencv DLL (for example: C:\opencv4.6\build\x64\vc14\bin):  
 
   set path=C:\opencv4.6\build\x64\vc14\bin;%path%
 
