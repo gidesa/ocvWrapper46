@@ -1,4 +1,7 @@
 # Ignora cartella opencv4.6-x86
 
 opencv4.6-x86/
+opencv4.6-x86/opencv_world460d.zip
+opencv4.6-x86/opencv_world460.zip
+opencv4.6-x86/opencv_videoio_ffmpeg460.zip
 
