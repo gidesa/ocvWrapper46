@@ -1013,38 +1013,102 @@ begin
   Result := CvScalar_(MaxDouble, MaxDouble, MaxDouble, MaxDouble);
 end;
 
+//----------------------------------------------------------------------------
 
+var
+  LoadedRedirectException: Boolean;
+  DefaultsVarState: Integer;
+
+
+procedure InitOCVExcRedirection;
+begin
+  try
+    if not(LoadedRedirectException) then
+        LoadedRedirectException:=  pCvRedirectException(@cvexception);
+  except
+    Halt(99);
+  end;
+end;
+
+
+procedure InitOCVDefaults;
+begin
+  try
+     { DefaultsVarState is used for delayed Delphi loading, it avoids
+       double calls to create functions}
+     if DefaultsVarState<1 then
+        begin pCvDefaultMat:=pCvMatCreateEmpty();  Inc(DefaultsVarState); end;
+     if DefaultsVarState<2 then
+        begin pCvDefaultSize:=pCvSizeCreate();     Inc(DefaultsVarState); end;
+     if DefaultsVarState<3 then
+        begin pCvDefaultPoint:=pCvPointCreate();   Inc(DefaultsVarState); end;
+     if DefaultsVarState<4 then
+        begin pCvPoint_1_1:=CvPoint_(-1,-1);       Inc(DefaultsVarState); end;
+     if DefaultsVarState<5 then
+        begin pCvDefaultScalar:=pCvScalarCreate(); Inc(DefaultsVarState); end;
+  except
+     begin
+          Halt(99);
+     end;
+  end;
+end;
+
+
+{Only for Delphi on Windows, Dll load notify function}
+{$IFDEF MSWINDOWS}
+{$IFDEF DELPHIDELAYED}
+var
+  LOldNotifyHook, LOldFailureHook: TDelayedLoadHook; { for storing the old hook pointers }
+function DelayedLoadHook(dliNotify: dliNotification; pdli: PDelayLoadInfo): Pointer; stdcall;
+begin
+case dliNotify of
+    dliNoteEndProcessing:
+    begin
+      InitOCVExcRedirection;
+      InitOCVDefaults;
+    end;
+    dliFailLoadLibrary:
+      WriteLn('Failed to load "', pdli.szDll, '" DLL');
+  end;
+
+  { Call the old hooks if they are not nil }
+  { This is recommended to do in case the old hook do further processing }
+  if dliNotify in [dliFailLoadLibrary, dliFailGetProcAddress] then
+  begin
+    if Assigned(LOldNotifyHook) then
+      LOldFailureHook(dliNotify, pdli);
+  end else
+  begin
+    if Assigned(LOldNotifyHook) then
+      LOldNotifyHook(dliNotify, pdli);
+  end;
+
+  Result := nil;
+end;
+{$ENDIF}
+{$ENDIF}
 
 {****************************************************************************}
 initialization
 begin
-  try
-    try
-      pCvRedirectException(@cvexception);
-    except
-      Halt(99);
-    end;
-
-      pCvDefaultMat:=pCvMatCreateEmpty();
-      pCvDefaultSize:=pCvSizeCreate();
-      pCvDefaultPoint:=pCvPointCreate();
-      pCvPoint_1_1:=CvPoint_(-1,-1);
-      pCvDefaultScalar:=pCvScalarCreate();
-      StringEmpty.pstr:=PAnsiChar('');
-      pCvStringEmpty:=@StringEmpty;
-  except
-      begin
-          Halt(99);
-      end;
-  end;
-
-{$IFDEF FPC}
-    // For some Opencv functions Freepascal require to set
-    // Floating Point Unit exception mask, to disable some exceptions generated
-    // from C++
-    SetExceptionMask(GetExceptionMask + [exOverflow,exZeroDivide,exInvalidOp]);
+{$IFDEF DELPHIDELAYED}
+{ Install new delayed loading hooks }
+  LOldNotifyHook  := SetDliNotifyHook2(DelayedLoadHook);
+  LOldFailureHook := SetDliFailureHook2(DelayedLoadHook);
+{$ELSE}
+  InitOCVExcRedirection;
+  InitOCVDefaults;
 {$ENDIF}
 
+  StringEmpty.pstr:=PAnsiChar('');
+  pCvStringEmpty:=@StringEmpty;
+
+{$IFDEF FPC}
+  // For some Opencv functions Freepascal require to set
+  // Floating Point Unit exception mask, to disable some exceptions generated
+  // from C++
+  SetExceptionMask(GetExceptionMask + [exOverflow,exZeroDivide,exInvalidOp]);
+{$ENDIF}
 end;
 
 finalization
