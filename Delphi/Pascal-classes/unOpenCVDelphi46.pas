@@ -250,7 +250,7 @@ var
   mt: Integer;
 begin
   inherited Create;
-  Assert((nchannels=1) or (nchannels=3),'Channels number must be 1, 2 or 3');
+  Assert((nchannels>=1) and (nchannels<=3),'Channels number must be 1, 2 or 3');
   case nchannels of
    1:  mt:=CV_8UC1;
    2:  mt:=CV_8UC2;
@@ -609,13 +609,14 @@ var
   modelTxt:  CvString_t;
 begin
   inherited Create;
+  net:=nil;
+  outNames:=nil;
 try
   classes:=TStringList.Create;
   classes.LoadFromFile(modelClassesName);
 
   modelBin.pstr := PAnsiChar(AnsiString(modelBinName));
   modelTxt.pstr :=PAnsiChar(AnsiString(modelConfigName));
-  net:=nil;
   net := pCvdnn_readNet(@modelBin, @modelTxt);
   pCvdnn_NetsetPreferableBackend(net, Ord(DNN_BACKEND_OPENCV));
   pCvdnn_NetsetPreferableTarget(net, Ord(DNN_TARGET_CPU));
@@ -624,7 +625,6 @@ try
       pCvocl_setUseOpenCL(True);
       pCvdnn_NetsetPreferableTarget(net, Ord(DNN_TARGET_OPENCL_FP16));
   end;
-  outNames:=nil;
   outNames:=pCvdnn_NetgetUnconnectedOutLayersNames(net);
 
   fThreshold:=0.7;
@@ -642,11 +642,12 @@ end;
 destructor TOcvDNNObjDetect.Destroy;
 begin
   if (net<>nil) then
-  begin
     pCvdnn_NetDelete(net);
+  if (outNames <> nil) then
     pCvVectorStringDelete(outNames);
-    classes.Free;
-  end;
+  if Assigned(classes) then
+     classes.Free;
+
   inherited;
 end;
 
@@ -709,6 +710,15 @@ var
 {$ENDIF}
 {$ENDIF}
 begin
+  vecOut:=nil;
+  vecBoxes:=nil;
+  vecScores:=nil;
+  vecNmsIndex:=nil;
+  mean:=nil;
+  inpSize:=nil;
+  classIdPoint:=nil;
+
+
 try
     Assert(Assigned(ocvimg),'Error: image not assigned');
     Assert(Assigned(detections),'Error: detections list not assigned');
@@ -823,18 +833,22 @@ OutputDebugString(PWideChar(floattostr(t2)+' '+IntToStr(detections.Count)));
 {$ENDIF}
 
 finally
-  if img<>nil then
-  begin
+  if vecBoxes<>nil then
     pCvVectorRect2dDelete(vecBoxes);
+  if vecScores<>nil then
     pCvVectorfloatDelete(vecScores);
+  if vecNmsIndex<>nil then
     pCvVectorintDelete(vecNmsIndex);
+  if vecOut<>nil then
     pCvVectorMatDelete(vecOut);
 
 
+  if mean<>nil then
     pCvScalarDelete(mean);
+  if inpSize<>nil then
     pCvSizeDelete(inpSize);
+  if classIdPoint<>nil then
     pCvPointDelete(classIdPoint);
-  end;
 end;
 end;
 {$ENDREGION}
@@ -852,13 +866,15 @@ var
   pstrCfg:  PCvString_t;
 begin
   inherited Create;
+  ptrnet:=nil;
+  net:=nil;
+  inpsize:=nil;
 try
   modelBin.pstr := PAnsiChar(AnsiString(modelBinName));
   inpsize:=CvSize_(320, 320);
   fScoreThreshold:=0.9;
   fNmsThreshold:=0.3;
   fTopK:=5000;
-  net:=nil;
   fRecognize:=False;
   fFaceRecognizer:=nil;
 
@@ -883,11 +899,10 @@ end;
 
 destructor TOcvDNNFaceDetect.Destroy;
 begin
-  if (net<>nil) then
-  begin
+  if (ptrnet<>nil) then
     pCvPtr_FaceDetectorYNDelete(ptrnet, net);
+  if (inpsize) <> nil then
     pCvSizeDelete(inpsize);
-  end;
   // delete internal face recognizer, if any
   if fFaceRecognizer<>nil then
     fFaceRecognizer.Free;
@@ -1045,13 +1060,11 @@ var
   faceRec: TFaceRecord;
 begin
   if (net<>nil) then
-  begin
     pCvPtr_FaceRecognizerSFDelete(ptrnet, net);
-  end;
   for faceRec in facesDatabase do
     pCvMatDelete(faceRec.faceFeatures);
-
-  facesDatabase.Free;
+  if Assigned(facesDatabase) then
+     facesDatabase.Free;
   inherited Destroy;
 end;
 
@@ -1190,7 +1203,8 @@ begin
     pCvFileStorageDelete(fstorage);
     pCvFileNodeDelete(fnode);
   finally
-    facesNames.Free;
+    if Assigned(facesNames) then
+        facesNames.Free;
   end;
 
 end;

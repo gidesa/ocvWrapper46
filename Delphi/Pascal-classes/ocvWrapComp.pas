@@ -34,7 +34,7 @@ interface
 
 uses
   {$IFDEF LCL}
-  LCLIntf, LCLType,
+  LCLIntf, LCLType, LResources,
   ExtCtrls,  Forms,
   SyncObjs,  lazCollections, Generics.Collections,
   {$IFDEF UNIX}
@@ -335,6 +335,7 @@ uses
  {$ELSE}
   Vcl.Graphics;
  {$ENDIF}
+
 
 {----- error management -----}
 const
@@ -1457,4 +1458,8 @@ end;
 
 {$ENDREGION}
 
+{$IFDEF FPC}
+Initialization
+{$I pkocvWrapComp.lrs}
+{$ENDIF}
 end.
