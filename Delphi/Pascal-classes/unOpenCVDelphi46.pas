@@ -1031,9 +1031,11 @@ var
   pstrCfg:  PCvString_t;
 begin
   inherited Create;
+  ptrnet:=nil;
+  net:=nil;
+  facesDatabase:=TObjectList<TFaceRecord>.Create;
 try
   modelBin.pstr := PAnsiChar(AnsiString(modelBinName));
-  net:=nil;
   fModelBinName:=modelBinName;
   fModelConfigName:=modelConfigName;
   fMode:=FRCompare;
@@ -1046,7 +1048,6 @@ try
   end;
   ptrnet:=pCvFaceRecognizerSF_create(@modelBin, pstrCfg);
   net:=pCvPtr_FaceRecognizerSFConvert(ptrnet);
-  facesDatabase:=TObjectList<TFaceRecord>.Create;
 except
   on E: Exception do
   begin
@@ -1061,10 +1062,12 @@ var
 begin
   if (net<>nil) then
     pCvPtr_FaceRecognizerSFDelete(ptrnet, net);
-  for faceRec in facesDatabase do
-    pCvMatDelete(faceRec.faceFeatures);
   if Assigned(facesDatabase) then
-     facesDatabase.Free;
+  begin
+    for faceRec in facesDatabase do
+      pCvMatDelete(faceRec.faceFeatures);
+    facesDatabase.Free;
+  end;
   inherited Destroy;
 end;
 
@@ -1087,6 +1090,8 @@ begin
 {$ENDIF}
 
   pCvFaceRecognizerSFalignCrop(net, ocvimg.PCvMatPtr, firstRec, alignedImg);
+
+
   // a temp Mat is needed, because this function always reuses the same internal data buffer
   pCvFaceRecognizerSFfeature(net, alignedImg, featuresTemp);
   pCvMatCopy(featuresTemp, features);

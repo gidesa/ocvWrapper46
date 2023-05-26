@@ -22,7 +22,8 @@ type
     ocvimgdir1: TOcvImageDirectory;
     procedure btnbitStartClick(Sender: TObject);
     procedure btnbitStopClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure ocvfacedet1Error(Sender: TObject; errorMess: string);
+    procedure ocvobjdet1Error(Sender: TObject; errorMess: string);
   private
     { Private declarations }
   public
@@ -53,21 +54,24 @@ procedure TForm7.btnbitStopClick(Sender: TObject);
 begin
   Cursor:=crHourGlass;
   Application.ProcessMessages;
-
   ocvobjdet1.Active:=False;
   ocvfacedet1.Active:=False;
   ocvcapt1.Active:=False;
-//  ocvimgdir1.Active:=False;
+  ocvimgdir1.Active:=False;
   btnbitStart.Enabled:=True;
   btnbitStop.Enabled:=False;
 
   Cursor:=crDefault;
 end;
 
-procedure TForm7.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TForm7.ocvfacedet1Error(Sender: TObject; errorMess: string);
 begin
-//    btnbitStopClick(Sender);
-//    CanClose:=True;
+  ShowMessage(errorMess);
+end;
+
+procedure TForm7.ocvobjdet1Error(Sender: TObject; errorMess: string);
+begin
+  ShowMessage(errorMess);
 end;
 
 end.

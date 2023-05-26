@@ -12,7 +12,6 @@ object Form7: TForm7
   Font.Style = []
   OldCreateOrder = False
   Position = poDesigned
-  OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
   object img1: TImage
@@ -94,8 +93,9 @@ object Form7: TForm7
   end
   object ocvobjdet1: TOcvProcObjectDetector
     DisplayImage = img3
-    VideoCapture = ocvcapt1
+    VideoCapture = ocvimgdir1
     ImagesBufferLength = 3
+    OnError = ocvobjdet1Error
     ModelBinName = '..\..\..\Delphi-components\yolov4-tiny.weights'
     ModelConfigName = '..\..\..\Delphi-components\yolov4-tiny.cfg'
     ModelClassesName = '..\..\..\Delphi-components\yolo-tiny-coco-classes.txt'
@@ -105,8 +105,9 @@ object Form7: TForm7
   end
   object ocvfacedet1: TOcvProcFaceDetector
     DisplayImage = img2
-    VideoCapture = ocvcapt1
+    VideoCapture = ocvimgdir1
     ImagesBufferLength = 3
+    OnError = ocvfacedet1Error
     ModelBinName = '..\..\..\Delphi-components\face_detection_yunet_2022mar.onnx'
     ScoreThreshold = 0.899999976158142100
     NmsThreshold = 0.300000011920929000
@@ -120,6 +121,7 @@ object Form7: TForm7
   end
   object ocvimgdir1: TOcvImageDirectory
     DisplayImage = img1
+    DirectoryName = '.\'
     Ext = '.BMP;.JPG;.PNG'
     SlidePause = 2000
     Left = 360

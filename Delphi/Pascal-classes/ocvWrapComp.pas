@@ -51,6 +51,7 @@ Type
   TVideoSourceType = (vsCamera, vsFile);
 
 
+  TOnErrorEvent = procedure(Sender: TObject; errorMess: string) of object;
   TOnFrameEvent =  procedure(Sender: TObject; const frame: TOCVImage) of object;
 
   TOcvCameraProp = class(TPersistent)
@@ -174,6 +175,7 @@ Type
     property SlidePause: integer read FSlidePause write FSlidePause;
   end;
 
+  TODThreadProcessError = procedure(errMess: string) of object;
   TObjDetThread = class(TCommThread<TOCVImage,TDetection>)
   private
      objdet: IDNNDetection;
@@ -182,6 +184,7 @@ Type
 
      fProcessing: Boolean;
      fErrorMess: string;
+     fProcessError: TODThreadProcessError;
 
      procedure signalError(ms: string);
   protected
@@ -189,14 +192,14 @@ Type
   public
      constructor Create(qWorkers: TMessageQueue<TOCVImage>;
                 qMain: TMessageQueue<TDetection>;
-                const objectDetector: IDNNDetection);
+                const objectDetector: IDNNDetection;
+                const processError: TODThreadProcessError = nil);
      destructor  Destroy; override;
 
      property ErrorMess: string read FErrorMess ;
      property Processing: boolean read FProcessing write FProcessing;
 
   end;
-
 
   TOcvProcessor = class(TComponent)
   private
@@ -205,6 +208,9 @@ Type
     fThreadNum: Integer;
     fActive: Boolean;
     fImagesBufferLength: Integer;
+
+    fErrorMessage: string;
+    fOnError: TOnErrorEvent;
 
     internOcvimg: TOCVImage;
     detections: TDetectionList;
@@ -217,7 +223,7 @@ Type
 
   protected
     isProcessing: Boolean;
-    procedure processError(Sender: TObject); virtual;
+    procedure processError(errMess: string); virtual;
     procedure display(const ocvimg: TOCVImage; const drawBackground: Boolean); virtual; abstract;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
     procedure activate(); virtual;
@@ -238,6 +244,8 @@ Type
      property DisplayImage: TImage read fImage write fImage;
      property VideoCapture:  TOcvImageSource read fOcvCap write fOcvCap;
      property ImagesBufferLength: Integer read FImagesBufferLength write FImagesBufferLength;
+
+     property OnError: TOnErrorEvent read fOnError write fOnError;
  end;
 
   TOnImageProcessed = procedure(Sender: TObject; const frame: TOCVImage; const detections: TDetectionList) of object;
@@ -904,6 +912,8 @@ begin
   procThreads[0]:=nil;
   SetLength(bufImages, 0);
   fImagesBufferLength:=20;
+
+  fOnError:=nil;
 end;
 
 procedure TOcvProcessor.BeforeDestruction;
@@ -974,7 +984,7 @@ begin
          procThreads[i].Terminate;
          while procThreads[i].Processing do
             Sleep(10);
-         procThreads[i].Free;
+         FreeAndNil(procThreads[i]);
        except
          // nop
        end;
@@ -1024,16 +1034,11 @@ begin
 end;
 
 
-procedure TOcvProcessor.processError(Sender: TObject);
-var
-  othread: TObjDetThread;
+procedure TOcvProcessor.processError(errMess: string);
 begin
-  if not(Sender is TObjDetThread) then Exit;
-  othread:=TObjDetThread(Sender);
-  if othread.ErrorMess<>'' then
+  if (errMess<>'') and Assigned(fOnError) then
   begin
-        setActive(False);
-        RaiseError(erProcess, '<'+ClassName+ '> ['+ othread.ErrorMess+']');
+      fOnError(self, IntToStr(erProcess)+ ' <'+ClassName+ '> ['+ errMess+']');
   end;
 end;
 
@@ -1051,7 +1056,8 @@ end;
 {$REGION 'TOBjDetThread'}
 constructor TObjDetThread.Create(qWorkers: TMessageQueue<TOCVImage>;
       qMain: TMessageQueue<TDetection>;
-      const objectDetector: IDNNDetection);
+      const objectDetector: IDNNDetection;
+      const processError: TODThreadProcessError);
 begin
    inherited Create(qWorkers, qMain);
    objdet:=objectDetector;
@@ -1059,13 +1065,17 @@ begin
    fprocessing:=False;
    img:=nil;
    fErrorMess:='';
+   fProcessError:=processError;
 end;
 
 
 destructor TObjDetThread.Destroy;
 begin
-  detections.Clear;
-  detections.Free;
+  if Assigned(detections) then
+  begin
+      detections.Clear;
+      detections.Free;
+  end;
   img.Free;
   inherited;
 end;
@@ -1073,8 +1083,15 @@ end;
 procedure TObjDetThread.signalError(ms: string);
 begin
   fErrorMess:=ms;
-  Terminate;
   fProcessing:=False;
+  // Error messages not supported as of FPC 3.2.2 without anonymous methods
+  {$IFNDEF FPC}
+  if Assigned(fProcessError) then
+    TThread.Synchronize(self, procedure
+                              begin
+                                  fProcessError(fErrorMess);
+                              end);
+  {$ENDIF}
 end;
 
  procedure TObjDetThread.ProcessMessage(const data: TOCVImage);
@@ -1163,8 +1180,7 @@ begin
   begin
       objdet[i]:=TOcvDNNObjDetect.Create(fModelBinName, fModelConfigName, fModelClassesName);
       objdet[i].threshold:=fThreshold;
-      procThreads[i]:=TObjDetThread.Create(fQueueToWorkers, fQueueToMain, objdet[i]);
-      procThreads[i].OnTerminate:=processError;
+      procThreads[i]:=TObjDetThread.Create(fQueueToWorkers, fQueueToMain, objdet[i], processError);
   end;
 end;
 
@@ -1342,8 +1358,7 @@ begin
       end;
 
 
-      procThreads[i]:=TObjDetThread.Create(fQueueToWorkers, fQueueToMain, objdet[i]);
-      procThreads[i].OnTerminate:=processError;
+      procThreads[i]:=TObjDetThread.Create(fQueueToWorkers, fQueueToMain, objdet[i], processError);
   end;
 
 end;
