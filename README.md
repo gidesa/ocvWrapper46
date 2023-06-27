@@ -3,6 +3,16 @@
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
+
+![MIDASDNN](midasdnn.png)
+
+# New example - 27/6/2023
+
+  * Added an example using Midas DNN, that estimates depth (distances)  
+    in a photo. Red points are points closer to observer,   
+    blu points are farther.
+
+
 # New version - 3/5/2023
  
   * Added four Delphi VCL/Lazarus components: two as image source, TOcvVideoSource and
