@@ -1,0 +1,59 @@
+object Form7: TForm7
+  Left = 760
+  Height = 193
+  Top = 356
+  Width = 435
+  Caption = 'Depth estimation with Midas DNN'
+  ClientHeight = 193
+  ClientWidth = 435
+  LCLVersion = '2.2.0.4'
+  object lbl1: TLabel
+    Left = 16
+    Height = 13
+    Top = 16
+    Width = 65
+    AutoSize = False
+    Caption = 'Input image'
+  end
+  object lblTime: TLabel
+    Left = 24
+    Height = 13
+    Top = 144
+    Width = 321
+    AutoSize = False
+  end
+  object btn1: TButton
+    Left = 176
+    Height = 25
+    Top = 80
+    Width = 75
+    Caption = 'Start '
+    OnClick = btn1Click
+    TabOrder = 0
+  end
+  object txImg1: TEdit
+    Left = 16
+    Height = 23
+    Top = 35
+    Width = 358
+    TabOrder = 1
+    Text = '..\..\testimg.jpg'
+  end
+  object btnLoad1: TButton
+    Left = 380
+    Height = 25
+    Top = 35
+    Width = 25
+    Caption = '...'
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    OnClick = btnLoad1Click
+    ParentFont = False
+    TabOrder = 2
+  end
+  object dlgOpen1: TOpenDialog
+    Left = 328
+    Top = 80
+  end
+end
