@@ -1,2 +1,2 @@
-Opencv 4.6 32 bit binaries
+Opencv 4.6 32 bit binaries for Windows
 
