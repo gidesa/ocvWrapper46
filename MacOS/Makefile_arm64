@@ -1,0 +1,29 @@
+#  ocvWrapper46 makefile for Linux
+
+CC          = gcc
+CXX         = g++
+CFLAGS      = -arch arm64 -mmacosx-version-min=10.12
+CXXFLAGS    = -std=c++11 -lstdc++ -shared -fPIC -Wall
+HOME        = ./
+PROJDIR     = ../
+OCVLIB      = /usr/local/lib
+OCVINC      = /usr/local/include/opencv4
+SRC         = $(PROJDIR)/source
+BUILD       = $(PROJDIR)/bin
+INCLUDEDIR  = -I$(SRC) -I$(OCVINC)
+
+LIBDIR      = -L$(OCVLIB)
+LIBMOD      = -lopencv_world
+
+TARGET=arm-apple-darwin64
+
+sharedlib= libocvCPPWrapper46.dylib
+sources = $(SRC)/wrapper.cpp
+
+all:  
+	@echo ********************** Compilation
+	$(CXX) $(CFLAGS)  $(CXXFLAGS) $(LIBDIR) $(INCLUDEDIR) $(sources) $(LIBMOD)  -o $(sharedlib)
+	@echo ********************** Compilation finished
+
+clean:
+	rm $(SRC)/$(sharedlib)

@@ -45,6 +45,14 @@ const
 {...$DEFINE DEBUGDLL}
 
 
+{ Conditionals for Lazarus/FPC on MacOS}
+{$IFDEF FPC}
+{$IFDEF DARWIN}
+   {$linklib libocvCPPWrapper46.dylib}
+{$ENDIF}
+{$ENDIF}
+
+
 {$IFDEF  DEBUG}
   {$IFDEF DEBUGDLL}
      {$INCLUDE 'debug_DLL_dir.inc'}
@@ -678,7 +686,7 @@ implementation
  {$ENDIF}
 
  {$IFNDEF FPC}
-    {$DEFINE DELPHIDELAYED}
+    {...$DEFINE DELPHIDELAYED}
  {$ENDIF}
 
  function   pCvRedirectException;         external ocvWrapper  name 'pCvRedirectException'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
@@ -878,7 +886,7 @@ BEGIN
           RowIn  := lazImg.GetDataLineStart(bitmap.Height -1 - j);
           offset := offset + iWidthStep;
           dataByte := pbytearray( offset);
-          {$IFDEF LINUX}
+          {$IFDEF UNIX}
           Move(rowin, dataByte, iWidthStep);
           {$ELSE}
           CopyMemory(rowin, dataByte, iWidthStep);
@@ -897,7 +905,7 @@ BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
         offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
-        {$IFDEF LINUX}
+        {$IFDEF UNIX}
         Move(rowin, dataByte, iWidthStep);
         {$ELSE}
         CopyMemory(rowin, dataByte, iWidthStep);
@@ -974,7 +982,7 @@ BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
         offset := UInt64(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
-        {$IFDEF LINUX}
+        {$IFDEF UNIX}
         Move(dataByte, rowin, iWidthStep);
         {$ELSE}
         CopyMemory(dataByte, rowin, iWidthStep);

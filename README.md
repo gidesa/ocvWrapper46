@@ -4,6 +4,13 @@
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
 
+# New version - 28/8/2023
+ 
+  * Added scripts to compile library under Apple MacOS. Kindly contributed by user "havezet".
+    This require also a modify in OpencvWrapper.pas conditionals for FPC/Lazarus: changed symbol LINUX with more
+    general UNIX; added lines to link library in MacOS
+
+
 ![MIDASDNN](midasdnn.png)
 
 # New example - 27/6/2023
