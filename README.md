@@ -11,9 +11,10 @@
     general UNIX; added lines to link library in MacOS
 
 
-![MIDASDNN](midasdnn.png)
 
 # New example - 27/6/2023
+
+![MIDASDNN](midasdnn.png)
 
   * Added an example using Midas DNN, that estimates depth (distances)  
     in a photo. Red points are points closer to observer,   
