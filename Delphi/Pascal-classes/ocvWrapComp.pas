@@ -1,4 +1,6 @@
 {
+  Non-visual VCL/LCL components for OpencvWrapper46 .
+
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
   This source is free software; you can redistribute it and/or modify it under
@@ -16,12 +18,6 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
-{-----------------------------------------------------------------------------
- Unit Name: ocvWrapComp
- Author:    GDS
- Date:      4-2023
- Purpose:   not-visual helper components for OpencvWrapper46
------------------------------------------------------------------------------}
 
 
 unit ocvWrapComp;
@@ -45,7 +41,7 @@ uses
   System.SyncObjs,  System.Generics.Collections,
   {$ENDIF}
   SysUtils, Classes,
-  OPENCVWrapper,  unOpenCVDelphi46, CommThread;
+  OPENCVWrapper,  unOpenCVDelphi46, unOCVImage, CommThread;
 Type
 
   TVideoSourceType = (vsCamera, vsFile);
@@ -54,6 +50,7 @@ Type
   TOnErrorEvent = procedure(Sender: TObject; errorMess: string) of object;
   TOnFrameEvent =  procedure(Sender: TObject; const frame: TOCVImage) of object;
 
+  //** Class that encapsulates properties of video camera source
   TOcvCameraProp = class(TPersistent)
   private
     fHeight: Integer;
@@ -77,6 +74,7 @@ Type
 
   TOcvProcessor = class;
 
+  //** This is the base class of  sources of images that are feeded into Opencv processors.
   TOcvImageSource = class(TComponent)
   private
     fImage: TImage;
@@ -107,13 +105,16 @@ Type
   public
     constructor Create(owner: TComponent); override;
     procedure BeforeDestruction; override;
+    //** Activate or deactivate the stream from the images source
      property Active: Boolean read fActive write setActive;
   published
+     //** A TImage component where to show image from source
      property DisplayImage: TImage read fImage write fImage;
-
+     //** Event fired when an image is acquired from source
      property OnFrame: TOnFrameEvent read fOnFrame write fOnFrame;
   end;
 
+  //** Component for video  as source of images/frames. Can use a realtime video stream, or a video file.
   TOcvVideoCapture = class(TOcvImageSource)
   private
     { Private declarations }
@@ -137,14 +138,20 @@ Type
     procedure BeforeDestruction; override;
   published
     { Published declarations }
+     //** Activate or deactivate the stream from the images source
      property Active: Boolean read fActive write setActive;
+     //** Video source type: video stream from camera, or video file
      property VideoSourceType: TVideoSourceType read fVideosourceType write setVideosource;
+     //** Video file name
      property VideoFileName: TFileName read fFilename write fFilename;
+     //** Video source for stream, it's the numeric id of system video source
      property VideoSource: Integer read fVideosource write fVideosource;
+     //** Properties to get/set from/to video camera
      property CameraProp: TOcvCameraProp read FCameraProp write FCameraProp;
   end;
 
-  TOcvImageDirectory = class(TOcvImageSource)
+ //** Component for using a file system directory  as source of images.
+ TOcvImageDirectory = class(TOcvImageSource)
   private
     { Private declarations }
     fDirecname: TFileName;
@@ -169,13 +176,17 @@ Type
     constructor Create(owner: TComponent); override;
   published
     { Published declarations }
-
+    //** Image files directory name
     property DirectoryName: TFileName read FDirecName write setDirecName;
+    //** Image files extensions list, default BMP, PNG, JPG
     property Ext: string read FExt write FExt;
+    //** Pause in milliseconds between read of files, default 30
     property SlidePause: integer read FSlidePause write FSlidePause;
   end;
 
   TODThreadProcessError = procedure(errMess: string) of object;
+
+  //** Thread class for object detection. Used in queue of requests
   TObjDetThread = class(TCommThread<TOCVImage,TDetection>)
   private
      objdet: IDNNDetection;
@@ -201,6 +212,7 @@ Type
 
   end;
 
+  //** Base class for Opencv image processor components
   TOcvProcessor = class(TComponent)
   private
     fImage: TImage;
@@ -209,7 +221,6 @@ Type
     fActive: Boolean;
     fImagesBufferLength: Integer;
 
-    fErrorMessage: string;
     fOnError: TOnErrorEvent;
 
     internOcvimg: TOCVImage;
@@ -239,17 +250,23 @@ Type
     procedure process(const img: TOCVImage); virtual;
     procedure endProcess();   virtual;
     property Active: boolean read FActive write SetActive;
+    //** Number of separate thread used to process images
     property ThreadNum: Integer read FThreadNum write setThreadNum;
   published
+     //** A TImage component where to show image from source
      property DisplayImage: TImage read fImage write fImage;
+     //** A TOcvImageSource component that feeds the images
      property VideoCapture:  TOcvImageSource read fOcvCap write fOcvCap;
+     //** Length of internal buffer for images, default 20. More is length, better is processing of fast stream,
+     //** but greater is memory used
      property ImagesBufferLength: Integer read FImagesBufferLength write FImagesBufferLength;
-
+     //** Event fired when there is an error in processing image
      property OnError: TOnErrorEvent read fOnError write fOnError;
  end;
 
   TOnImageProcessed = procedure(Sender: TObject; const frame: TOCVImage; const detections: TDetectionList) of object;
 
+  //** Component for object detection in an image/frame
   TOcvProcObjectDetector = class(TOcvProcessor)
   private
     fModelBinName: TFileName;
@@ -275,14 +292,21 @@ Type
     procedure process(const img: TOCVImage);  override;
 
   published
+     //** File name of the neural network binary model
      property ModelBinName: TFileName read FModelBinName write FModelBinName;
+     //** File name of model configuration file
      property ModelConfigName: TFileName read FModelConfigName write FModelConfigName;
+     //** File name of the list containing the classes (categories) names
      property ModelClassesName: TFileName read FModelClassesName write FModelClassesName;
+     //** Minimum value between 0 and 1 for accepting the detection. Only detections with not less confidence
+     //** (quality) will be returned
      property Threshold: single read FThreshold write FThreshold;
 
+     //** Event fired when the processing of single image/frame is terminated
      property OnObjDetProcessed: TOnImageProcessed  read  fOnImageProcessed write fOnImageProcessed;
   end;
 
+  //** Component for human face detection in an image/frame
   TOcvProcFaceDetector = class(TOcvProcessor)
   private
     fModelBinName: TFileName;
@@ -316,18 +340,32 @@ Type
     procedure process(const img: TOCVImage);  override;
 
   published
+     //** File name of the neural network binary model
      property ModelBinName: TFileName read FModelBinName write FModelBinName;
+     //** File name of model configuration file
      property ModelConfigName: TFileName read FModelConfigName write FModelConfigName;
+     //** Threshold on the detection confidence: only face detections with confidence >= threshold
+     // are returned. Default 0.9
      property ScoreThreshold: Single read FScoreThreshold write FScoreThreshold;
+     //** Non Maxima Suppression (NMS) threshold used internally. Default 0.3
      property NmsThreshold: Single read FNmsThreshold write FNmsThreshold;
+     //**  The number of bounding boxes preserved before NMS. Default  5000
      property TopK: Integer read FTopK write FTopK;
+     //** Length of internal buffer for images, default 20. More is length, better is processing of fast stream,
+     //** but greater is memory used
      property ImagesBufferLength: Integer read FImagesBufferLength write FImagesBufferLength;
+     //** Set recognize = true if you want to activate face recognition
      property Recognize: boolean read FRecognize write FRecognize;
+     //** Name of face recognition binary model file
      property ReconModelBinName: TFileName read FReconModelBinName write FReconModelBinName;
+     //** Name of face recognition model configuration file, optional. Depend from model binary type used
      property ReconModelConfigName: TFileName read FReconModelConfigName write FReconModelConfigName;
+     //** Name of face recognition file that contains assignment of a name to face training images
      property ReconFacesNames: TFileName read FReconFacesNames write FReconFacesNames;
+     //** Name of face recognition JSON file that bind a feature array to every face name
      property ReconFeaturesName: TFileName read FReconFeaturesName write FReconFeaturesName;
 
+     //** Event fired when the processing of single image/frame is terminated
      property OnObjDetProcessed: TOnImageProcessed  read  fOnImageProcessed write fOnImageProcessed;
   end;
 

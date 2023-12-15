@@ -1,20 +1,6 @@
-{ This unit contains classes encapsulating various Opencv functions
-  and algorithms.
-  ----------------------------------------------------------------------------
-  Object detection: download Yolo V4 lite from:
-  binary:
-    https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights
-  config:
-    https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg
-  classes:
-    https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/coco.names
-  ----------------------------------------------------------------------------
-  Face Detection: Download face_detection_yunet_2022mar.onnx from
-    https://github.com/opencv/opencv_zoo/tree/master/models/face_detection_yunet
-  ----------------------------------------------------------------------------
-  Face Reognition: Download face_recognition_sface_2021dec.onnx from
-    https://github.com/opencv/opencv_zoo/tree/master/models/face_recognition_sface
-  ----------------------------------------------------------------------------
+{
+   This unit contains classes encapsulating various Opencv functions and algorithms
+   about:  object detection, faces detection, faces recognition.
 
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
@@ -32,14 +18,30 @@
   at <http://www.gnu.org/copyleft/gpl.html>. You can also obtain it by writing
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
+  ----------------------------------------------------------------------------
+  Object detection: download neural network Yolo V4 lite from:
+  binary:
+    https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v4_pre/yolov4-tiny.weights
+  config:
+    https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolov4-tiny.cfg
+  classes:
+    https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/coco.names
+  ----------------------------------------------------------------------------
+  Face Detection: Download neural network face_detection_yunet_2022mar.onnx from
+    https://github.com/opencv/opencv_zoo/tree/master/models/face_detection_yunet
+  ----------------------------------------------------------------------------
+  Face Recognition: Download neural network face_recognition_sface_2021dec.onnx from
+    https://github.com/opencv/opencv_zoo/tree/master/models/face_recognition_sface
+  ----------------------------------------------------------------------------
 }
+
 {$IFDEF FPC}
   {$mode Delphi}
 {$ENDIF}
 
-{...$DEFINE DEBUGTIME}
 
 unit unOpenCVDelphi46;
+{.. $DEFINE DEBUGTIME}
 
 interface
 uses  Classes, Sysutils,
@@ -55,69 +57,35 @@ uses  Classes, Sysutils,
       Vcl.ExtCtrls,
       System.Generics.Collections,
       {$ENDIF}
-      OPENCVWrapper;
+      OPENCVWrapper, unOCVImage;
 
 type
-
-  TOCVImage = class
-  private
-    internImage: PCvMat_t;
-    fullImage: PCvMat_t;
-    fWidth: Integer;
-    fHeight: Integer;
-    fNchannels: Integer;
-    fROI: TRect;
-    fId: Integer;
-    fName: string;
-
-    function getImagePointer: PCvMat_t;
-    procedure setROI(const ROI: TRect);
-    function  getIsGray(): Boolean;
-
-  protected
-  public
-          constructor Create(const width, height: Integer; const nchannels: integer); overload;
-          constructor Create(const filename: string);  overload;
-          constructor Create(const cvMatImg: PCvMat_t); overload;
-          destructor Destroy(); override;
-          procedure load(filename: string);
-          procedure resetROI();
-          procedure showInImage(formImg: TImage );
-          procedure save(const filename: string);
-          function  clone(const gray: Boolean = false; const fillZeros: Boolean = false): TOCVImage;
-          procedure copy(const dest: TOcvImage);
-          procedure toBmp(var bmp: TBitmap);
-          procedure fromBmp(bmp: TBitmap);
-          function resize(newWidth: Integer; newHeight: Integer): TOCVImage;
-          procedure splitChannels(var channelsImg: TArray<TOCVImage>); overload;
-          procedure splitChannels(const channelsImg: PCvvector_Mat); overload;
-          procedure merge(const channelsImg: TArray<TOcvImage>); overload;
-          procedure merge(const channelsImg: PCvvector_Mat); overload;
-
-          property PCvMatPtr: PCvMat_t read getImagePointer;
-          property ROI: TRect read fROI write setROI;
-          property width: Integer read fWidth;
-          property height: integer read fHeight;
-          property nchannels: integer read fNchannels;
-          property isGray: Boolean read getIsGray;
-          property ID: Integer read FID write FID;
-          property Name: String read FName write FName;
-  end;
-
+  //** This class encapsulates data for object detection in image
   TDetection = class
   public
+    //** Confidence is a measure of quality. Greater is confidence more truthful is detection.
     confidence: Double;
+    //** ClassId is the numeric id of the class/category of object
     classId:    Integer;
+    //** Name of the class/category of object
     className:  string;
+    //** Box is the rectangle inside the image that contains the object detected
     box    :    TRect;
+    //** nsmValid is a flag used internally in Non Maxima Suppression (NMS) processing.
+    //** Overlapped detections with nsmValid=False are deleted from the final results
     nsmValid:   Boolean;
+    //** Numeric id of the image where the detection is found. Used in threaded  detections
     imageId:    Integer;
 
+    //** Draw the object box on a bitmap, scaled to x and y factors
     procedure draw(const bmp: TBitmap; scaleX, scaleY: single); virtual;
   end;
 
+  //** This class encapsulates extended data for faces detection and recognition in image
   TFaceDetection = class(TDetection)
   public
+    //** all X,Y pairs represent the position in image of one face part:
+    //** eyes, nose, mouth.
     rightEyeX:  Single;
     rightEyeY:  Single;
     leftEyeX:   Single;
@@ -128,27 +96,33 @@ type
     rightCornerMouthY: Single;
     leftCornerMouthX:  Single;
     leftCornerMouthY:  Single;
+    //** recognition score with cosine measure
     reconCosScore:     Single;
+    //** recognition score with L2 norm measure
     reconL2NormScore:  Single;
 
     procedure draw(const bmp: TBitmap; scaleX, scaleY: single);  override;
   end;
 
+  //** This record contains the name and the features signature for a face.
+  // The record is used in faces recognition class
   TFaceRecord = class
      faceName: string;
      faceFeatures: PCvMat_t;
   end;
-
 
   { Detection list cannot be an TObjectList, because detection objects
     must be deleted only AFTER being processed, that is programmatically
     and not in automated mode; instead TObjecList delete all objects when Clear-ed }
   TDetectionList = class(TList<TDetection>);
 
+  //** Interface for classes that detect something inside an image. Input is a TOCVImage object;
+  // output is a list of detected objects, could be empty
   IDNNDetection = interface
     procedure process(const ocvimg: TOCVImage; detections: TDetectionList);
   end;
 
+  //** This class encapsulates object detection processing
   TOcvDNNObjDetect = class(TInterfacedObject, IDNNDetection)
   private
     net:       PCvdnn_Net_t;
@@ -163,15 +137,24 @@ type
 
     procedure setThreshold(val: Single);
   public
+    //** Constructor requires names of these files of the neural network model:
+    //** bin file name; config file name; classes names list file
     constructor Create(const modelBinName: string; const modelConfigName: string; const modelClassesName: string );
     destructor Destroy; override;
+    //** Process an image, and return a list of detections, can be empty
     procedure process(const ocvimg: TOCVImage; detections: TDetectionList);
 
+    //** Threshold on the detection confidence: only detections with confidence >= threshold
+    // are returned. Default 0.7
     property threshold: single read fThreshold write setThreshold;
   end;
 
+  //** Modes used by face recognition object when processing:
+  //** FRCreateDb = detect faces in an image, and create a new db of names and their face feature vector
+  //** FRCompare  = detect faces in an image, and compare them to the face feature vectors db previously loaded
   TOcvFaceReconMode = (FRCreateDb, FRCompare);
 
+  //** This class encapsulates face recognition processing, that is is assigning a name to detected faces
   TOcvDNNFaceRecognizer = class
   private
     fModelBinName:     string;
@@ -184,18 +167,31 @@ type
     facesDatabase: TObjectList<TFaceRecord>;
 
   public
+    //** Constructor requires names of these files of the neural network model:
+    //** bin file name; config file name, optional
     constructor Create(const modelBinName: string; const modelConfigName: string = '' );
     destructor Destroy; override;
+    //** Process an image with the face detections (in Opencv Mat format), and return a list of faces
+    // recognized, can be empty
     procedure process(const ocvimg: TOCVImage; const detectionsMat: PCvMat_t; detections: TDetectionList);
+    //** From the input image and  the face detections (in Opencv Mat format), extract the features
+    //** vector for the 'rowind' detection
     procedure extractFeatures(const ocvimg: TOCVImage; const detectionMat: PCvMat_t;
                         rowind: Integer;  const features: PCvMat_t);
+    //** Save the internal features array to file in Opencv Json format
     procedure saveFeatures(const featuresFileName: string);  virtual;
+    //** Load the internal features array from a file in Opencv Json format, and the face image-name pairs
+    //** from a text file. The pairs are in the format: <image File name>=<name>, one for every line.
+    //** for example: img1.jpg=Mary
     procedure loadFeatures(const featuresFileName: string; const faceNamesList: string);  virtual;
 
+    //** The processing mode required: createDb or compare.
     property Mode: TOcvFaceReconMode read FMode write FMode;
   end;
 
 
+
+  //** This class encapsulates face detection processing
   TOcvDNNFaceDetect = class(TInterfacedObject, IDNNDetection)
   private
     ptrnet:    PCvPtr_FaceDetectorYN;
@@ -215,23 +211,33 @@ type
 
     procedure setScoreThreshold(val: Single);
     procedure setNmsThreshold(val: Single);
+    procedure setTopK(val: Integer);
   public
+    //** Constructor requires names of these files of the neural network model:
+    //** bin file name; config file name, optional
     constructor Create(const modelBinName: string; const modelConfigName: string = '' );
     destructor Destroy; override;
+    //** Process an image, and return a list of faces  detected, can be empty
     procedure process(const ocvimg: TOCVImage; detections: TDetectionList);
 
+    //** Threshold on the detection confidence: only face detections with confidence >= threshold
+    // are returned. Default 0.9
     property ScoreThreshold: Single read FscoreThreshold write setScoreThreshold;
+    //** Non Maxima Suppression (NMS) threshold used internally. Default 0.3
     property NmsThreshold: Single read FNmsThreshold write setNmsThreshold;
-    property TopK: integer read FTopK write FTopK;
+    //**  The number of bounding boxes preserved before NMS. Default  5000
+    property TopK: integer read FTopK write setTopK;
 
+    //** Flag to activate face recognition
     property Recognize: boolean  read fRecognize write fRecognize;
+    //** Face recognition object, used when recognize flag = true; must be created
+    // externally
     property FaceRecognizer: TOcvDNNFaceRecognizer read FFaceRecognizer write FFaceRecognizer;
   end;
 
 
 {*****************************************************************************}
 implementation
-
 uses
       {$IFDEF FPC}
       Math,
@@ -240,269 +246,6 @@ uses
       {$ENDIF}
       AutoDestroy;
 
-{******************************************************************************}
-{******************** TOCVImage ***********************************************}
-{******************************************************************************}
-
-{$REGION 'TOCVImage'}
-constructor TOCVImage.Create(const width, height: Integer; const nchannels: integer);
-var
-  mt: Integer;
-begin
-  inherited Create;
-  Assert((nchannels>=1) and (nchannels<=3),'Channels number must be 1, 2 or 3');
-  case nchannels of
-   1:  mt:=CV_8UC1;
-   2:  mt:=CV_8UC2;
-   3:  mt:=CV_8UC3;
-  end;
-  internImage:=pCvMatImageCreate(width, height, mt );
-  fullImage:=internImage;
-  fROI:= Rect(0,0,width, height);
-  fWidth:=width;
-  fHeight:=height;
-  fNchannels:=nchannels;
-  fId:=0;
-  fName:='';
-end;
-
-constructor TOCVImage.Create(const filename: string);
-begin
-  inherited Create;
-  internImage:=nil;
-  load(filename);
-end;
-
-constructor TOCVImage.Create(const cvMatImg: PCvMat_t);
-var
-  w, h: Integer;
-begin
-  w:= pCvMatGetWidth(cvMatImg);
-  h:= pCvMatGetHeight(cvMatImg);
-  internImage:=nil;
-  if w*h=0 then
-  begin
-    raise Exception.Create('TOCVImage.create: input PCvMat invalid');
-  end;
-  fROI:= Rect(0,0,w, h);
-  fWidth:=w;
-  fHeight:=h;
-  fNchannels:=pCvMatGetChannels(cvMatImg);
-  internImage:=cvMatImg;
-  fullImage:=internImage;
-  fId:=0;
-  fName:='';
-end;
-
-
-destructor TOCVImage.Destroy;
-begin
-  if internImage<>nil then
-  begin
-      pCvMatDelete(internImage);
-      internImage:=nil;
-  end;
-  inherited Destroy;
-end;
-
-function TOCVImage.getImagePointer(): PCvMat_t;
-begin
-  Result:=internImage;
-end;
-
-function TOCVImage.getIsGray(): Boolean;
-begin
-  Result:= (fNchannels = 1);
-end;
-
-procedure TOCVImage.setROI(const ROI: TRect);
-var
-  cvr: CvRectS;
-begin
-  if EqualRect(fROI, ROI) then Exit;
-  if PtInRect(Rect(0,0,fWidth+1, fHeight+1), Point(ROI.Left, ROI.Top))
-    and PtInRect(Rect(0,0,fWidth+1, fHeight+1), Point(ROI.Right, ROI.Bottom)) then
-  begin
-    fROI:=ROI;
-    cvr.x:=ROI.Left;
-    cvr.y:=ROI.Top;
-    cvr.width:=ROI.Width;
-    cvr.height:=ROI.Height;
-    internImage:=pCvMatROI(internImage, @cvr);
-  end;
-end;
-
-procedure TOCVImage.resetROI;
-begin
-  fROI:=Rect(0,0,fWidth, fHeight);
-  if internImage<>fullImage then
-  begin
-      pCvMatDelete(internImage);
-      internImage:=fullImage;
-  end;
-end;
-
-procedure TOCVImage.showInImage(formImg: TImage);
-var
-  rec: TRect;
-  bmp: TBitmap;
-  colorImg: PCvMat_t;
-begin
-    bmp := TBitmap.Create;
-    bmp.PixelFormat :=  pf24bit;
-    resetROI;
-    if fNchannels=1 then
-    begin
-      colorImg:=pCvMatImageCreate(fWidth, fHeight,  CV_8UC3);
-      pCvCvtColor(internImage, colorImg, Ord(COLOR_GRAY2BGR));
-      MatImage2Bitmap(colorImg, bmp);
-      pCvMatDelete(colorImg);
-    end
-    else
-    begin
-      MatImage2Bitmap(internImage, bmp);
-    end;
-    rec := formImg.canvas.ClipRect;
-    formImg.canvas.StretchDraw(rec , bmp);
-    bmp.Free;
-    setROI(fROI);
-end;
-
-procedure TOCVImage.load(filename: string);
-var
-  w, h: Integer;
-  cvstr: CvString_t;
-begin
-  Assert(FileName<>'','File name empty');
-  if internImage<>nil then
-    pCvMatDelete(internImage);
-  internImage:=nil;
-  cvstr.pstr:= PAnsiChar(AnsiString(filename));
-  internImage:=pCvimread(@cvstr, Ord(IMREAD_UNCHANGED));
-  w:= pCvMatGetWidth(internImage);
-  h:= pCvMatGetHeight(internImage);
-  if w*h=0 then
-  begin
-    raise Exception.Create('TOCVImage.create: file '+filename+' not loaded');
-    pCvMatDelete(internImage);
-    internImage:=nil;
-  end;
-
-  fROI:= Rect(0,0,w, h);
-  fWidth:=w;
-  fHeight:=h;
-  fNchannels:=pCvMatGetChannels(internImage);
-  fullImage:=internImage;
-end;
-
-procedure TOCVImage.save(const filename: string);
-var
-  cvfname: CvString_t;
-begin
-  Assert(filename<>'', 'File name is empty');
-  cvfname.pstr:= PAnsiChar(AnsiString(filename));
-  pCvimwrite(@cvfname, internImage);
-end;
-
-function TOCVImage.clone(const gray: Boolean = False; const fillZeros: Boolean = false): TOCVImage;
-var
-  outImg: TOCVImage;
-  sczero: PCvScalar_t;
-begin
-  if gray then
-  begin
-    outImg:=TOCVImage.Create(fWidth, fHeight, 1);
-  end
-  else
-  begin
-    outImg:=TOCVImage.Create(fWidth, fHeight, fNchannels);
-  end;
-
-  if not(fillZeros) then
-  begin
-    if (gray) and (fNchannels<>1) then
-      pCvCvtColor(internImage, outImg.PCvMatPtr, Ord(COLOR_BGR2GRAY))
-    else
-    begin
-      pCvMatCopy(internImage, outImg.PCvMatPtr);
-    end;
-  end
-  else
-  begin
-     sczero:=CvScalar_(0,0,0,0);
-     pCvMatFill(outImg.PCvMatPtr, sczero);
-     pCvScalarDelete(sczero);
-  end;
-  Result:=outImg;
-end;
-
-procedure TOCVImage.copy(const dest: TOCVImage);
-begin
-  pCvMatCopy(internImage, dest.PCvMatPtr);
-end;
-
-function TOCVImage.resize(newWidth: Integer; newHeight: Integer): TOCVImage;
-var
-  outImg: TOCVImage;
-  newsize: PCvSize_t;
-begin
-  outImg:=TOCVImage.Create(newWidth, newHeight, fNchannels);
-  newsize:=CvSize_(newWidth, newHeight);
-  pCvresize(internImage, outImg.PCvMatPtr, newsize);
-  pCvSizeDelete(newsize);
-  Result:=outImg;
-end;
-
-procedure TOCVImage.toBmp(var bmp: TBitmap);
-begin
-  MatImage2Bitmap(internImage, bmp);
-end;
-
-procedure TOCVImage.fromBmp(bmp: TBitmap);
-begin
-  Bitmap2MatImage(internImage, bmp);
-end;
-
-procedure TOCVImage.splitChannels(const channelsImg: PCvvector_Mat);
-begin
-  pCvsplit(internImage, channelsImg);
-end;
-
-procedure TOCVImage.splitChannels(var channelsImg: TArray<TOCVImage>);
-var
-  i: Integer;
-  vecmat: PCvvector_Mat;
-begin
-  SetLength(channelsImg, 0);
-  SetLength(channelsImg, fNchannels);
-  vecmat:=pCvVectorMatCreate(fNchannels);
-  splitChannels(vecmat);
-  for i:=0 to fNchannels-1 do
-  begin
-    channelsImg[i]:=TOCVImage.Create(pCvVectorMatGet(vecmat, I));
-  end;
-  pCvVectorMatDelete(vecmat);
-end;
-
-procedure TOCVImage.merge(const channelsImg: PCvvector_Mat);
-begin
-  pCvmerge(channelsImg, internImage);
-end;
-
-
-procedure TOCVImage.merge(const channelsImg: TArray<TOCVImage>);
-var
-  i: Integer;
-  vecmat: PCvvector_Mat;
-begin
-  vecmat:=pCvVectorMatCreate(Length(channelsImg));
-  for i:=0 to High(channelsImg) do
-    pCvVectorMatSet(vecmat, i, channelsImg[i].PCvMatPtr);
-  merge(vecmat);
-  pCvVectorMatDelete(vecmat);
-end;
-
-{$ENDREGION}
 
 {******************************************************************************}
 {******************** TDetection **********************************************}
@@ -743,7 +486,7 @@ t1:=GetTickCount;
     pCvdnn_NetforwardV4(net, vecOut, outNames);
 
     // Network produces output blob with a shape NxC where N is a number of
-    // detected objects and C is a number of classes + 4 where the first 4
+    // detected objects and C is a number of classes + 4; in detection row the first 4
     // numbers are [center_x, center_y, width, height]
     matdims[0]:=classes.Count;
     fX:= w ;
@@ -912,13 +655,28 @@ end;
 procedure TOcvDNNFaceDetect.setScoreThreshold(val: Single);
 begin
   if (0<val) and (val<=1.0) then
+  begin
     fScoreThreshold:=val;
+    pCvFaceDetectorYNsetScoreThreshold(net, fScoreThreshold);
+  end;
 end;
 
 procedure TOcvDNNFaceDetect.setNmsThreshold(val: Single);
 begin
   if (0<val) and (val<=1.0) then
+  begin
     fNmsThreshold:=val;
+    pCvFaceDetectorYNsetNMSThreshold(net, fNmsThreshold);
+  end;
+end;
+
+procedure TOcvDNNFaceDetect.setTopK(val: Integer);
+begin
+  if (val >=0) then
+  begin
+    fTopK:=val;
+    pCvFaceDetectorYNsetTopK(net, fTopK);
+  end;
 end;
 
 
@@ -928,10 +686,10 @@ var
   i:         Integer;
 
   img:       PCvMat_t;
-  outmat:    PCvMat_t;
   w, h:           Integer;
   outH, outW:     Integer;
   detect:         TFaceDetection;
+  detectMat:      TOcvParamMat;
 
 {$IFDEF MSWINDOWS}
 {$IFDEF DEBUGTIME}
@@ -949,61 +707,66 @@ begin
 t1:=GetTickCount;
 {$ENDIF}
 {$ENDIF}
-    img:=ocvimg.PCvMatPtr;
-    w:=ocvimg.width;
-    h:=ocvimg.height;
-    inpSize:=CvSize_(w, h, inpSize);
 
-    pCvFaceDetectorYNsetInputSize(net, inpsize);
-    pCvFaceDetectorYNsetScoreThreshold(net, fScoreThreshold);
-    pCvFaceDetectorYNsetNMSThreshold(net, fNmsThreshold);
-    pCvFaceDetectorYNsetTopK(net, fTopK);
+  img:=ocvimg.PCvMatPtr;
+  w:=ocvimg.width;
+  h:=ocvimg.height;
+  // class variable, not local; so not delete
+  inpSize:=CvSize_(w, h, inpSize);
 
-
-    // send image through the network
-    outmat:=CvMatAuto(pCvMatCreateEmpty).AsPtr;
-
-    pCvFaceDetectorYNdetect(net, img, outmat);
+  pCvFaceDetectorYNsetInputSize(net, inpsize);
+  pCvFaceDetectorYNsetScoreThreshold(net, fScoreThreshold);
+  pCvFaceDetectorYNsetNMSThreshold(net, fNmsThreshold);
+  pCvFaceDetectorYNsetTopK(net, fTopK);
 
 
+  // send image through the network
+  detectMat:=TOcvParamMat.CreateEmpty;
+
+  pCvFaceDetectorYNdetect(net, img, detectMat.PCvMatPtr);
 
 
-    // prepare detection results
-    outW:=pCvMatGetWidth(outmat);
-    outH:=pCvMatGetHeight(outmat);
 
-    for i:=0 to  outH-1 do
-    begin
-        detect:=TFaceDetection.Create;
 
-        detect.classId:=1;
-        detect.className:='face';
-        detect.imageId:=ocvimg.ID;
-        detect.nsmValid:=True;
+  // prepare detection results
+  outW:=detectMat.width;
+  outH:=detectMat.height;
 
-        detect.box.Left:=  Round(pCvMatGetFloat(outmat, i, 0));
-        detect.box.Top:=   Round(pCvMatGetFloat(outmat, i, 1));
-        detect.box.Width:= Round(pCvMatGetFloat(outmat, i, 2));
-        detect.box.Height:=Round(pCvMatGetFloat(outmat, i, 3));
-        detect.rightEyeX:=pCvMatGetFloat(outmat, i, 4);
-        detect.rightEyeY:=pCvMatGetFloat(outmat, i, 5);
-        detect.leftEyeX:=pCvMatGetFloat(outmat, i, 6);
-        detect.leftEyeY:=pCvMatGetFloat(outmat, i, 7);
-        detect.noseTipX:=pCvMatGetFloat(outmat, i, 8);
-        detect.noseTipY:=pCvMatGetFloat(outmat, i, 9);
-        detect.rightCornerMouthX:=pCvMatGetFloat(outmat, i,10);
-        detect.rightCornerMouthY:=pCvMatGetFloat(outmat, i,11);
-        detect.leftCornerMouthX:=pCvMatGetFloat(outmat, i,12);
-        detect.leftCornerMouthY:=pCvMatGetFloat(outmat, i,13);
-        detect.confidence := pCvMatGetFloat(outmat, i,14);
+  for i:=0 to  outH-1 do
+  begin
+      detect:=TFaceDetection.Create;
 
-        detections.add(detect);
-    end;
-    if fRecognize then
-    begin
-      fFaceRecognizer.process(ocvimg, outmat, detections);
-    end;
+      detect.classId:=1;
+      detect.className:='face';
+      detect.imageId:=ocvimg.ID;
+      detect.nsmValid:=True;
 
+
+      detect.box.Left:=  detectMat.atInt[i, 0, 0];
+      detect.box.Top:=   detectMat.atInt[ i, 1, 0];
+      detect.box.Width:= detectMat.atInt[ i, 2, 0];
+      detect.box.Height:=detectMat.atInt[ i, 3, 0];
+      detect.rightEyeX:= detectMat.at[ i, 4, 0];
+      detect.rightEyeY:= detectMat.at[ i, 5, 0];
+      detect.leftEyeX:=  detectMat.at[ i, 6, 0];
+      detect.leftEyeY:=  detectMat.at[ i, 7, 0];
+      detect.noseTipX:=  detectMat.at[ i, 8, 0];
+      detect.noseTipY:=  detectMat.at[ i, 9, 0];
+      detect.rightCornerMouthX:=detectMat.at[ i,10, 0];
+      detect.rightCornerMouthY:=detectMat.at[ i,11, 0];
+      detect.leftCornerMouthX:= detectMat.at[ i,12, 0];
+      detect.leftCornerMouthY:= detectMat.at[ i,13, 0];
+      detect.confidence := detectMat.at[ i,14, 0];
+
+
+      detections.add(detect);
+  end;
+  if (fRecognize) and (fFaceRecognizer<>nil) then
+  begin
+    fFaceRecognizer.process(ocvimg, detectMat.PCvMatPtr, detections);
+  end;
+
+  detectMat.Free;
 {$IFDEF MSWINDOWS}
 {$IFDEF DEBUGTIME}
 t2:=(GetTickCount - t1)/1000;
@@ -1018,6 +781,7 @@ end;
 {******************** TOcvDNNFaceRecognizer ***********************************}
 {******************************************************************************}
 {$REGION 'TOcvFaceRecognizer'}
+
 const
   FR_COS_THRESHOLD = 0.363;
   FR_L2_NORM_THRESHOLD = 1.128;
@@ -1074,8 +838,8 @@ end;
 procedure TOcvDNNFaceRecognizer.extractFeatures(const ocvimg: TOCVImage;
           const detectionMat: PCvMat_t; rowind: Integer; const features: PCvMat_t);
 var
-  firstRec: PCvMat_t;
-  alignedImg: PCvMat_t;
+  firstRec:     PCvMat_t;
+  alignedImg:   PCvMat_t;
   featuresTemp: PCvMat_t;
 begin
 {$IFDEF FPC}
@@ -1174,13 +938,15 @@ begin
   Assert(featuresFileName<>'', 'Error: faces feature file name is empty');
   Assert(faceNamesList<>'', 'Error: faces names file name is empty');
 
+  fstorage:=nil;
+  fnode:=nil;
+  fstorage:=pCvFileStorageCreate();
   try
     facesNames:=TStringList.Create;
     facesNames.LoadFromFile(faceNamesList);
 
     facesDatabase.Clear;
 
-    fstorage:=pCvFileStorageCreate();
     cvstr.pstr:=PAnsiChar(AnsiString(featuresFileName));
     pCvFileStorageopen(fstorage, @cvstr, Ord(TCvFileStorage_Mode._READ));
 
@@ -1203,11 +969,14 @@ begin
       facerec.faceFeatures:=fsmat;
       facesDatabase.Add(facerec)
     end;
-
     pCvFileStoragerelease(fstorage);
-    pCvFileStorageDelete(fstorage);
-    pCvFileNodeDelete(fnode);
+
   finally
+    if fstorage<> nil then
+       pCvFileStorageDelete(fstorage);
+    if fnode<>nil then
+       pCvFileNodeDelete(fnode);
+    pCvStringDelete(pstr);
     if Assigned(facesNames) then
         facesNames.Free;
   end;
@@ -1223,17 +992,22 @@ var
 begin
   if facesDatabase.Count=0 then Exit;
 
+  fstorage:=nil;
   fstorage:=pCvFileStorageCreate();
-  cvstr.pstr:=PAnsiChar(AnsiString(featuresFileName));
-  pCvFileStorageopen(fstorage, @cvstr, Ord(TCvFileStorage_Mode._WRITE));
+  try
+    cvstr.pstr:=PAnsiChar(AnsiString(featuresFileName));
+    pCvFileStorageopen(fstorage, @cvstr, Ord(TCvFileStorage_Mode._WRITE));
 
-  for faceRec in facesDatabase do
-  begin
-      cvstr.pstr:=PAnsiChar(AnsiString(faceRec.faceName));
-      pCvFileStoragewriteV4(fstorage, @cvstr, faceRec.faceFeatures);
+    for faceRec in facesDatabase do
+    begin
+        cvstr.pstr:=PAnsiChar(AnsiString(faceRec.faceName));
+        pCvFileStoragewriteV4(fstorage, @cvstr, faceRec.faceFeatures);
+    end;
+    pCvFileStoragerelease(fstorage);
+  finally
+    if fstorage<>nil then
+     pCvFileStorageDelete(fstorage);
   end;
-  pCvFileStoragerelease(fstorage);
-  pCvFileStorageDelete(fstorage);
 end;
 
 {$ENDREGION}

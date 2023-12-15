@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Opencv for Delphi: ocvWrapComp: Class TOcvVideoCapture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="tipuesearch/tipuesearch.css">
+
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>Opencv for Delphi</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<div style="clear: both"></div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tipue_search_input').tipuesearch({
+        /* 10 items to display seems standard */
+        'show': 10,
+        /* For PasDoc docs, showing urls is not very useful,
+           since the page title already shows the unit and identifier. */
+        'showURL': false
+    });
+});
+</script>
+</td><td class="content">
+<span id="TOcvVideoCapture"></span><h1 class="cio">Class TOcvVideoCapture</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="ocvWrapComp.html">ocvWrapComp</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TOcvVideoCapture = class(<a class="normal" href="ocvWrapComp.TOcvImageSource.html">TOcvImageSource</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+Component for video as source of images/frames. Can use a realtime video stream, or a video file.</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TComponent</li>
+<li class="ancestor"><a class="normal" href="ocvWrapComp.TOcvImageSource.html">TOcvImageSource</a></li>
+<li class="thisitem">TOcvVideoCapture</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="ocvWrapComp.TOcvVideoCapture.html#Create">Create</a></b>(owner: TComponent); override;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="ocvWrapComp.TOcvVideoCapture.html#BeforeDestruction">BeforeDestruction</a></b>; override;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="ocvWrapComp.TOcvVideoCapture.html#Active">Active</a></b>: Boolean read fActive write <a  href="ocvWrapComp.TOcvImageSource.html#setActive">setActive</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="ocvWrapComp.TOcvVideoCapture.html#CameraProp">CameraProp</a></b>: <a  href="ocvWrapComp.TOcvCameraProp.html">TOcvCameraProp</a> read FCameraProp write FCameraProp;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="ocvWrapComp.TOcvVideoCapture.html#VideoFileName">VideoFileName</a></b>: TFileName read fFilename write fFilename;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="ocvWrapComp.TOcvVideoCapture.html#VideoSource">VideoSource</a></b>: Integer read fVideosource write fVideosource;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><code>property <b><a  href="ocvWrapComp.TOcvVideoCapture.html#VideoSourceType">VideoSourceType</a></b>: <a  href="ocvWrapComp.html#TVideoSourceType">TVideoSourceType</a> read fVideosourceType write setVideosource;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(owner: TComponent); override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Public declarations</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="BeforeDestruction"></span><code>procedure <b>BeforeDestruction</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="Active"></span><code>property <b>Active</b>: Boolean read fActive write <a  href="ocvWrapComp.TOcvImageSource.html#setActive">setActive</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+<a class="normal" href="ocvWrapComp.TOcvImageSource.html#activate">Activate</a> or <a class="normal" href="ocvWrapComp.TOcvImageSource.html#deActivate">deactivate</a> the stream from the images source</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="CameraProp"></span><code>property <b>CameraProp</b>: <a  href="ocvWrapComp.TOcvCameraProp.html">TOcvCameraProp</a> read FCameraProp write FCameraProp;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Properties to get/set from/to video camera</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="VideoFileName"></span><code>property <b>VideoFileName</b>: TFileName read fFilename write fFilename;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Video file name</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="VideoSource"></span><code>property <b>VideoSource</b>: Integer read fVideosource write fVideosource;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Video source for stream, it's the numeric id of system video source</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="published.gif" alt="Published" title="Published"></a></td>
+<td class="itemcode"><span id="VideoSourceType"></span><code>property <b>VideoSourceType</b>: <a  href="ocvWrapComp.html#TVideoSourceType">TVideoSourceType</a> read fVideosourceType write setVideosource;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Video source type: video stream from camera, or video file</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

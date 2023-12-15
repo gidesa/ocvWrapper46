@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Opencv for Delphi: unOpenCVDelphi46: Class TOcvDNNFaceRecognizer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="tipuesearch/tipuesearch.css">
+
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>Opencv for Delphi</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<div style="clear: both"></div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tipue_search_input').tipuesearch({
+        /* 10 items to display seems standard */
+        'show': 10,
+        /* For PasDoc docs, showing urls is not very useful,
+           since the page title already shows the unit and identifier. */
+        'showURL': false
+    });
+});
+</script>
+</td><td class="content">
+<span id="TOcvDNNFaceRecognizer"></span><h1 class="cio">Class TOcvDNNFaceRecognizer</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="unOpenCVDelphi46.html">unOpenCVDelphi46</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TOcvDNNFaceRecognizer = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+This class encapsulates face recognition processing, that is is assigning a name to detected faces</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TOcvDNNFaceRecognizer</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#Create">Create</a></b>(const modelBinName: string; const modelConfigName: string = '' );</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#extractFeatures">extractFeatures</a></b>(const ocvimg: <a  href="unOCVImage.TOCVImage.html">TOCVImage</a>; const detectionMat: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>; rowind: Integer; const features: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#loadFeatures">loadFeatures</a></b>(const featuresFileName: string; const faceNamesList: string); virtual;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#process">process</a></b>(const ocvimg: <a  href="unOCVImage.TOCVImage.html">TOCVImage</a>; const detectionsMat: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>; detections: <a  href="unOpenCVDelphi46.TDetectionList.html">TDetectionList</a>);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#saveFeatures">saveFeatures</a></b>(const featuresFileName: string); virtual;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="unOpenCVDelphi46.TOcvDNNFaceRecognizer.html#Mode">Mode</a></b>: <a  href="unOpenCVDelphi46.html#TOcvFaceReconMode">TOcvFaceReconMode</a> read FMode write FMode;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>(const modelBinName: string; const modelConfigName: string = '' );</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor requires names of these files of the neural network model: bin file name; config file name, optional</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+&nbsp;</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="extractFeatures"></span><code>procedure <b>extractFeatures</b>(const ocvimg: <a  href="unOCVImage.TOCVImage.html">TOCVImage</a>; const detectionMat: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>; rowind: Integer; const features: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+From the input image and the face detections (in Opencv Mat format), extract the features vector for the 'rowind' detection</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="loadFeatures"></span><code>procedure <b>loadFeatures</b>(const featuresFileName: string; const faceNamesList: string); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Load the internal features array from a file in Opencv Json format, and the face image-name pairs from a text file. The pairs are in the format: &lt;image File name&gt;=&lt;name&gt;, one for every line. for example: img1.jpg=Mary</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="process"></span><code>procedure <b>process</b>(const ocvimg: <a  href="unOCVImage.TOCVImage.html">TOCVImage</a>; const detectionsMat: <a  href="OPENCVWrapper.html#PCvMat_t">PCvMat_t</a>; detections: <a  href="unOpenCVDelphi46.TDetectionList.html">TDetectionList</a>);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+<code>Process</code> an image with the face detections (in Opencv Mat format), and return a list of faces recognized, can be empty</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="saveFeatures"></span><code>procedure <b>saveFeatures</b>(const featuresFileName: string); virtual;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Save the internal features array to file in Opencv Json format</p>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Mode"></span><code>property <b>Mode</b>: <a  href="unOpenCVDelphi46.html#TOcvFaceReconMode">TOcvFaceReconMode</a> read FMode write FMode;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The processing <code>mode</code> required: createDb or compare.</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

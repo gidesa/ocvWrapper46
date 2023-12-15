@@ -1,3 +1,6 @@
+{The unit contains classes that build a threaded queue
+ with workers and results list } 
+
 unit CommThread;
 {$IFDEF FPC}
 {$MODE Delphi}

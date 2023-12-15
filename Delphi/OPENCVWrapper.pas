@@ -42,7 +42,7 @@ const
   define DEBUGDLL, and the program will load the debug dll
   Note: only for Delphi }
 
-{...$DEFINE DEBUGDLL}
+{... $DEFINE DEBUGDLL}
 
 
 { Conditionals for Lazarus/FPC on MacOS}
@@ -217,8 +217,8 @@ const
 IPL_ORIGIN_TL  = 0;
 IPL_ORIGIN_BL  = 1;
 
+
 type
-  { IplImage structure from Opencv C API }
   TIplROI = record
     Coi     : Integer;
     XOffset : Integer;
@@ -228,6 +228,8 @@ type
   end;
   PIplROI = ^TIplROI;
 
+  //** IplImage structure from old Opencv C API
+  //** Retained for compatibility for some functions.
   PIplImage = ^TIplImage;
   TIplImage = record
     NSize           : Integer;                 // size of iplImage struct
@@ -243,9 +245,9 @@ type
     Width           : Integer;
     Height          : Integer;
     Roi             : PIplROI;
-    MaskROI         : PIplImage;               // poiner to maskROI if any
+    MaskROI         : PIplImage;               // pointer to maskROI if any
     ImageId         : Pointer;                 // use of the application
-    TileInfo        : Pointer;            // contains information on tiling
+    TileInfo        : Pointer;                 // contains information on tiling
     ImageSize       : Integer;                 // useful size in bytes
     ImageData       : PByte;                   // pointer to aligned image
     WidthStep       : Integer;                 // size of aligned line in bytes
@@ -253,6 +255,9 @@ type
     BorderConst     : array [0..3] of Integer;
     ImageDataOrigin : PByte;                   // ptr to full, nonaligned image
   end;
+
+
+
 
 
 { Opencv and C++ native classes, vectors, pointers type }
@@ -285,8 +290,6 @@ PCvdnn_Target_t = ^__intern__26;
 PCvStream_t = ^__intern__27;
 PCvDescriptorExtractor_t = ^__intern__28;
 PCvFeatureDetector_t = ^__intern__29;
-
-
 
 
 PCvvector_CameraParams = ^__intern__30;
@@ -322,6 +325,7 @@ PCvvector_vector_Point = ^__intern__59;
 PCvvector_vector_Point2f = ^__intern__60;
 PCvvector_vector_char = ^__intern__61;
 
+{ alias of PCvvector_int }
 PCvMatShape =  PCvvector_int;
 
 PCvPtr_AKAZE = ^__intern__70;
@@ -399,6 +403,9 @@ PCvPtr_Boost = ^__intern__139;
 
 
 { helper records for some simple Opencv classes }
+
+//** Struct to encapsulate strings passed as input/ouput parameters
+//** to C wrapper functions
   CvString_t   = record
       pstr: PAnsiChar;
       nrchar: Integer;
@@ -582,18 +589,36 @@ PCvMomentsS = ^CvMomentsS;
 
 
 {------------- Pascal helpers ---------------}
+  //** Create an Opencv Size object with passed parameters. If pcvsize is not null,
+  //** simply overwrite/update object properties.
   function  CvSize_(width, height: Integer; pcvsize: PCvSize_t = nil): PCvSize_t;
+  //** Create an Opencv Scalar object with passed parameters. If pcvscalar is not null,
+  //** simply overwrite/update object properties.
   function  CvScalar_(v0, v1, v2, v3: Double; pcvscalar: PCvScalar_t = nil): PCvScalar_t;
+  //** Create an Opencv Point object with passed integer parameters. If pcpoint is not null,
+  //** simply overwrite/update object properties.
   function  CvPoint_(x, y: Integer; pcvpoint: PCvPoint_t = nil): PCvPoint_t;
+  //** Create an Opencv Vec3b object with passed byte parameters. If pcvec3b is not null,
+  //** simply overwrite/update object properties.
   function  CvVec3b_(v0, v1, v2: byte; pcvvec3b: PCvVec3b_t = nil): PCvVec3b_t;
+  //** Create an Opencv TermCriteria object with passed  parameters. If pcvtermcrit is not null,
+  //** simply overwrite/update object properties.
   function  CvTermCriteria_(tcType: integer; max_iter: Integer; epsilon: Double;
                            pcvtermcrit: PCvTermCriteria_t = nil): PCvTermCriteria_t;
+  //** Create an Opencv Rect2d object with passed  parameters. If pcvrect2d is not null,
+  //** simply overwrite/update object properties.
   function  CvRect2d_(x, y, width, height: Double; pcvrect2d: PCvRect2d_t = nil): PCvRect2d_t;
-  function  pCvMorphologyDefaultBordeValue(): PCvScalar_t;
+  //** Create an Opencv MorphologyDefaultBordeValue object with passed  parameters.
+  function  pCvMorphologyDefaultBorderValue(): PCvScalar_t;
+  //** Convert an Opencv Mat image to TBitmap object
   procedure MatImage2Bitmap(matImg: PCvMat_t; var bitmap: TBitmap);
+  //** Convert a TBitmap object to an Opencv Mat image
   procedure Bitmap2MatImage(matImage: PCvMat_t;  bitmap: TBitmap);
-  {---- C++ exception redirection  -------}
-  function  pCvRedirectException(const func: Pointer): Boolean; cdecl;
+  //** Decode to a printable value the type of a Mat object
+  procedure  CvMatTypeDecode(const mat: PCvMat_t; var dataType: string; var nchans: Integer);
+  //** Redirect C++ exception to the procedure passed as a parameter.
+  //** Signature of procedure must be: procedure(msg: PCvString_t); cdecl;
+  function  pCvRedirectException(const proc: Pointer): Boolean; cdecl;
 {--------------------------------------------}
 { --------------- Opencv User functions ------------}
 // nothing
@@ -610,25 +635,26 @@ PCvMomentsS = ^CvMomentsS;
   procedure  pCvMatDelete (const mat: PCvMat_t); cdecl;
   function   pCvMatROI(const mat: PCvMat_t; const roi: PCvRectS): PCvMat_t; cdecl;
   procedure  pCvMatFill(const wrapper: PCvMat_t; const val: PCvScalar_t; const mask: PCvMat_t = nil); cdecl;
+  //** Operations between a Mat and a scalar value. Possible op codes: '+', '-', '*', '/'
   procedure  pCvMatScalarOp(const wrapper: PCvMat_t; const op: AnsiChar; val: Double); cdecl;
   function   pCvMatGetRow (const mat: PCvMat_t; const rowind: integer): PCvMat_t; cdecl;
-  procedure  pCvMatCopy(const src: PCvMat_t; const dst: PCvMat_t); cdecl;
+  procedure  pCvMatCopy(const src: PCvMat_t; const dst: PCvMat_t; const mask: PCvMat_t { default: Mat() } = nil); cdecl;
   function   pCvMatClone (const mat: PCvMat_t): PCvMat_t; cdecl;
   procedure  pCvMatConvertTo(const src: PCvMat_t; const dst: PCvMat_t; dstType: Integer; alpha: Double = 1.0; beta: Double = 0); cdecl;
   procedure  pCvMatExtractChannel(const src: PCvMat_t; const dst: PCvMat_t; channelId: integer); cdecl;
   procedure  pCvMatCopyToUmat (const mat: PCvMat_t; const dest: PCvUMat_t); cdecl;
   function   pCvMatToUmat (const mat: PCvMat_t): PCvUMat_t; cdecl;
   function   pCvMatFromUmat (const mat: PCvUMat_t): PCvMat_t; cdecl;
-  function   pCvMatSetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Byte): Byte; cdecl;
-  function   pCvMatGetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer): Byte; cdecl;
-  function   pCvMatSetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Integer): Integer; cdecl;
-  function   pCvMatGetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer): Integer; cdecl;
-  function   pCvMatSetFloat(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Single): Single; cdecl;
-  function   pCvMatGetFloat(const mat: PCvMat_t; const rowind: Integer; const colind: Integer): Single; cdecl;
+  function   pCvMatSetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Byte; const channel: Integer = 0): Byte; cdecl;
+  function   pCvMatGetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; channel: Integer = 0): Byte; cdecl;
+  function   pCvMatSetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Integer; const channel: Integer = 0): Integer; cdecl;
+  function   pCvMatGetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const channel: Integer = 0): Integer; cdecl;
+  function   pCvMatSetFloat(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Single; const channel: Integer = 0): Single; cdecl;
+  function   pCvMatGetFloat(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const channel: Integer = 0): Single; cdecl;
   function   pCvMatSetFloatMultidim(const mat: PCvMat_t; const indexes: PInteger; const val: Single): Single; cdecl;
-  function   pCvMatGetFloatMultidim(const mat: PCvMat_t; const indexes: PInteger; const colind: Integer): Single; cdecl;
-  function   pCvMatSetDouble(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Double): Double; cdecl;
-  function   pCvMatGetDouble(const mat: PCvMat_t; const rowind: Integer; const colind: Integer): Double; cdecl;
+  function   pCvMatGetFloatMultidim(const mat: PCvMat_t; const indexes: PInteger): Single; cdecl;
+  function   pCvMatSetDouble(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Double; const channel: Integer = 0): Double; cdecl;
+  function   pCvMatGetDouble(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const channel: Integer = 0): Double; cdecl;
   function   pCvMatSetPixelC3(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: PCvVec3b_t ): PCvVec3b_t; cdecl;
   function   pCvMatGetPixelC3(const mat: PCvMat_t; const rowind: Integer; const colind: Integer): PCvVec3b_t; cdecl;
   function   pCvMatGetWidth(const mat: PCvMat_t): Integer ; cdecl;
@@ -652,19 +678,19 @@ PCvMomentsS = ^CvMomentsS;
 {$INCLUDE   'unOcvWrapper_functions.pas'}
 
 
-{  Here are the more frequent default values in functions and methods arguments,
-   that are defined as classes instance. They are defined here to help
-   calling ocvWrapper functions.
-   Example:
-   Procedure  pCvaccumulate(src: PCvMat_t; dst: PCvMat_t; mask: PCvMat_t (* default: Mat() *));
-   can be called as:
-     pCvaccumulate(src, dst, pCvDefaultMat);
-   Example:
-   Procedure  pCvpyrUp(src: PCvMat_t; dst: PCvMat_t; dstsize: PCvSize_t (* default: Size() *);
-                            borderType: Integer (* default: BORDER_DEFAULT *));
-   can be called as:
-     pCvpyrUp(src, dst, pCvDefaultSize, BORDER_DEFAULT );
-}
+//**  Here are the more frequent default values in functions and methods arguments,
+//   that are defined as classes instance. They are defined here to help
+//   calling ocvWrapper functions.
+//**   Example:
+//**   Procedure  pCvaccumulate(src: PCvMat_t; dst: PCvMat_t; mask: PCvMat_t (* default: Mat() *));
+//**   can be called as:
+//**     pCvaccumulate(src, dst, pCvDefaultMat);
+//**   Example:
+//**   Procedure  pCvpyrUp(src: PCvMat_t; dst: PCvMat_t; dstsize: PCvSize_t (* default: Size() *);
+//                            borderType: Integer (* default: BORDER_DEFAULT *));
+//**   can be called as:
+//**     pCvpyrUp(src, dst, pCvDefaultSize, BORDER_DEFAULT );
+
 
 
 var
@@ -672,7 +698,8 @@ var
   pCvDefaultSize:   PCvSize_t;
   pCvDefaultPoint:  PCvPoint_t;
   pCvDefaultScalar: PCvScalar_t;
-  pCvPoint_1_1:     PCvPoint_t;   // Point(-1,-1)
+  //** For Opencv default value  Point(-1,-1)
+  pCvPoint_1_1:     PCvPoint_t;
   StringEmpty:      CvString_t;
   pCvStringEmpty:   PCvString_t;
 
@@ -836,6 +863,48 @@ begin
   pCvRect2dFromStruct(Result, @crect2d);
 end;
 
+var
+  { Opencv Mat data types names }
+  OCVTYPE: array[0..6] of string = ('CV_8U', 'CV_8S', 'CV_16U', 'CV_16S', 'CV_32S', 'CV_32F', 'CV_64F');
+
+procedure CvMatTypeDecode(const mat: PCvMat_t; var dataType: string; var nchans: Integer);
+//        C1  C2  C3  C4
+//
+//CV_8U   0   8  16  24
+//CV_8S   1   9  17  25
+//CV_16U  2  10  18  26
+//CV_16S  3  11  19  27
+//CV_32S  4  12  20  28
+//CV_32F  5  13  21  29
+//CV_64F  6  14  22  30
+var
+  cvtype: Integer;
+begin
+  dataType:='???';
+  nchans:=0;
+  cvtype:= pCvMatGetType(mat);
+  if (cvtype in [0..6]) then
+  begin
+    nchans:=1;
+    dataType:=OCVTYPE[cvtype - 0];
+  end;
+  if (cvtype in [8..14]) then
+  begin
+    nchans:=2;
+    dataType:=OCVTYPE[cvtype - 8];
+  end;
+  if (cvtype in [16..22]) then
+  begin
+    nchans:=3;
+    dataType:=OCVTYPE[cvtype - 16];
+  end;
+  if (cvtype in [24..30]) then
+  begin
+    nchans:=4;
+    dataType:=OCVTYPE[cvtype - 24];
+  end;
+end;
+
 {-----------------------------------------------------------------------------
   Procedure:  MatImage2Bitmap
   Author:     G. De Sanctis
@@ -862,7 +931,7 @@ procedure MatImage2Bitmap(matImg: PCvMat_t; var bitmap: TBitmap);
 BEGIN
   TRY
     iplImg:=pCvMatToIplImage(matImg);
-    assert((iplimg.Depth = 8) and (iplimg.NChannels = 3),
+    Assert((iplimg.Depth = 8) and (iplimg.NChannels = 3),
                 'Not a 24 bit color Opencv image!');
     iHeight:=iplimg.Height;
     iWidth:=iplimg.Width;
@@ -1016,7 +1085,7 @@ BEGIN
   END
 END; {Bitmap2MatImage}
 
-function  pCvMorphologyDefaultBordeValue(): PCvScalar_t;
+function  pCvMorphologyDefaultBorderValue(): PCvScalar_t;
 begin
   Result := CvScalar_(MaxDouble, MaxDouble, MaxDouble, MaxDouble);
 end;

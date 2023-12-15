@@ -1,7 +1,32 @@
 ![OCV46LOGO](ocv46-logo.png)
-# ocvWrapper46 v 1.1
+# ocvWrapper46 v 1.2
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
+
+# New version - 15/12/2023
+  
+   C++ sources:
+   * ocvWrp_nativeNotGen.h, ocvWrp_nativeNotGen_signatures.h : added parameter "mask" to PCvMatCopy function; 
+                 added parameter "channel" to PCvMatGetx/pCvMatSetx functions
+   * ocvWrp_c_generated_const.h: added constants for all types of Mat
+   
+   Binaries:
+   * recompiled all DLL
+
+   Delphi/FPC sources and examples:
+
+   *  unOcvWrapper_const.pas: added constants for all types of Mat
+   *  OpencvWrapper.pas: added parameter "mask" to PCvMatCopy function;  added parameter "channel" 
+       to PCvMatGetx/pCvMatSetx functions
+   *  Pascal-classes\unOCVImage.pas: new class TOCVParamMat; many new methods for TOCVImage
+   *  Pascal-classes\ocvWrapComp.pas: added reference to new unit unOCVImage
+   *  Pascal-classes\unOpenCVDelphi46.pas: moved TOCVImage class to new unit unOCVImage; fixed some minor bugs
+   *  Pascal-classes\unOCVContours.pas: new class for OpenCV contours
+   *  frameRecon: new project Delphi/Lazarus that find the transformation matrix
+       (homography) between a camera image and corresponding horizontal image (floor)
+   
+
+   Also added a new directory pasdoc with documentation on Pascal classes.
 
 
 # New version - 28/8/2023

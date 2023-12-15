@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Opencv for Delphi: unOpenCVContours: Class TOCVContour</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="tipuesearch/tipuesearch.css">
+
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>Opencv for Delphi</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p><form class="search-form" action="_tipue_results.html"><div class="search-input"><input type="text" name="q" id="tipue_search_input"></div><div class="search-button"><input type="button" id="tipue_search_button" onclick="this.form.submit();"></div></form>
+<div style="clear: both"></div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tipue_search_input').tipuesearch({
+        /* 10 items to display seems standard */
+        'show': 10,
+        /* For PasDoc docs, showing urls is not very useful,
+           since the page title already shows the unit and identifier. */
+        'showURL': false
+    });
+});
+</script>
+</td><td class="content">
+<span id="TOCVContour"></span><h1 class="cio">Class TOCVContour</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section">Properties</div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="unOpenCVContours.html">unOpenCVContours</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TOCVContour = class(<a class="normal" href="unOCVImage.TOcvParamMat.html">TOcvParamMat</a>)</code></p>
+<h2 class="description">Description</h2>
+<p>
+This class is a specialized version of <a class="normal" href="unOCVImage.TOcvParamMat.html">TOCVParamMat</a>, augmented with specific methods to process contours. Note that in Opencv contours are stored as normal Mat objects.</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="ancestor"><a class="normal" href="unOCVImage.TOcvParamMat.html">TOcvParamMat</a></li>
+<li class="thisitem">TOCVContour</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="unOpenCVContours.TOCVContour.html#approxPolygon">approxPolygon</a></b>(epsilon: Double = 7; closed: Boolean = True): <a  href="unOpenCVContours.TOCVContour.html">TOCVContour</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="unOpenCVContours.TOCVContour.html#getContourArea">getContourArea</a></b>(): Double;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="unOpenCVContours.TOCVContour.html#getContourLength">getContourLength</a></b>(): Double;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="unOpenCVContours.TOCVContour.html#getContourVertex">getContourVertex</a></b>( const ind: Integer): TPoint;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="unOpenCVContours.TOCVContour.html#getMoments">getMoments</a></b>(): <a  href="OPENCVWrapper.CvMomentsS.html">CvMomentsS</a>;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="approxPolygon"></span><code>function <b>approxPolygon</b>(epsilon: Double = 7; closed: Boolean = True): <a  href="unOpenCVContours.TOCVContour.html">TOCVContour</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Approximate a complex contour with a polygon having less vertexes and sides</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="getContourArea"></span><code>function <b>getContourArea</b>(): Double;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate area of contour</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="getContourLength"></span><code>function <b>getContourLength</b>(): Double;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate length (perimeter) of contour</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="getContourVertex"></span><code>function <b>getContourVertex</b>( const ind: Integer): TPoint;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get the vertex <a class="normal" href="unOCVImage.TOcvParamMat.html#at">at</a> input index of the contour</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="getMoments"></span><code>function <b>getMoments</b>(): <a  href="OPENCVWrapper.CvMomentsS.html">CvMomentsS</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calculate moments for contour</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

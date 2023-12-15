@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="ReleaseX86"/>
+    <Units>
+      <Unit>
+        <Filename Value="frameRecon.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="71" Y="11"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmFrameRecon.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fFrameRecon"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="649"/>
+        <CursorPos Y="653"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="41" Y="24"/>
+        <UsageCount Value="22"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="19"/>
+        <CursorPos Y="30"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOpenCVContours.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="233"/>
+        <CursorPos X="12" Y="250"/>
+        <UsageCount Value="22"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="9">
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="38" TopLine="22"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="373" Column="40" TopLine="28"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="375" Column="23" TopLine="373"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="385" Column="24" TopLine="373"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="151" Column="14" TopLine="131"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="388" Column="53" TopLine="370"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="389" Column="31" TopLine="377"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="192" TopLine="178"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="128" Column="71" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="554" Column="74" TopLine="535"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

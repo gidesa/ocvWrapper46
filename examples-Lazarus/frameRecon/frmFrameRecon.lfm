@@ -1,0 +1,257 @@
+object fFrameRecon: TfFrameRecon
+  Left = 354
+  Height = 609
+  Top = 163
+  Width = 979
+  Caption = 'Frame recon'
+  ClientHeight = 609
+  ClientWidth = 979
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -10
+  Font.Name = 'MS Sans Serif'
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyPress = FormKeyPress
+  Position = poDesktopCenter
+  LCLVersion = '2.2.6.0'
+  object Image1: TImage
+    Left = 648
+    Height = 385
+    Top = 112
+    Width = 320
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 105
+    Top = 0
+    Width = 979
+    Align = alTop
+    ClientHeight = 105
+    ClientWidth = 979
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 150
+      Height = 17
+      Top = 14
+      Width = 145
+      AutoSize = False
+      Caption = 'Canny/Threshold parameters'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 150
+      Height = 17
+      Top = 38
+      Width = 146
+      AutoSize = False
+      Caption = 'approx polygon epsilon'
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 150
+      Height = 25
+      Top = 62
+      Width = 137
+      AutoSize = False
+      Caption = 'max perim ratio difference % in approx polygon'
+      ParentColor = False
+      WordWrap = True
+    end
+    object lbDist: TLabel
+      Left = 510
+      Height = 17
+      Top = 71
+      Width = 137
+      AutoSize = False
+      Caption = 'Z transl.'
+      ParentColor = False
+    end
+    object btnStart: TButton
+      Left = 46
+      Height = 33
+      Top = 6
+      Width = 89
+      Caption = 'Read image'
+      OnClick = btnStartClick
+      TabOrder = 0
+    end
+    object sePar1: TSpinEdit
+      Left = 302
+      Height = 21
+      Top = 6
+      Width = 57
+      TabOrder = 1
+      Value = 100
+    end
+    object sePar2: TSpinEdit
+      Left = 374
+      Height = 21
+      Top = 6
+      Width = 57
+      TabOrder = 2
+      Value = 50
+    end
+    object cbPar3: TComboBox
+      Left = 446
+      Height = 21
+      Top = 6
+      Width = 41
+      ItemHeight = 13
+      ItemIndex = 0
+      Items.Strings = (
+        '3'
+        '5'
+        '7'
+      )
+      Style = csDropDownList
+      TabOrder = 3
+      Text = '3'
+    end
+    object sePolyPar1: TSpinEdit
+      Left = 302
+      Height = 21
+      Top = 38
+      Width = 57
+      TabOrder = 4
+      Value = 7
+    end
+    object sePerimRatioDiff: TSpinEdit
+      Left = 302
+      Height = 21
+      Top = 62
+      Width = 57
+      MaxValue = 90
+      MinValue = 5
+      TabOrder = 5
+      Value = 20
+    end
+    object cbCanny: TCheckBox
+      Left = 510
+      Height = 19
+      Top = 6
+      Width = 72
+      Caption = 'Use Canny'
+      Checked = True
+      State = cbChecked
+      TabOrder = 6
+    end
+    object cbDisplayCont: TCheckBox
+      Left = 510
+      Height = 19
+      Top = 38
+      Width = 98
+      Caption = 'Display contours'
+      TabOrder = 7
+    end
+    object btnSave: TButton
+      Left = 646
+      Height = 25
+      Top = 9
+      Width = 129
+      Caption = 'Save mapped image'
+      Enabled = False
+      OnClick = btnSaveClick
+      TabOrder = 8
+    end
+    object btnSaveProspMatrix: TButton
+      Left = 646
+      Height = 25
+      Top = 40
+      Width = 129
+      Caption = 'Save prospective matrix'
+      Enabled = False
+      OnClick = btnSaveProspMatrixClick
+      TabOrder = 9
+    end
+  end
+  object Panel1: TPanel
+    Left = 2
+    Height = 490
+    Top = 111
+    Width = 640
+    ClientHeight = 490
+    ClientWidth = 640
+    TabOrder = 1
+    object imgCamera: TImage
+      Left = 1
+      Height = 488
+      Top = 1
+      Width = 638
+      Align = alClient
+    end
+  end
+  object pnl1: TPanel
+    Left = 648
+    Height = 98
+    Top = 503
+    Width = 323
+    ClientHeight = 98
+    ClientWidth = 323
+    TabOrder = 2
+    object lbl1: TLabel
+      Left = 22
+      Height = 13
+      Top = 6
+      Width = 98
+      AutoSize = False
+      Caption = 'Square side (pixel)'
+      ParentColor = False
+    end
+    object lbl2: TLabel
+      Left = 22
+      Height = 29
+      Top = 65
+      Width = 146
+      AutoSize = False
+      Caption = 'Real side (mm). Used in saved params'
+      ParentColor = False
+      WordWrap = True
+    end
+    object lbl3: TLabel
+      Left = 22
+      Height = 13
+      Top = 33
+      Width = 146
+      AutoSize = False
+      Caption = 'Square dist. from base Y (mm)'
+      ParentColor = False
+    end
+    object txSide: TEdit
+      Left = 174
+      Height = 21
+      Top = 0
+      Width = 65
+      TabOrder = 0
+    end
+    object txRealSide: TEdit
+      Left = 174
+      Height = 21
+      Top = 65
+      Width = 65
+      TabOrder = 1
+    end
+    object txDistFromBaseY: TEdit
+      Left = 174
+      Height = 21
+      Top = 25
+      Width = 65
+      TabOrder = 2
+    end
+  end
+  object dlgOpen1: TOpenDialog
+    Left = 744
+    Top = 416
+  end
+  object dlgSavePic1: TSavePictureDialog
+    Filter = 'Portable Network Graphics (*.png)|*.png|JPEG Image File (*.jpg)|*.jpg|Bitmaps (*.bmp)|*.bmp|TIFF Images (*.tiff)|*.tiff'
+    Left = 808
+    Top = 8
+  end
+  object dlgSaveMatrix: TSaveDialog
+    Filter = 'OpenCV matrix|*.xml'
+    Left = 808
+    Top = 56
+  end
+end

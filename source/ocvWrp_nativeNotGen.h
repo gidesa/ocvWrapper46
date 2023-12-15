@@ -203,7 +203,6 @@ try {
 		} else {
 			wrapper->v = new cv::Mat(ndims, dims, mtype, (void*)dataptr);
 		};
-
 }
 	catch (std::exception &e) {
 		exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -308,10 +307,10 @@ CVAPI(void)   pCvMatScalarOp(struct Mat_t* wrapper, char op, double val)
 
 
 
-CVAPI(void)   pCvMatCopy(struct Mat_t* src, struct Mat_t* dst)
+CVAPI(void)   pCvMatCopy(struct Mat_t* src, struct Mat_t* dst, struct Mat_t* mask)
 {
 try {
-	(src->v)->copyTo(*dst->v);
+	(src->v)->copyTo(*dst->v, inparrDefault(mask)); 
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -398,10 +397,40 @@ CVAPI(struct Mat_t*) pCvMatFromUmat(struct UMat_t* src)
 	return (retval);
 }
 
-CVAPI(unsigned char)   pCvMatGetByte(struct Mat_t* wrapper, int rowind, int colind) {
-	uchar retval = 0;
+inline void checkChannel(const int nchannels, const int channel) {
+	if ((channel < 0) || (channel > nchannels - 1) || (channel > 3)) {
+		throw std::invalid_argument("Channel is < 0, or > channels total, or > 3");
+	};
+}
+
+
+inline void checkIndex(const int row, const int col, const int width, const int height) {
+	if ((row < 0) || (row > width- 1) ) {
+		throw std::invalid_argument("Row index is < 0, or > Mat width-1");
+	};
+	if ((col < 0) || (col > height - 1)) {
+		throw std::invalid_argument("Column index is < 0, or > Mat height-1");
+	};
+}
+
+
+
+CVAPI(unsigned char)   pCvMatGetByte(struct Mat_t* wrapper, int rowind, int colind, int channel) {
+uchar retval = 0;
 try {
-	retval = wrapper->v->at<unsigned char>(rowind, colind);
+	    checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+		int nchannels = wrapper->v->channels();
+		if (nchannels == 1) {
+			retval = wrapper->v->at<unsigned char>(rowind, colind);
+		}
+		else {
+			checkChannel(nchannels, channel);
+			switch (nchannels) {
+			case 2: retval = wrapper->v->at<Vec2b>(rowind, colind)(channel); break;
+			case 3: retval = wrapper->v->at<Vec3b>(rowind, colind)(channel); break;
+			case 4: retval = wrapper->v->at<Vec4b>(rowind, colind)(channel); break;
+			};
+		}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -410,10 +439,21 @@ catch (std::exception &e) {
 	return retval;
 }
 
-CVAPI(int)   pCvMatGetInt(struct Mat_t* wrapper, int rowind, int colind) {
+CVAPI(int)   pCvMatGetInt(struct Mat_t* wrapper, int rowind, int colind, int channel) {
 	int retval = 0;
 try {
-	retval = wrapper->v->at<int>(rowind, colind);
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		retval = wrapper->v->at<int>(rowind, colind);
+	} else {
+			checkChannel(nchannels, channel);
+			switch (nchannels) {
+			case 2: retval = wrapper->v->at<Vec2i>(rowind, colind)(channel); break;
+			case 3: retval = wrapper->v->at<Vec3i>(rowind, colind)(channel); break;
+			case 4: retval = wrapper->v->at<Vec4i>(rowind, colind)(channel); break;
+			};
+	}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -422,10 +462,21 @@ catch (std::exception &e) {
 	return retval;
 }
 
-CVAPI(float)   pCvMatGetFloat(struct Mat_t* wrapper, int rowind, int colind) {
+CVAPI(float)   pCvMatGetFloat(struct Mat_t* wrapper, int rowind, int colind, int channel) {
 	float retval = 0;
 try {
-	retval = wrapper->v->at<float>(rowind, colind);
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		retval = wrapper->v->at<float>(rowind, colind);
+	} else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: retval = wrapper->v->at<Vec2f>(rowind, colind)(channel); break;
+		case 3: retval = wrapper->v->at<Vec3f>(rowind, colind)(channel); break;
+		case 4: retval = wrapper->v->at<Vec4f>(rowind, colind)(channel); break;
+		};
+	}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -444,10 +495,21 @@ catch (std::exception &e) {
     return retval;
 }
 
-CVAPI(double)   pCvMatGetDouble(struct Mat_t* wrapper, int rowind, int colind) {
+CVAPI(double)   pCvMatGetDouble(struct Mat_t* wrapper, int rowind, int colind, int channel) {
 	double retval = 0;
 try {
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
 		retval = wrapper->v->at<double>(rowind, colind);
+	} else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: retval = wrapper->v->at<Vec2d>(rowind, colind)(channel); break;
+		case 3: retval = wrapper->v->at<Vec3d>(rowind, colind)(channel); break;
+		case 4: retval = wrapper->v->at<Vec4d>(rowind, colind)(channel); break;
+		};
+	}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -459,6 +521,7 @@ catch (std::exception &e) {
 CVAPI(Vec3b_t*)   pCvMatGetPixelC3(struct Mat_t* wrapper, int rowind, int colind) {
 	Vec3b_t* retval = 0;
 try {
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
 	retval = new Vec3b_t;
 	Vec3b* pr = new Vec3b();
 	retval->v = pr;
@@ -473,9 +536,22 @@ catch (std::exception &e) {
 }
 
 
-CVAPI(unsigned char)   pCvMatSetByte(struct Mat_t* wrapper, int rowind, int colind, unsigned char value) {
+CVAPI(unsigned char)   pCvMatSetByte(struct Mat_t* wrapper, int rowind, int colind, unsigned char value, int  channel) {
 try {
-	wrapper->v->at<unsigned char>(rowind, colind) = value;
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		wrapper->v->at<unsigned char>(rowind, colind) = value;
+	}
+	else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: wrapper->v->at<Vec2b>(rowind, colind)(channel) = value; break;
+		case 3:	wrapper->v->at<Vec3b>(rowind, colind)(channel) = value; break;
+		case 4:	wrapper->v->at<Vec4b>(rowind, colind)(channel) = value; break;
+		};
+	}
+
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -483,9 +559,21 @@ catch (std::exception &e) {
 return (value);
 }
 
-CVAPI(int)   pCvMatSetInt(struct Mat_t* wrapper, int rowind, int colind, int value) {
+CVAPI(int)   pCvMatSetInt(struct Mat_t* wrapper, int rowind, int colind, int value, int channel) {
 try {
-	wrapper->v->at<int>(rowind, colind) = value;
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		wrapper->v->at<int>(rowind, colind) = value;
+	}  else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: wrapper->v->at<Vec2i>(rowind, colind)(channel) = value; break;
+		case 3:	wrapper->v->at<Vec3i>(rowind, colind)(channel) = value; break;
+		case 4:	wrapper->v->at<Vec4i>(rowind, colind)(channel) = value; break;
+		};
+	}
+
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -493,9 +581,21 @@ catch (std::exception &e) {
 return (value);
 }
 
-CVAPI(float)   pCvMatSetFloat(struct Mat_t* wrapper, int rowind, int colind, float value) {
+CVAPI(float)   pCvMatSetFloat(struct Mat_t* wrapper, int rowind, int colind, float value, int channel) {
 try {
-	wrapper->v->at<float>(rowind, colind) = value;
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		wrapper->v->at<float>(rowind, colind) = value;
+	}
+	else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: wrapper->v->at<Vec2f>(rowind, colind)(channel) = value; break;
+		case 3:	wrapper->v->at<Vec3f>(rowind, colind)(channel) = value; break;
+		case 4:	wrapper->v->at<Vec4f>(rowind, colind)(channel) = value; break;
+		};
+	}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -514,9 +614,21 @@ return (value);
 }
 
 
-CVAPI(double)   pCvMatSetDouble(struct Mat_t* wrapper, int rowind, int colind, double value) {
+CVAPI(double)   pCvMatSetDouble(struct Mat_t* wrapper, int rowind, int colind, double value, int channel) {
 try {
-	wrapper->v->at<double>(rowind, colind) = value;
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
+	int nchannels = wrapper->v->channels();
+	if (nchannels == 1) {
+		wrapper->v->at<double>(rowind, colind) = value;
+	}
+	else {
+		checkChannel(nchannels, channel);
+		switch (nchannels) {
+		case 2: wrapper->v->at<Vec2d>(rowind, colind)(channel) = value; break;
+		case 3:	wrapper->v->at<Vec3d>(rowind, colind)(channel) = value; break;
+		case 4:	wrapper->v->at<Vec4d>(rowind, colind)(channel) = value; break;
+		};
+	}
 }
 catch (std::exception &e) {
 	exceptionDisplay((string)__func__ +  ": " + e.what());
@@ -527,6 +639,7 @@ return (value);
 
 CVAPI(Vec3b_t*)   pCvMatSetPixelC3(struct Mat_t* wrapper, int rowind, int colind, Vec3b_t* value) {
 try {
+	checkIndex(rowind, colind, wrapper->v->rows, wrapper->v->cols);
 	wrapper->v->at<Vec3b>(rowind, colind) = *value->v;
 }
 catch (std::exception &e) {
