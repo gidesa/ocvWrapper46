@@ -2,7 +2,6 @@
 // JCL_DEBUG_EXPERT_INSERTJDBG OFF
 // JCL_DEBUG_EXPERT_DELETEMAPFILE OFF
 program frameRecon;
-{....$APPTYPE CONSOLE}
 uses
   Forms,
   frmFrameRecon in 'frmFrameRecon.pas' {fFrameRecon};

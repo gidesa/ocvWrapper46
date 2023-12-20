@@ -1,7 +1,7 @@
 object fFrameRecon: TfFrameRecon
-  Left = 354
+  Left = 391
   Height = 609
-  Top = 163
+  Top = 171
   Width = 979
   Caption = 'Frame recon'
   ClientHeight = 609
@@ -37,36 +37,27 @@ object fFrameRecon: TfFrameRecon
       Top = 14
       Width = 145
       AutoSize = False
-      Caption = 'Canny/Threshold parameters'
+      Caption = 'Canny/Threshold main parm'
       ParentColor = False
     end
     object Label2: TLabel
-      Left = 150
+      Left = 151
       Height = 17
-      Top = 38
+      Top = 68
       Width = 146
       AutoSize = False
       Caption = 'approx polygon epsilon'
       ParentColor = False
     end
     object Label4: TLabel
-      Left = 150
+      Left = 373
       Height = 25
-      Top = 62
+      Top = 64
       Width = 137
       AutoSize = False
       Caption = 'max perim ratio difference % in approx polygon'
       ParentColor = False
       WordWrap = True
-    end
-    object lbDist: TLabel
-      Left = 510
-      Height = 17
-      Top = 71
-      Width = 137
-      AutoSize = False
-      Caption = 'Z transl.'
-      ParentColor = False
     end
     object btnStart: TButton
       Left = 46
@@ -82,21 +73,22 @@ object fFrameRecon: TfFrameRecon
       Height = 21
       Top = 6
       Width = 57
+      Enabled = False
       TabOrder = 1
       Value = 100
     end
     object sePar2: TSpinEdit
-      Left = 374
+      Left = 302
       Height = 21
-      Top = 6
+      Top = 32
       Width = 57
       TabOrder = 2
       Value = 50
     end
     object cbPar3: TComboBox
-      Left = 446
+      Left = 374
       Height = 21
-      Top = 6
+      Top = 32
       Width = 41
       ItemHeight = 13
       ItemIndex = 0
@@ -112,15 +104,15 @@ object fFrameRecon: TfFrameRecon
     object sePolyPar1: TSpinEdit
       Left = 302
       Height = 21
-      Top = 38
+      Top = 64
       Width = 57
       TabOrder = 4
       Value = 7
     end
     object sePerimRatioDiff: TSpinEdit
-      Left = 302
+      Left = 525
       Height = 21
-      Top = 62
+      Top = 64
       Width = 57
       MaxValue = 90
       MinValue = 5
@@ -164,6 +156,27 @@ object fFrameRecon: TfFrameRecon
       Enabled = False
       OnClick = btnSaveProspMatrixClick
       TabOrder = 9
+    end
+    object Label3: TLabel
+      Left = 152
+      Height = 17
+      Top = 36
+      Width = 145
+      AutoSize = False
+      Caption = 'Other Canny parameters'
+      ParentColor = False
+    end
+    object trckbrMainParm: TTrackBar
+      Left = 376
+      Height = 21
+      Top = 8
+      Width = 124
+      Frequency = 20
+      Max = 255
+      OnChange = trckbrMainParmChange
+      Position = 100
+      Enabled = False
+      TabOrder = 10
     end
   end
   object Panel1: TPanel

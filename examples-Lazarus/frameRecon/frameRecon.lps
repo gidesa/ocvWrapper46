@@ -3,13 +3,13 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="12"/>
-    <BuildModes Active="ReleaseX86"/>
+    <BuildModes Active="Release"/>
     <Units>
       <Unit>
         <Filename Value="frameRecon.lpr"/>
         <IsPartOfProject Value="True"/>
         <CursorPos X="71" Y="11"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -20,9 +20,9 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="649"/>
-        <CursorPos Y="653"/>
-        <UsageCount Value="22"/>
+        <TopLine Value="309"/>
+        <CursorPos Y="314"/>
+        <UsageCount Value="23"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -32,16 +32,17 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="41" Y="24"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="19"/>
-        <CursorPos Y="30"/>
-        <UsageCount Value="22"/>
+        <TopLine Value="614"/>
+        <CursorPos Y="626"/>
+        <UsageCount Value="23"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="..\..\Delphi\Pascal-classes\unOpenCVContours.pas"/>
@@ -49,38 +50,10 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="233"/>
         <CursorPos X="12" Y="250"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="23"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="9">
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="38" TopLine="22"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="373" Column="40" TopLine="28"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="375" Column="23" TopLine="373"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="385" Column="24" TopLine="373"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="151" Column="14" TopLine="131"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="388" Column="53" TopLine="370"/>
-      </Position>
-      <Position>
-        <Filename Value="frmFrameRecon.pas"/>
-        <Caret Line="389" Column="31" TopLine="377"/>
-      </Position>
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="frmFrameRecon.pas"/>
         <Caret Line="192" TopLine="178"/>
@@ -92,6 +65,114 @@
       <Position>
         <Filename Value="frmFrameRecon.pas"/>
         <Caret Line="554" Column="74" TopLine="535"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="653" TopLine="628"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="652" TopLine="629"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="655" TopLine="632"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="208" Column="5" TopLine="200"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="419" Column="44" TopLine="408"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="131" Column="42" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="772" Column="40" TopLine="751"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="155" TopLine="145"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="96" Column="15" TopLine="85"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="199" Column="11" TopLine="195"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="207" Column="110" TopLine="202"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="129" Column="15" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="270" Column="47" TopLine="268"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="568" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="569" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="572" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="573" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="574" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="575" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="576" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="577" TopLine="563"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="532" TopLine="519"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="528" TopLine="519"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="568" TopLine="565"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="588" Column="15" TopLine="576"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="243" Column="19" TopLine="231"/>
+      </Position>
+      <Position>
+        <Filename Value="frmFrameRecon.pas"/>
+        <Caret Line="421" TopLine="408"/>
       </Position>
     </JumpHistory>
     <RunParams>

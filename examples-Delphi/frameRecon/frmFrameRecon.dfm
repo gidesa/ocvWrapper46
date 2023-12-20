@@ -37,32 +37,32 @@ object fFrameRecon: TfFrameRecon
       Width = 145
       Height = 17
       AutoSize = False
-      Caption = 'Canny/Threshold parameters'
+      Caption = 'Canny/Threshold main parm.'
     end
     object Label2: TLabel
       Left = 152
-      Top = 40
+      Top = 63
       Width = 146
       Height = 17
       AutoSize = False
       Caption = 'approx polygon epsilon'
     end
     object Label4: TLabel
-      Left = 152
-      Top = 64
+      Left = 376
+      Top = 63
       Width = 137
       Height = 25
       AutoSize = False
       Caption = 'max perim ratio difference % in approx polygon'
       WordWrap = True
     end
-    object lbDist: TLabel
-      Left = 512
-      Top = 73
-      Width = 137
+    object lbl4: TLabel
+      Left = 152
+      Top = 39
+      Width = 145
       Height = 17
       AutoSize = False
-      Caption = 'Z transl.'
+      Caption = 'Other Canny parameters'
     end
     object btnStart: TButton
       Left = 48
@@ -78,14 +78,15 @@ object fFrameRecon: TfFrameRecon
       Top = 8
       Width = 57
       Height = 22
+      Enabled = False
       MaxValue = 0
       MinValue = 0
       TabOrder = 1
       Value = 100
     end
     object sePar2: TSpinEdit
-      Left = 376
-      Top = 8
+      Left = 303
+      Top = 35
       Width = 57
       Height = 22
       MaxValue = 0
@@ -94,8 +95,8 @@ object fFrameRecon: TfFrameRecon
       Value = 50
     end
     object cbPar3: TComboBox
-      Left = 448
-      Top = 8
+      Left = 375
+      Top = 35
       Width = 41
       Height = 21
       Style = csDropDownList
@@ -109,7 +110,7 @@ object fFrameRecon: TfFrameRecon
     end
     object sePolyPar1: TSpinEdit
       Left = 304
-      Top = 40
+      Top = 63
       Width = 57
       Height = 22
       MaxValue = 0
@@ -118,8 +119,8 @@ object fFrameRecon: TfFrameRecon
       Value = 7
     end
     object sePerimRatioDiff: TSpinEdit
-      Left = 304
-      Top = 64
+      Left = 528
+      Top = 63
       Width = 57
       Height = 22
       MaxValue = 90
@@ -164,6 +165,17 @@ object fFrameRecon: TfFrameRecon
       Enabled = False
       TabOrder = 9
       OnClick = btnSaveProspMatrixClick
+    end
+    object trckbrMainParm: TTrackBar
+      Left = 367
+      Top = 8
+      Width = 139
+      Height = 26
+      Enabled = False
+      Max = 255
+      Frequency = 20
+      TabOrder = 10
+      OnChange = trckbrMainParmChange
     end
   end
   object Panel1: TPanel

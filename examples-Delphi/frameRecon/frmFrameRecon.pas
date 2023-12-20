@@ -69,7 +69,6 @@ type
     sePerimRatioDiff: TSpinEdit;
     cbCanny: TCheckBox;
     cbDisplayCont: TCheckBox;
-    lbDist: TLabel;
     Image1: TImage;
     imgCamera: TImage;
     dlgOpen1: TOpenDialog;
@@ -84,12 +83,15 @@ type
     txRealSide: TEdit;
     txDistFromBaseY: TEdit;
     lbl3: TLabel;
+    lbl4: TLabel;
+    trckbrMainParm: TTrackBar;
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure btnSaveProspMatrixClick(Sender: TObject);
+    procedure trckbrMainParmChange(Sender: TObject);
   private
     { Private declarations }
     bmp:        TBitmap;
@@ -122,7 +124,7 @@ type
     procedure extractContours(const origImg: TOCVImage; image: TOCVImage;  var numCont: Integer);
     function  calc_diagonals(const seqResult: TOCVContour): TDiagonals;
     function  processContour(const contour: TOCVContour): TOCVContour;
-    function  verifyHole(contourInd: Integer; diags: TDiagonals): Boolean;
+    function  verifyHole(contourInd: Integer; diags: TDiagonals; parentCont: TOCVContour): Boolean;
     procedure calc_mapping(contourInd: Integer; image: TOCVImage);
     function  findFrame(const origImg: TOCVImage; image: TOCVImage): boolean;
     procedure releaseImages;
@@ -192,6 +194,8 @@ begin
     bmp := TBitmap.Create;
     bmp.PixelFormat :=  pf24bit;
 
+    trckbrMainParm.Position:=sePar1.Value;
+
     image := nil;
     frame := nil;
     mapx  := nil;
@@ -225,6 +229,8 @@ procedure TfFrameRecon.FormDestroy(Sender: TObject);
 begin
     bmp.Free;
     releaseImages;
+    if Assigned(frame) then
+       FreeAndNil(frame);
     origQuad.Free;
     pro.Free;
     intrinsic.Free;
@@ -245,13 +251,12 @@ begin
       FreeAndNil(outImg);
     if Assigned(extractedFrame) then
        FreeAndNil(extractedFrame);
-    if Assigned(frame) then
-       FreeAndNil(frame);
     if Assigned(mapMatrix) then
        FreeAndNil(mapMatrix);
     if Assigned(inverseMapMatrix) then
        FreeAndNil(inverseMapMatrix);
 end;
+
 
 procedure TfFrameRecon.showImage;
 begin
@@ -264,6 +269,7 @@ procedure TfFrameRecon.main_cycle(frame: TOCVImage);
 var
   gausblurSize: PCvSize_t;
 begin
+        releaseImages;
         if not (assigned(image )) then
         begin
             // allocate all the buffers
@@ -299,6 +305,8 @@ begin
 
            TOpenCVAlgor.initUndistort(frame, distortion, intrinsic, mapx, mapy);
         end;
+
+        image1.Picture:=nil;
 
         frame.copy(image);
 
@@ -342,14 +350,6 @@ begin
 
 end;
 
-procedure TfFrameRecon.FormKeyPress(Sender: TObject; var Key: Char);
-begin
-        if( key = char(27) ) then
-        begin
-            self.Destroy;
-            halt;
-        end;
-end;
 
 procedure TfFrameRecon.btnSaveClick(Sender: TObject);
 begin
@@ -396,6 +396,8 @@ begin
   image1.Picture:=nil;
   if dlgOpen1.Execute then
   begin
+    if Assigned(frame) then
+       FreeAndNil(frame);
     frame:=TOCVImage.Create(dlgOpen1.FileName);
     if frame=nil then
     begin
@@ -403,10 +405,32 @@ begin
     end else begin
       main_cycle(frame);
       showImage;
+      trckbrMainParm.Enabled:=True;
     end;
   end;
 
 end;
+
+procedure TfFrameRecon.trckbrMainParmChange(Sender: TObject);
+begin
+  if trckbrMainParm.Position <> sePar1.Value then
+  begin
+    sePar1.Value:=trckbrMainParm.Position;
+    showImage;
+    main_cycle(frame);
+  end;
+end;
+
+procedure TfFrameRecon.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+        if( key = char(27) ) then
+        begin
+            self.Destroy;
+            halt;
+        end;
+end;
+
+
 
 procedure TfFrameRecon.extractContours(const origImg: TOCVImage; image: TOCVImage; var numCont: Integer);
 begin
@@ -446,11 +470,11 @@ begin
   // Note that the mapped image is much greater than the original one.
   extractedFrame:=image.map(mapMatrix);
   extractedFrame.showInImage(Image1);
-  Image1.Repaint;
 
   btnSave.Enabled:=True;
   btnSaveProspMatrix.Enabled:=True;
 end;
+
 
 
 function  TfFrameRecon.calc_diagonals(const seqResult: TOCVContour): TDiagonals;
@@ -495,19 +519,20 @@ end;
 
 end;
 
-function TfFrameRecon.verifyHole(contourInd: Integer; diags: TDiagonals): Boolean;
+function TfFrameRecon.verifyHole(contourInd: Integer; diags: TDiagonals; parentCont: TOCVContour): Boolean;
 var
   nholes: integer;
   nextHole: Integer;
   holeMat, hole2: TOCVContour;
   holeDiags:      TDiagonals;
+  parentArea:     Double;
 begin
     Result:=False;
     ocvContours.resetGetInternal;
+    parentArea:=parentCont.getContourArea();
     try
       // internal contours with CV_RETR_TREE
       // hierarchy Mat has: 1 row, <nr of contours> columns, 4 channels, integer type
-       //hole := hierarchyMat.atInt[0, contourInd, CONT_FIRST_CHILD];
        holeMat:=ocvContours.getNextInternalContour(contourInd, nextHole);
        nholes := 0;
        //       4) scorre i contorni interni (TREE)
@@ -522,31 +547,35 @@ begin
               Continue;
             end;
                //    4.1) approssima ogni contorno con poligono
-              hole2:=holeMat.approxPolygon(sePolyPar1.Value);
-              //     4.2) verifica se poligono ha 4 vertici
-              if hole2.height<>4 then continue;
-                 holeDiags:=calc_diagonals(hole2);
+               hole2:=holeMat.approxPolygon(sePolyPar1.Value);
+               //     4.2) verifica se poligono ha 4 vertici
+               if hole2.height<>4 then continue;
+               //        e se è differente
+               if (Abs(hole2.getContourArea - parentArea) / parentArea )  < 0.05 then Continue;
 
-                 //          4.4) se i coefficienti delle diagonali del poligono interno
-                 //               sono uguali a quelli del poligono esterno, a meno di errore dato,
-                 //               la ricerca e' positiva, uscire dalla funzione
-                 if (diags.vert1 = holeDiags.vert1) and (diags.vert2 = holeDiags.vert2)
-                     and (abs(diags.m1 - holeDiags.m1)/diags.m1 <= (sePerimRatioDiff.Value / 100))
-                     and (abs(diags.q1 - holeDiags.q1)/diags.q1 <= (sePerimRatioDiff.Value / 100))
-                     and (abs(diags.m2 - holeDiags.m2)/diags.m2 <= (sePerimRatioDiff.Value / 100))
-                     and (abs(diags.q2 - holeDiags.q2)/diags.q2 <= (sePerimRatioDiff.Value / 100))   then
-                 begin
-                             Result := true;
-                             Break;
-                 end;
 
+               holeDiags:=calc_diagonals(hole2);
+
+
+               //          4.4) se i coefficienti delle diagonali del poligono interno
+               //               sono uguali a quelli del poligono esterno, a meno di errore dato,
+               //               la ricerca e' positiva, uscire dalla funzione
+               if (diags.vert1 = holeDiags.vert1) and (diags.vert2 = holeDiags.vert2)
+                   and (abs(diags.m1 - holeDiags.m1)/diags.m1 <= (sePerimRatioDiff.Value / 100))
+                   and (abs(diags.q1 - holeDiags.q1)/diags.q1 <= (sePerimRatioDiff.Value / 100))
+                   and (abs(diags.m2 - holeDiags.m2)/diags.m2 <= (sePerimRatioDiff.Value / 100))
+                   and (abs(diags.q2 - holeDiags.q2)/diags.q2 <= (sePerimRatioDiff.Value / 100))   then
+               begin
+                           Result := true;
+                           Break;
+               end;
           finally
               if holeMat<>nil then
                 holeMat.Free;
-              holeMat:=ocvContours.getNextInternalContour(contourInd, nextHole);
               if hole2<>nil then
                  hole2.Free;
           end;
+          holeMat:=ocvContours.getNextInternalContour(contourInd, nextHole);
        end;    // while hole
     except
       on E: Exception do
@@ -723,25 +752,25 @@ begin
 
 
       // test each contour
+      frame_found := false;
       ocvContours.resetGet;
       for i:=0 to nrc-1 do
       begin
         // contours Mat has: <nr vertex> rows; 1 column; 2 channels; integer type
         contours:=ocvContours.getNextContour(curCont);
         if contours=nil then break;
-        frame_found := false;
         seqResult:=processContour(contours);
         if seqResult<>nil then
         begin
           // now seqResult Mat has: 4 rows; 1 column; 2 channels; integer type
           diags:=calc_diagonals(seqResult);
-          frame_found:=verifyHole(i, diags);
+          frame_found:=verifyHole(curCont, diags, seqResult);
           if (frame_found) then
           begin
-                calc_mapping(i, image);
+                calc_mapping(curCont, image);
                 result:=True;
           end;
-        end;  // if seqresult.height=4
+        end;
         FreeAndNil(contours);
         if seqResult<>nil then
             FreeAndNil(seqResult);
