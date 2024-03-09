@@ -193,6 +193,9 @@ type
           //** Transform the entire image to another image using a mapping matrix (homography).
           //** If out width and height are set to default, the output image will be 4 times greater.
           function  map(const mapMatrix: TOcvParamMat; const outWidth: Integer = -1; const outHeight: Integer = -1): TOCVImage;
+          //** Fill the image with the values converted from a Mat having same size and CV32F (single) data type
+          procedure convertFromSingle(const img32: TOcvParamMat);
+
 
 
           //** The pointer to internal Opencv Mat object
@@ -807,7 +810,7 @@ end;
 procedure TOCVImage.toGray(grayImg: TOCVImage);
 begin
   Assert(Assigned(grayImg), 'toGray: input image not assigned');
-  Assert((grayImg.width=fWidth) and (grayImg.height=fHeight) and (grayImg.nchannels=fNchannels),
+  Assert((grayImg.width=fWidth) and (grayImg.height=fHeight) and (grayImg.nchannels=1),
      Format('toGray: input image must have same width and height, and only 1 channel. Input w/h/nch %d %d %d; Self w/h/nch %d %d %d',
           [grayimg.width, grayimg.height, grayimg.nchannels, fwidth, fheight, fnchannels]));
   pCvCvtColor(internImage, grayImg.PCvMatPtr, Ord(COLOR_BGR2GRAY));
@@ -1229,6 +1232,36 @@ begin
         outSize,
         ord(TCvInterpolationFlags.INTER_LINEAR)+ord(TCvInterpolationFlags.WARP_FILL_OUTLIERS)+ord(TCvInterpolationFlags.WARP_INVERSE_MAP));
   pCvSizeDelete(outSize);
+end;
+
+procedure TOCVImage.convertFromSingle(const img32: TOcvParamMat);
+  VAR
+    scale, shift, diff: Double;
+    minVal, maxVal: Double;
+  begin
+  TRY
+    Assert((Img32.dataType = cvSingle)
+                and ( ((self.NChannels = 1) and (Img32.NChannels = 1))  ),
+                'Input must be cvSingle (32F) data type, 1 channel; output image must be 1 channel');
+    Assert((img32.width = fWidth) and (img32.height = fHeight),' Input mat must have same width and height of image');
+
+    pcvMinMaxLoc(img32.PCvMatPtr,  @minVal, @maxVal);
+    diff := maxVal - minVal;
+    if diff <>0 then
+        scale := 255/diff
+    else
+        scale := 0;
+    shift := -minVal*scale;
+
+    pCvconvertScaleAbs (img32.PCvMatPtr, internImage, scale, shift);
+  Except
+        on E: Exception do
+        begin
+             raise  Exception.Create('ConvertFromSingle- error - ' + e.Message);
+        end;
+
+  END; //try
+
 end;
 
 {$ENDREGION}
