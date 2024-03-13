@@ -108,11 +108,11 @@ from script, but are hand written.
 
 # Docs on general arguments
 
-[General-documentation.md]
+[General documentation](./General-documentation.md)
 
 # Docs on Opencv Mat class and corresponding Pascal classes
 
-[Matrices.md]
+[Notes on Matrices](./Matrices.md)
 
 # Detailed docs on all Delphi/FPC functions and classes
 
