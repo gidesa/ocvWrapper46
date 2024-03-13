@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="ReleaseX86"/>
+    <Units>
+      <Unit>
+        <Filename Value="dnnObjectDetection2.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form7"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="216"/>
+        <CursorPos X="96" Y="224"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\unOcvWrapper_const.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="205"/>
+        <CursorPos X="109" Y="218"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="939"/>
+        <CursorPos X="19" Y="952"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="20"/>
+        <CursorPos X="8" Y="33"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\programmi\FPC3.2.4\fpcsrc\packages\rtl-generics\src\generics.collections.pas"/>
+        <UnitName Value="Generics.Collections"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="131"/>
+        <CursorPos X="52" Y="144"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="16">
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="44" Column="51" TopLine="73"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="226" Column="46" TopLine="217"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="226" Column="46" TopLine="217"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="952" Column="19" TopLine="939"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="113" Column="76" TopLine="100"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="237" Column="20" TopLine="232"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="459" Column="13" TopLine="446"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="494" Column="3" TopLine="481"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="29" Column="44" TopLine="16"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="33" Column="8" TopLine="20"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="127" Column="3" TopLine="114"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="137" Column="40" TopLine="118"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="141" Column="3" TopLine="128"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="154" TopLine="142"/>
+      </Position>
+      <Position>
+        <Filename Value="frmDnnObjectDetection2.pas"/>
+        <Caret Line="53" Column="25" TopLine="40"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\OPENCVWrapper.pas"/>
+        <Caret Line="952" Column="19" TopLine="939"/>
+      </Position>
+      <Position>
+        <Filename Value="..\..\Delphi\Pascal-classes\unOCVImage.pas"/>
+        <Caret Line="33" Column="8" TopLine="20"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

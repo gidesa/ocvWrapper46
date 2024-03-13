@@ -26,11 +26,10 @@ unit unOCVImage;
 interface
 uses  Classes, Sysutils,
       {$IFDEF LCL}
-      {$IFDEF MSWINDOWS} LCLIntf, LCLType, LMessages, {$ENDIF}
+      {$IFDEF MSWINDOWS} LCLIntf, LCLType, {$ENDIF}
       Graphics,
       Types,
       ExtCtrls,
-      Generics.Collections,
       {$ELSE}
       Vcl.Graphics,
       Types,
@@ -57,6 +56,7 @@ type
     function getDataType(): TOcvDataType;
     function getNchannels(): Integer;
     function getImagePointer: PCvMat_t;
+    function dataType2NativeDataType(dt: TOcvDataType; nchans: Integer): integer;
 
     procedure setDataType();  inline;
   protected
@@ -73,6 +73,9 @@ type
   public
        //** Constructor for Mat with assigned width (columns), height (rows), data type, and channel number if > 1
        constructor Create(const width, height: Integer; dataType: TOcvDataType; nchannels: Integer = 1); overload;
+       //** Constructor for Mat with more than 2 dimensions, parameters are: array with list of dimensions; data type;
+       //** optional channels number if > 1; and optional pointer to data bytes
+       constructor Create(const dimArray: array of Integer; dataType: TOcvDataType; nchannels: Integer = 1; dataPtr: Int64 = 0); overload;
        //** Constructor for empty Mat. It will be filled by Opencv functions
        constructor CreateEmpty(); overload;
        //** Constructor that load a Mat object named 'matName' from a file in Opencv format (XML, Json, Yaml)
@@ -83,6 +86,8 @@ type
        //** Save the Mat to a text file. The format is set by name extension, and can be: XML, Json, Yaml.
        //** Inside the file the matrix has name 'matName'.
        procedure save(const filename: string; const matName: string);
+       //** Return an array with list of mat dimensions
+       function  Shape(): TArray<Integer>;
 
        //** The pointer to internal Opencv Mat object
        property PCvMatPtr: PCvMat_t read getImagePointer;
@@ -226,6 +231,46 @@ uses {$IFDEF FPC}StrUtils{$ELSE}System.StrUtils{$ENDIF} ;
 
 {$REGION 'TOCVParamMat'}
 
+function TOcvParamMat.dataType2NativeDataType(dt: TOcvDataType; nchans: Integer): Integer;
+begin
+  Result := CV_8UC1;
+  case dt of
+  cvByte:    begin
+    case nchans of
+      1: Result:= CV_8UC1;
+      2: Result:= CV_8UC2;
+      3: Result:= CV_8UC3;
+      4: Result:= CV_8UC4;
+    end;
+  end;
+  cvInteger: begin
+    case nchans of
+      1: Result:= CV_32SC1;
+      2: Result:= CV_32SC2;
+      3: Result:= CV_32SC3;
+      4: Result:= CV_32SC4;
+    end;
+  end;
+  cvSingle:  begin
+    case nchans of
+      1: Result:= CV_32FC1;
+      2: Result:= CV_32FC2;
+      3: Result:= CV_32FC3;
+      4: Result:= CV_32FC4;
+    end;
+  end;
+  cvDouble:  begin
+    case nchans of
+      1: Result:= CV_64FC1;
+      2: Result:= CV_64FC2;
+      3: Result:= CV_64FC3;
+      4: Result:= CV_64FC4;
+    end;
+  end;
+  end;
+end;
+
+
 constructor TOcvParamMat.Create(const width: Integer; const height: Integer; dataType: TOcvDataType;
         nchannels: Integer);
 var
@@ -236,45 +281,32 @@ begin
   Assert(  ((Low(tocvdatatype)<=dataType) and  (datatype <=High(tocvdatatype))  ),
                         'TOCVParamMat: data type can be: cvByte, cvInteger, cvSingle, cvDouble');
   fDataType:=DataType;
-  case dataType of
-  cvByte:    begin
-    case nchannels of
-      1: mt:= CV_8UC1;
-      2: mt:= CV_8UC2;
-      3: mt:= CV_8UC3;
-      4: mt:= CV_8UC4;
-    end;
-  end;
-  cvInteger: begin
-    case nchannels of
-      1: mt:= CV_32SC1;
-      2: mt:= CV_32SC2;
-      3: mt:= CV_32SC3;
-      4: mt:= CV_32SC4;
-    end;
-  end;
-  cvSingle:  begin
-    case nchannels of
-      1: mt:= CV_32FC1;
-      2: mt:= CV_32FC2;
-      3: mt:= CV_32FC3;
-      4: mt:= CV_32FC4;
-    end;
-  end;
-  cvDouble:  begin
-    case nchannels of
-      1: mt:= CV_64FC1;
-      2: mt:= CV_64FC2;
-      3: mt:= CV_64FC3;
-      4: mt:= CV_64FC4;
-    end;
-  end;
-  end;
+
+  mt:=dataType2NativeDataType(dataType, nchannels);
   internImage:=pCvMatImageCreate(width, height, mt );
   fWidth:=width;
   fHeight:=height;
   fNChannels:=nchannels;
 end;
+
+constructor TOcvParamMat.Create(const dimArray: array of Integer;
+                dataType: TOcvDataType; nchannels: Integer; dataPtr: Int64);
+var
+  mt: Integer;
+begin
+  inherited Create;
+  Assert(  ((Low(tocvdatatype)<=dataType) and  (datatype <=High(tocvdatatype))  ),
+                        'TOCVParamMat: data type can be: cvByte, cvInteger, cvSingle, cvDouble');
+  Assert( (Length(dimArray)>0), 'TOCVParamMat: array of dimensions is empty');
+  fDataType:=DataType;
+  mt:=dataType2NativeDataType(dataType, nchannels);
+  internImage:=pCvMatCreate(Length(dimArray), @dimArray[0], mt, dataPtr);
+  fWidth:=-1;
+  fHeight:=-1;
+  fNChannels:=nchannels;
+end;
+
+
 
 constructor TOcvParamMat.Create(const filename: string; const matName: string);
 var
@@ -390,6 +422,7 @@ begin
   if ((fDataType<>cvEmpty) and (fNChannels>0) )   // valid matrix
     or ( (fDataType = cvEmpty) and  (getWidth() * getHeight() = 0) ) // empty matrix
         then Exit;
+  cvtype:='';
   CvMatTypeDecode(internImage,  cvtype, fNChannels);
   if (cvtype ='CV_8U')
   or (cvtype = 'CV_8S')     then begin fDataType := cvByte;    end
@@ -432,6 +465,15 @@ function TOcvParamMat.getNchannels: Integer;
 begin
   setDataType;
   Result:=fNChannels;
+end;
+
+function TOcvParamMat.Shape(): TArray<Integer>;
+var
+  nr: Integer;
+begin
+  nr:=pCvMatGetDimsNum(internImage);
+  SetLength(Result, nr);
+  pCvMatGetDims(internImage, @Result[0]);
 end;
 
 function TOcvParamMat.getCellInt(r: Integer; c: Integer; ch: Integer): Integer;
