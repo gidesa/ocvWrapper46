@@ -20,9 +20,10 @@
 }
 {$IFDEF FPC}
   {$mode Delphi}
+  {$WARN 06058 Off } {Call to subroutine "xxx" marked as inline is not inlined}
+  {$WARN 06060 Off } {Case statement does not handle all possible cases}
 {$ENDIF}
 unit unOCVImage;
-
 interface
 uses  Classes, Sysutils,
       {$IFDEF LCL}

@@ -3,6 +3,15 @@
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
+# New version - 21/4/2024
+
+   Delphi/FPC sources and examples:
+   * added Pascal classes for vectors and Ptrs (TOcvVector, TOcvPtr)
+     Note: the classes use generics and require FPC 3.3.1 or superior
+   * added an example showing how to use Pascal classes: featureTestWithClasses
+   * detailed docs on vectors and Ptrs
+ 
+
 # New version - 15/12/2023
   
    C++ sources:
@@ -113,6 +122,14 @@ from script, but are hand written.
 # Docs on Opencv Mat class and corresponding Pascal classes
 
 [Notes on Matrices](./Matrices.md)
+
+# Docs on Opencv/C++ vector classes and corresponding Pascal classes
+
+[Notes on vectors](./Vectors.md)
+
+# Docs on Opencv/C++ Ptr classes and corresponding Pascal classes
+
+[Notes on Ptr](./Ptrs.md)
 
 # Detailed docs on all Delphi/FPC functions and classes
 

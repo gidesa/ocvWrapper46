@@ -1,0 +1,88 @@
+object Form6: TForm6
+  Left = 644
+  Height = 197
+  Top = 432
+  Width = 394
+  Caption = 'Feature detector ORB test'
+  ClientHeight = 197
+  ClientWidth = 394
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poDesktopCenter
+  LCLVersion = '3.2.0.0'
+  object lbl1: TLabel
+    Left = 16
+    Height = 13
+    Top = 16
+    Width = 65
+    AutoSize = False
+    Caption = 'First image'
+  end
+  object lbl2: TLabel
+    Left = 16
+    Height = 13
+    Top = 43
+    Width = 73
+    AutoSize = False
+    Caption = 'Second image'
+  end
+  object btnStart: TButton
+    Left = 136
+    Height = 25
+    Top = 136
+    Width = 121
+    Caption = 'Detect features'
+    TabOrder = 0
+    OnClick = btnStartClick
+  end
+  object txImg1: TEdit
+    Left = 87
+    Height = 21
+    Top = 8
+    Width = 250
+    TabOrder = 1
+    Text = '..\..\datamat1.jpg'
+  end
+  object btnLoad1: TButton
+    Left = 355
+    Height = 25
+    Top = 8
+    Width = 25
+    Caption = '...'
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 2
+    OnClick = btnLoad1Click
+  end
+  object txImg2: TEdit
+    Left = 87
+    Height = 21
+    Top = 35
+    Width = 250
+    TabOrder = 3
+    Text = '..\..\datamat2.jpg'
+  end
+  object btnLoad2: TButton
+    Left = 355
+    Height = 25
+    Top = 35
+    Width = 25
+    Caption = '...'
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Tahoma'
+    ParentFont = False
+    TabOrder = 4
+    OnClick = btnLoad2Click
+  end
+  object dlgOpen1: TOpenDialog
+    Filter = 'Jpg|*.jpg|Png|*.png|Bmp|*.bmp|All files|*.*'
+    InitialDir = 'd:\'
+    Left = 312
+    Top = 88
+  end
+end
