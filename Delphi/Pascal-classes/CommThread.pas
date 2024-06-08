@@ -10,9 +10,9 @@ interface
 
 uses
   {$IFDEF LCL}
-  Windows, Classes, SysUtils, SyncObjs, lazCollections;
+  Classes, SysUtils, SyncObjs, lazCollections;
   {$ELSE}
-  Winapi.Windows, System.Classes, System.SysUtils, System.SyncObjs, System.Generics.Collections;
+  System.Classes, System.SysUtils, System.SyncObjs, System.Generics.Collections;
   {$ENDIF}
 
 type
