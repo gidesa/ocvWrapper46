@@ -4,7 +4,7 @@
 
 # Use of Opencv matrices and Delphi/FPC classes documentation
   
-
+  
 # The Mat class in Opencv
 
 The Mat class is the main one in Opencv. It is a matrix class, that contains images. Every Mat image
