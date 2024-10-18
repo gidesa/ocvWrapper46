@@ -37,7 +37,6 @@ requires
 
 contains
   CommThread in '..\Delphi\Pascal-classes\CommThread.pas',
-  ocvWrapComp in '..\Delphi\Pascal-classes\ocvWrapComp.pas',
-  unFileIterator in '..\Delphi\Pascal-classes\unFileIterator.pas';
+  ocvWrapComp in '..\Delphi\Pascal-classes\ocvWrapComp.pas';
 
 end.

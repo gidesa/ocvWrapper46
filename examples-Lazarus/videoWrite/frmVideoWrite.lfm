@@ -1,0 +1,111 @@
+object fVideoWrite: TfVideoWrite
+  Left = 1110
+  Height = 424
+  Top = 354
+  Width = 320
+  ClientHeight = 424
+  ClientWidth = 320
+  OnCreate = FormCreate
+  LCLVersion = '2.2.6.0'
+  object img1: TImage
+    Left = 24
+    Height = 201
+    Top = 204
+    Width = 273
+  end
+  object lbl1: TLabel
+    Left = 32
+    Height = 15
+    Top = 88
+    Width = 34
+    Caption = 'Codec'
+    ParentColor = False
+  end
+  object lbl2: TLabel
+    Left = 32
+    Height = 15
+    Top = 120
+    Width = 44
+    Caption = 'File type'
+    ParentColor = False
+  end
+  object lbl3: TLabel
+    Left = 24
+    Height = 53
+    Top = 147
+    Width = 273
+    AutoSize = False
+    Caption = 'NOTE: H264 codec require that the library "openh264-1.8.0-win32.dll" will be in application binary directory, or in path '
+    ParentColor = False
+    WordWrap = True
+  end
+  object btnStart: TButton
+    Left = 24
+    Height = 25
+    Top = 16
+    Width = 57
+    Caption = 'Start'
+    OnClick = btnStartClick
+    TabOrder = 0
+  end
+  object btnStop: TButton
+    Left = 240
+    Height = 25
+    Top = 16
+    Width = 57
+    Caption = 'Stop'
+    Enabled = False
+    OnClick = btnStopClick
+    TabOrder = 1
+  end
+  object cbCodec: TComboBox
+    Left = 96
+    Height = 23
+    Top = 85
+    Width = 121
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object cbType: TComboBox
+    Left = 96
+    Height = 23
+    Top = 120
+    Width = 121
+    ItemHeight = 15
+    ItemIndex = 0
+    Items.Strings = (
+      'AVI'
+      'MP4'
+    )
+    Style = csDropDownList
+    TabOrder = 3
+    Text = 'AVI'
+  end
+  object ocvcapt1: TOcvVideoCapture
+    DisplayImage = img1
+    Active = False
+    VideoSourceType = vsCamera
+    VideoSource = 0
+    CameraProp.Height = 480
+    CameraProp.Width = 640
+    CameraProp.Brightness = 100
+    CameraProp.Contrast = 5
+    CameraProp.Gamma = 100
+    CameraProp.FPS = 15
+    CameraProp.WhiteBalance = 4500
+    CameraProp.AutoWhiteBalance = False
+    Left = 136
+    Top = 16
+  end
+  object ocvmoviewrite1: TOcvProcMovieWrite
+    VideoCapture = ocvcapt1
+    ImagesBufferLength = 20
+    fourccCodec = vcMJPG
+    Fps = 15
+    frameWidth = 640
+    frameHeight = 480
+    Left = 256
+    Top = 80
+  end
+end

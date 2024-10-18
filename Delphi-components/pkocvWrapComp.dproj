@@ -93,7 +93,6 @@
 			<DCCReference Include="vcl.dcp"/>
 			<DCCReference Include="..\Delphi\Pascal-classes\CommThread.pas"/>
 			<DCCReference Include="..\Delphi\Pascal-classes\ocvWrapComp.pas"/>
-			<DCCReference Include="..\Delphi\Pascal-classes\unFileIterator.pas"/>
 			<RcItem Include="TOCVIMAGEDIRECTORY.bmp">
 				<ResourceType>BITMAP</ResourceType>
 				<ResourceId>TOCVIMAGEDIRECTORY</ResourceId>
@@ -109,6 +108,10 @@
 			<RcItem Include="TOCVVIDEOCAPTURE.bmp">
 				<ResourceType>BITMAP</ResourceType>
 				<ResourceId>TOCVVIDEOCAPTURE</ResourceId>
+			</RcItem>
+			<RcItem Include="TOCVMOVIEWRITE.bmp">
+				<ResourceType>BITMAP</ResourceType>
+				<ResourceId>TOCVPROCMOVIEWRITE</ResourceId>
 			</RcItem>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>

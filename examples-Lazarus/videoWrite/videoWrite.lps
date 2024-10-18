@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release"/>
+    <Units>
+      <Unit>
+        <Filename Value="videoWrite.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos Y="10"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frmVideoWrite.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fVideoWrite"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="58" Y="83"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\Delphi\Pascal-classes\ocvWrapComp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1639"/>
+        <CursorPos X="69" Y="1644"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="7">
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="11" Column="3" TopLine="28"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="8" Column="74"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="43" Column="6" TopLine="29"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="8" Column="47"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="10" Column="12"/>
+      </Position>
+      <Position>
+        <Filename Value="videoWrite.lpr"/>
+        <Caret Line="9" Column="14"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="57" Column="26" TopLine="46"/>
+      </Position>
+      <Position>
+        <Filename Value="frmVideoWrite.pas"/>
+        <Caret Line="83" Column="58" TopLine="78"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <SkipCheckLCLInterfaces Value="True"/>
+</CONFIG>

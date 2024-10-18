@@ -3,6 +3,17 @@
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
+
+# New version - 18/10/2024
+
+   Delphi/FPC sources and examples:
+   * added a new component for Delphi and Lazarus that write a movie from
+     an image source; see package in Delphi-components or Lazarus-components
+   * added an example showing how write webcam video in a file, using the new component
+   * updated docs
+
+
+
 # New version - 21/4/2024
 
    Delphi/FPC sources and examples:

@@ -369,6 +369,54 @@ Type
      property OnObjDetProcessed: TOnImageProcessed  read  fOnImageProcessed write fOnImageProcessed;
   end;
 
+  TVideoCodec = (vcMP43,vcDIVX,vcMJPG,vcMPEG,vcXVID, vcX264, vcWMV1, vcI420, vcIYUV, vcFFV1, vcHFYU);
+  TOnFrameWrite = procedure(Sender: TObject; const frame: TOCVImage) of object;
+
+  //** Component to write a movie from image source
+  TOcvProcMovieWrite = class(TOcvProcessor)
+  private
+    fFilename   : string;
+    fFourccCodec: TVideoCodec;
+    fFps        : Integer;
+    fFrameWidth : Integer;
+    fFrameHeight: Integer;
+
+    ocvwriter   : PCvVideoWriter_t;
+
+    fOnFrameWrite: TOnFrameWrite;
+
+
+    procedure activate(); override;
+    procedure deactivate(); override;
+    procedure display(const ocvimg: TOCVImage; const drawBackground: Boolean);  override;
+
+    procedure SetFourccCodec(val: TVideoCodec);
+    procedure SetFps(val: Integer);
+
+    //** Only one thread used to process images
+    property ThreadNum: Integer read FThreadNum write setThreadNum;
+
+  protected
+  public
+    class procedure GetVideoCodecList(codecNames: TStrings);
+    constructor Create(owner: TComponent); override;
+    procedure process(const img: TOCVImage);  override;
+
+  published
+     //** File name of saved movie
+     property FileName: string read fFilename write fFilename;
+     //** Codec used in saved file, as a fourcc 4 characters code
+     property fourccCodec: TVideoCodec read FfourccCodec write SetfourccCodec;
+     //** Frame per second of saved movie
+     property Fps: integer read FFps write SetFps;
+     //** Width of movie frame
+     property frameWidth: Integer read FframeWidth write FframeWidth;
+     //** Height of movie frame
+     property frameHeight: Integer read FframeHeight write FframeHeight;
+
+     //** Event fired when the processing of single image/frame is terminated
+     property OnFrameWrite: TOnFrameWrite  read  fOnFrameWrite write fOnFrameWrite;
+  end;
 
 
 procedure Register;
@@ -377,9 +425,9 @@ implementation
 
 uses
  {$IFDEF LCL}
-  Graphics;
+  Graphics, Typinfo;
  {$ELSE}
-  Vcl.Graphics;
+  Vcl.Graphics, System.TypInfo;
  {$ENDIF}
 
 
@@ -412,7 +460,8 @@ End;
 
 procedure Register;
 begin
-  RegisterComponents('Opencv', [TOcvVideoCapture, TOcvImageDirectory, TOcvProcObjectDetector, TOcvProcFaceDetector]);
+  RegisterComponents('Opencv', [TOcvVideoCapture, TOcvImageDirectory, TOcvProcObjectDetector, TOcvProcFaceDetector,
+                         TOcvProcMovieWrite]);
 end;
 
 
@@ -1507,6 +1556,105 @@ begin
   curDetection.draw(bmp, scaleX, scaleY);
   fImage.Repaint;
 //OutputDebugString(PWideChar('imgId ' + IntToStr(curDetectImageId)) );
+end;
+
+{$ENDREGION}
+
+{******************************************************************************}
+{******************** TOcvProcMovieWrite **************************************}
+{******************************************************************************}
+
+{$REGION 'TOcvProcMovieWrite'}
+
+class procedure TOcvProcMovieWrite.GetVideoCodecList(codecNames: TStrings);
+var
+  vcodec: TVideoCodec;
+  vc: string;
+begin
+  if not Assigned(codecNames) then
+    raise EArgumentException.Create('Codec names list not assigned');
+  for vcodec:=Low(tvideocodec) to High(tvideocodec) do
+  begin
+    vc:=GetEnumName(TypeInfo(TVideoCodec), Ord(vcodec));
+    codecNames.Add(vc);
+  end;
+end;
+
+
+constructor TOcvProcMovieWrite.Create(owner: TComponent);
+begin
+  inherited Create(owner);
+  fFilename:='';
+  fFrameWidth:=640;
+  fFrameHeight:=480;
+  fFourccCodec:=vcMJPG;
+  fFps:=15;
+  ocvwriter:=nil;
+end;
+
+procedure TOcvProcMovieWrite.SetFourccCodec(val: TVideoCodec);
+begin
+  fFourccCodec:=val;
+end;
+
+procedure TOcvProcMovieWrite.SetFps(val: Integer);
+begin
+  if (val>0) and (val <= 40) then
+    fFps:=val;
+end;
+
+procedure TOcvProcMovieWrite.activate;
+var
+  cvName: CvString_t;
+  frameSize: PCvSize_t;
+  fourcc: string;
+begin
+  inherited activate;
+  if (fFilename='') then
+    RaiseError(erNoFilename, 'Movie file name is empty');
+  cvName.pstr:=PAnsiChar(AnsiString(fFilename));
+  frameSize:=CvSize_(fFrameWidth, fFrameHeight);
+  fourcc:=GetEnumName(TypeInfo(TVideoCodec), Ord(ffourcccodec));
+  fourcc:=Copy(fourcc, 3,4);
+  ocvwriter:=pCvVideoWriterCreateV3(@cvName,  Ord(TCvVideoCaptureAPIs.CAP_FFMPEG),
+            pCvVideoWriterfourcc(fourcc[1], fourcc[2],
+                                 fourcc[3], fourcc[4]),
+            fFps,
+            frameSize);
+  pCvSizeDelete(frameSize);
+  if not(pCvVideoWriterisOpened(ocvwriter)) then
+  begin
+    pCvVideoWriterDelete(ocvwriter);
+    ocvwriter:=nil;
+    RaiseError(erNotOpen,'Unable to open movie file');
+  end;
+end;
+
+procedure TOcvProcMovieWrite.deactivate;
+begin
+  if ocvwriter<>nil then
+    pCvVideoWriterDelete(ocvwriter);
+  ocvwriter:=nil;
+  isProcessing:=False;
+end;
+
+procedure TOcvProcMovieWrite.display(const ocvimg: TOCVImage; const drawBackground: Boolean);
+begin
+  ocvimg.showInImage(fImage);
+  fImage.Repaint;
+end;
+
+
+procedure TOcvProcMovieWrite.process(const img: TOCVImage);
+begin
+  if ocvwriter<>nil then
+    pCvVideoWriterwrite(ocvwriter, img.PCvMatPtr);
+  if Assigned(fOnFrameWrite) then
+    begin
+      fOnFrameWrite(Self, img);
+    end;
+  if Assigned(fImage) then
+         display(img, True);
 end;
 
 {$ENDREGION}
