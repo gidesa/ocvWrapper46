@@ -35,7 +35,7 @@ uses  Classes, Sysutils,
       Vcl.Graphics,
       Types,
       Vcl.ExtCtrls,
-      System.Generics.Collections,
+
       {$ENDIF}
       OPENCVWrapper;
 
@@ -88,7 +88,10 @@ type
        //** Inside the file the matrix has name 'matName'.
        procedure save(const filename: string; const matName: string);
        //** Return an array with list of mat dimensions
-       function  Shape(): TArray<Integer>;
+       function Shape(): TArray<Integer>;
+       //** Return a new matrix copying the data starting fromRow and fromCol, for a total
+       //** of numRows and numCols
+       function subMat(fromCol: Integer; fromRow: Integer; numCols: Integer; numRows: integer): TOcvParamMat;
 
        //** The pointer to internal Opencv Mat object
        property PCvMatPtr: PCvMat_t read getImagePointer;
@@ -130,13 +133,15 @@ type
   public
           //** Constructor for image with assigned width (columns), height (rows), and channels (colors in images)
           constructor Create(const width, height: Integer; const nchannels: integer); overload;
-          //** Constructor that load an assigned image from file
-          constructor Create(const filename: string);  overload;
+          //** Constructor that load an assigned image from file.If required
+          //** the image loaded is gray (1 channel)
+          constructor Create(const filename: string; loadAsGray: Boolean = False);  overload;
           //** Constructor that create a TOCVImage object over an existing Opencv Mat object
           constructor Create(const cvMatImg: PCvMat_t); overload;
           destructor Destroy(); override;
-          //** Load an image from file. Image must have one of Opencv recognized types
-          procedure load(filename: string);
+          //** Load an image from file. Image must have one of Opencv recognized types. If required
+          //** the image loaded is gray (1 channel)
+          procedure load(filename: string; loadAsGray: Boolean = False);
           //** Reset to default the Region Of Interest (ROI). The default is the entire image
           procedure resetROI();
           //** Show the image into a TImage graphic component
@@ -416,6 +421,35 @@ begin
   end;
 end;
 
+function TOcvParamMat.subMat(fromCol: Integer; fromRow: Integer; numCols: Integer;
+        numRows: Integer): TOcvParamMat;
+var
+  cvROIRect:  CvRectS;
+  sourceCrop: PCvMat_t;
+begin
+  Result:=nil;
+  if ( (fDataType = cvEmpty) and  (getWidth() * getHeight() = 0) ) // empty matrix
+  then
+        raise EArgumentException.Create('Matrix is empty');
+  if (fromRow<0) or (fromRow>fHeight) then
+      raise EArgumentException.Create('fromRow argument out of matrix dimensions');
+  if (fromCol<0) or (fromCol>fWidth) then
+      raise EArgumentException.Create('fromCol argument out of matrix dimensions');
+  if (numRows<1) or (fromRow+numRows>fHeight) then
+      raise EArgumentException.Create('numRows argument must be between 1 and (height - fromRow) ');
+  if (numCols<1) or (fromCol+numCols>fWidth) then
+      raise EArgumentException.Create('numCols argument must be between 1 and (width - fromCol) ');
+
+  Result:=TOcvParamMat.Create(numCols, numRows, self.getDataType);
+  cvROIRect.x:=fromCol;
+  cvROIRect.y:=fromRow;
+  cvROIRect.width:=numCols;
+  cvROIRect.height:=numRows;
+  sourceCrop:=  pCvMatROI(internImage, @cvROIRect);
+  pCvMatCopy(sourceCrop, Result.PCvMatPtr);
+  pCvMatDelete(sourceCrop);
+end;
+
 procedure TOcvParamMat.setDataType;
 var
   cvtype: string;
@@ -592,11 +626,11 @@ begin
   fName:='';
 end;
 
-constructor TOCVImage.Create(const filename: string);
+constructor TOCVImage.Create(const filename: string; loadAsGray: Boolean);
 begin
   inherited Create;
   internImage:=nil;
-  load(filename);
+  load(filename, loadAsGray);
   fId:=0;
   fName:='';
 end;
@@ -611,7 +645,7 @@ begin
   internImage:=nil;
   if w*h=0 then
   begin
-    raise Exception.Create('TOCVImage.create: input PCvMat invalid');
+    raise EArgumentException.Create('TOCVImage.create: input PCvMat invalid');
   end;
   fROI:= Rect(0,0,w, h);
   fWidth:=w;
@@ -707,7 +741,7 @@ begin
     setROI(fROI);
 end;
 
-procedure TOCVImage.load(filename: string);
+procedure TOCVImage.load(filename: string; loadAsGray: Boolean);
 var
   w, h: Integer;
   cvstr: CvString_t;
@@ -718,7 +752,10 @@ begin
     pCvMatDelete(internImage);
   internImage:=nil;
   cvstr.pstr:= PAnsiChar(AnsiString(filename));
-  internImage:=pCvimread(@cvstr, Ord(IMREAD_UNCHANGED));
+  if loadAsGray then
+     internImage:=pCvimread(@cvstr, Ord(IMREAD_GRAYSCALE))
+  else
+     internImage:=pCvimread(@cvstr, Ord(IMREAD_UNCHANGED));
   w:= pCvMatGetWidth(internImage);
   h:= pCvMatGetHeight(internImage);
   if w*h=0 then
@@ -778,6 +815,7 @@ end;
 
 procedure TOCVImage.copy(const dest: TOCVImage; const mask: TOCVImage);
 begin
+  Assert(Assigned(dest),'destination image is not assigned');
   if mask= nil then
        pCvMatCopy(internImage, dest.PCvMatPtr)
   else

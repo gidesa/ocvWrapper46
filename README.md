@@ -3,6 +3,21 @@
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
 
+# New version - 14/11/2024
+
+![DIGITSRECOGNITION](digrec2.png)
+
+   Delphi/FPC sources and examples:
+
+  * TOcvParamMat: added method subMat that extracts a part of matrix 
+    in a new TOcvParamMat object  
+  * TOcvImage: in Create from file, and in load method, added a flag to load 
+    the image as gray one (1 channel)  
+  * new unit unOCVMLClassifier with classes for machine learning classifiers: K Nearest Neighbour; Support
+    Vector Machines 
+  * new example program DigitsRecognition for Delphi/FPC, that train a KNN and SVM classifier on
+    handwritten digits
+
 
 # New version - 18/10/2024
 

@@ -1,0 +1,190 @@
+object fDigitsRecon: TfDigitsRecon
+  Left = 724
+  Height = 465
+  Top = 251
+  Width = 440
+  Caption = 'Digits recognition'
+  ClientHeight = 465
+  ClientWidth = 440
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poDesktopCenter
+  LCLVersion = '3.2.0.0'
+  object pnl1: TPanel
+    Left = 0
+    Height = 41
+    Top = 0
+    Width = 440
+    Align = alTop
+    ClientHeight = 41
+    ClientWidth = 440
+    ParentBackground = False
+    TabOrder = 0
+    object btnStart: TButton
+      Left = 32
+      Height = 25
+      Top = 8
+      Width = 75
+      Caption = 'Train'
+      TabOrder = 0
+      OnClick = btnStartClick
+    end
+  end
+  object pnl2: TPanel
+    Left = 0
+    Height = 424
+    Top = 41
+    Width = 440
+    Align = alClient
+    ClientHeight = 424
+    ClientWidth = 440
+    ParentBackground = False
+    TabOrder = 1
+    object pagectrl1: TPageControl
+      Left = 1
+      Height = 422
+      Top = 1
+      Width = 438
+      ActivePage = tabsheetUserDigit
+      Align = alClient
+      Style = tsFlatButtons
+      TabIndex = 3
+      TabOrder = 0
+      object tabsheetEvalRes: TTabSheet
+        Caption = 'Messages'
+        ClientHeight = 393
+        ClientWidth = 430
+        object meRes: TMemo
+          Left = 0
+          Height = 393
+          Top = 0
+          Width = 430
+          Align = alClient
+          Font.CharSet = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Times New Roman'
+          ParentFont = False
+          ScrollBars = ssVertical
+          TabOrder = 0
+        end
+      end
+      object tabsheetKNNTest: TTabSheet
+        Caption = 'KNearest test results'
+        ClientHeight = 393
+        ClientWidth = 430
+        ImageIndex = 1
+        object imgKNNTest: TImage
+          Left = 0
+          Height = 393
+          Top = 0
+          Width = 430
+          Align = alClient
+        end
+      end
+      object tabsheetSVMTest: TTabSheet
+        Caption = 'SVM test results'
+        ClientHeight = 393
+        ClientWidth = 430
+        Enabled = False
+        ImageIndex = 2
+        object imgSVMTest: TImage
+          Left = 0
+          Height = 393
+          Top = 0
+          Width = 430
+          Align = alClient
+        end
+      end
+      object tabsheetUserDigit: TTabSheet
+        Caption = 'User digit'
+        ClientHeight = 393
+        ClientWidth = 430
+        ImageIndex = 3
+        object lblKNNRes: TLabel
+          Left = 3
+          Height = 13
+          Top = 216
+          Width = 199
+          AutoSize = False
+          Caption = 'KNN  Prediction'
+          ParentColor = False
+        end
+        object lblSVMRes: TLabel
+          Left = 3
+          Height = 13
+          Top = 248
+          Width = 199
+          AutoSize = False
+          Caption = 'SVM  Prediction'
+          ParentColor = False
+        end
+        object btnLoadDigit: TButton
+          Left = 3
+          Height = 25
+          Top = 20
+          Width = 105
+          Caption = 'Load a digit image'
+          TabOrder = 0
+          OnClick = btnLoadDigitClick
+        end
+        object btnPredict: TButton
+          Left = 3
+          Height = 25
+          Top = 72
+          Width = 105
+          Caption = 'Predict digit'
+          Enabled = False
+          TabOrder = 1
+          OnClick = btnPredictClick
+        end
+        object pnl3: TPanel
+          Left = 200
+          Height = 207
+          Top = 3
+          Width = 215
+          BevelInner = bvRaised
+          ClientHeight = 207
+          ClientWidth = 215
+          ParentBackground = False
+          TabOrder = 2
+          object imgUserDigit: TImage
+            Left = 2
+            Height = 203
+            Top = 2
+            Width = 211
+            Align = alClient
+          end
+        end
+        object pnl4: TPanel
+          Left = 208
+          Height = 62
+          Top = 235
+          Width = 207
+          BevelInner = bvRaised
+          Caption = 'Resized image'
+          ClientHeight = 62
+          ClientWidth = 207
+          ParentBackground = False
+          TabOrder = 3
+          VerticalAlignment = taAlignTop
+          object imgResized: TImage
+            Left = 88
+            Height = 20
+            Top = 24
+            Width = 20
+          end
+        end
+      end
+    end
+  end
+  object dlgOpen1: TOpenDialog
+    Left = 152
+    Top = 96
+  end
+end
