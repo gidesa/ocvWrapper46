@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 struct  Mat_t*    pCvMat2dCreate(int cols, int rows, int mtype);
-struct  Mat_t*    pCvMatCreate(int ndims, const int* dims, int mtype, int mtype, uint64 dataptr = 0);
+struct  Mat_t*    pCvMatCreate(int ndims, const int* dims, int mtype, int mtype, uint64 dataptr = 0, const size_t* steps = 0);
 struct  Mat_t*    pCvMatCreateEmpty();
 struct  Mat_t*    pCvMatImageCreate(int width, int height, int mtype);
 void              pCvMatDelete(struct Mat_t* wrapper);
@@ -35,6 +35,10 @@ float             pCvMatGetFloat(struct Mat_t* wrapper, int rowind, int colind, 
 float             pCvMatGetFloatMultidim(struct Mat_t* wrapper, int* indexes); 
 float             pCvMatSetFloat(struct Mat_t* wrapper, int rowind, int colind, float value, int channel = 0); 
 float             pCvMatSetFloatMultidim(struct Mat_t* wrapper, int* indexes, float value); 
+short             pCvMatGetSmallint(struct Mat_t* wrapper, int rowind, int colind, int channel = 0);
+short             pCvMatSetSmallint(struct Mat_t* wrapper, int rowind, int colind, short value, int channel = 0); 
+ushort            pCvMatGetWord(struct Mat_t* wrapper, int rowind, int colind, int channel = 0);
+ushort            pCvMatSetWord(struct Mat_t* wrapper, int rowind, int colind, ushort value, int channel = 0); 
 int               pCvMatGetChannels(struct Mat_t* wrapper); 
 int               pCvMatGetData(struct Mat_t* wrapper); 
 int               pCvMatGetDepth(struct Mat_t* wrapper); 
@@ -43,9 +47,9 @@ void              pCvMatGetDims(struct Mat_t* wrapper, int* dim);
 uint64            pCvMatGetDimPtr(struct Mat_t* wrapper, int i1, int i2);
 int               pCvMatGetHeight(struct Mat_t* wrapper); 
 int               pCvMatGetInt(struct Mat_t* wrapper, int rowind, int colind, int channel = 0);
+int               pCvMatSetInt(struct Mat_t* wrapper, int rowind, int colind, int value, int channel = 0); 
 int               pCvMatGetType(struct Mat_t* wrapper); 
 int               pCvMatGetWidth(struct Mat_t* wrapper); 
-int               pCvMatSetInt(struct Mat_t* wrapper, int rowind, int colind, int value, int channel = 0); 
 struct Mat_t*     pCvMatROI(Mat_t* src, CvRectS* roi);
 struct Mat_t*     pCvMatClone(struct Mat_t* src);
 struct Mat_t*     pCvMatFromUmat(struct UMat_t* src);
@@ -53,6 +57,8 @@ struct UMat_t*    pCvMatToUmat(struct Mat_t* src);
 struct Mat_t*     pCvMatGetRow(struct Mat_t* wrapper, int nrow);
 unsigned char     pCvMatGetByte(struct Mat_t* wrapper, int rowind, int colind, int channel = 0); 
 unsigned char     pCvMatSetByte(struct Mat_t* wrapper, int rowind, int colind, unsigned char value, int channel = 0);
+char              pCvMatGetInt8(struct Mat_t* wrapper, int rowind, int colind, int channel = 0); 
+char              pCvMatSetInt8(struct Mat_t* wrapper, int rowind, int colind, char value, int channel = 0);
 void              pCvMatCopy(struct Mat_t* src, struct Mat_t* dst, struct Mat_t* mask);
 void              pCvMatCopyToUmat(struct Mat_t* src, struct UMat_t* dst);
 void              pCvMatConvertTo(struct Mat_t* src, struct Mat_t* dst, int outtype, double alpha=1.0, double beta=0.0);

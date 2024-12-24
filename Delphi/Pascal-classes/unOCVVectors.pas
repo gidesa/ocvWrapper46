@@ -1,5 +1,4 @@
 {
-  This unit contains classes encapsulating the various vector Opencv classes.
 
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
@@ -18,12 +17,14 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
+
 {$IFDEF FPC}
   {$mode Delphi}
-  {$WARN 05093 Off } {result variable of a managed type does not seem to be initialized}
-  {$WARN 05094 Off } {result variable of a managed type does not seem to be initialized}
-  {$WARN 06018 Off } {Unreachable code}
+  {$WARN 05093 Off } // result variable of a managed type does not seem to be initialized
+  {$WARN 05094 Off } // result variable of a managed type does not seem to be initialized
+  {$WARN 06018 Off } // Unreachable code}
 {$ENDIF}
+{**  This unit contains classes encapsulating the various vector Opencv classes.}
 unit unOCVVectors;
 
 interface

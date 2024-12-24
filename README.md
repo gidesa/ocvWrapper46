@@ -1,7 +1,24 @@
 ![OCV46LOGO](ocv46-logo.png)
-# ocvWrapper46 v 1.2
+# ocvWrapper46 v 1.3
 
 # A wrapper library around Opencv 4.6 C++ API for Delphi, Lazarus/Freepascal and C
+
+# New version - 24/12/2024
+
+   C++ sources:
+   * ocvWrp_nativeNotGen.h, ocvWrp_nativeNotGen_signatures.h : added optional parameter "steps" to PCvMatCreate for multidims
+               Mat; added specialised functions pCvMatGetxx/pCvMatSetxx  for new data types: char, ushort (uint16_t), 
+               short (int16_t), corresponding to Pascal types: Int8, Word, Smallint
+   
+   Binaries for OpencvWrapper v 1.3:
+   * recompiled all DLL
+
+   Delphi/FPC sources:
+
+  * TOcvParamMat: added new data types: cvInt8, cvWord, cvSmallint; added methods to get/set elements with one of new type  
+  * TOcvImage: added draw functions: line, rectangle, circle, ellipse, polylines
+  * Improved comments on some units
+
 
 # New version - 14/11/2024
 

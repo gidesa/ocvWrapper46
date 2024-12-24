@@ -1,5 +1,4 @@
-{ ocvWrapper46: wrapper for Opencv 4.6 C++ API interface
-
+{
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
   This source is free software; you can redistribute it and/or modify it under
@@ -17,6 +16,9 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
+{** OpencvWrapper: wrapper for Opencv C++ API interface
+
+Current Opencv version supported is 4.6}
 unit OPENCVWrapper;
 {$WARN SYMBOL_PLATFORM OFF}
 
@@ -26,7 +28,7 @@ unit OPENCVWrapper;
 interface
 uses
 {$ifdef MSWINDOWS}
-  Windows,
+   Windows,
 {$endif}
 {$ifdef FPC}
      Math{$ifdef LCL},Graphics, FPImage, IntfGraphics{$endif};
@@ -42,7 +44,7 @@ const
   define DEBUGDLL, and the program will load the debug dll
   Note: only for Delphi }
 
-{... $DEFINE DEBUGDLL}
+{...$DEFINE DEBUGDLL}
 
 
 { Conditionals for Lazarus/FPC on MacOS}
@@ -590,7 +592,7 @@ PCvMomentsS = ^CvMomentsS;
 
 {------------- Pascal helpers ---------------}
   //** Create an Opencv Size object with passed parameters. If pcvsize is not null,
-  //** simply overwrite/update object properties.
+  //**    simply overwrite/update object properties.
   function  CvSize_(width, height: Integer; pcvsize: PCvSize_t = nil): PCvSize_t;
   //** Create an Opencv Scalar object with passed parameters. If pcvscalar is not null,
   //** simply overwrite/update object properties.
@@ -628,7 +630,7 @@ PCvMomentsS = ^CvMomentsS;
   procedure  pCvStringDelete(const cvstr: PCvString_t);  cdecl;
 
 { Opencv Mat class }
-  function   pCvMatCreate(const ndims: Integer; const dims: PInteger; const mtype: integer; dataptr: UInt64 = 0): PCvMat_t; cdecl;
+  function   pCvMatCreate(const ndims: Integer; const dims: PInteger; const mtype: integer; dataptr: UInt64 = 0; const sizes: PUInt64 = 0): PCvMat_t; cdecl;
   function   pCvMatCreateEmpty (): PCvMat_t  ; cdecl;
   function   pCvMat2dCreate (const rows: Integer; const cols: Integer; const mtype: integer): PCvMat_t ; cdecl;
   function   pCvMatImageCreate(const width: Integer; height: Integer; const mtype: Integer): PCvMat_t; cdecl;
@@ -647,6 +649,14 @@ PCvMomentsS = ^CvMomentsS;
   function   pCvMatFromUmat (const mat: PCvUMat_t): PCvMat_t; cdecl;
   function   pCvMatSetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Byte; const channel: Integer = 0): Byte; cdecl;
   function   pCvMatGetByte(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; channel: Integer = 0): Byte; cdecl;
+
+  function   pCvMatSetInt8(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Int8; const channel: Integer = 0): Int8; cdecl;
+  function   pCvMatGetInt8(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; channel: Integer = 0): Int8; cdecl;
+  function   pCvMatSetSmallint(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: SmallInt; const channel: Integer = 0): SmallInt; cdecl;
+  function   pCvMatGetSmallint(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; channel: Integer = 0): SmallInt; cdecl;
+  function   pCvMatSetWord(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Word; const channel: Integer = 0): Word; cdecl;
+  function   pCvMatGetWord(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; channel: Integer = 0): Word; cdecl;
+
   function   pCvMatSetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Integer; const channel: Integer = 0): Integer; cdecl;
   function   pCvMatGetInt(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const channel: Integer = 0): Integer; cdecl;
   function   pCvMatSetFloat(const mat: PCvMat_t; const rowind: Integer; const colind: Integer; const val: Single; const channel: Integer = 0): Single; cdecl;
@@ -739,6 +749,15 @@ implementation
  function   pCvMatGetRow;                 external ocvWrapper  name 'pCvMatGetRow'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
  function   pCvMatGetByte;                external ocvWrapper  name 'pCvMatGetByte'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
  function   pCvMatSetByte;                external ocvWrapper  name 'pCvMatSetByte'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+
+ function   pCvMatGetInt8;                external ocvWrapper  name 'pCvMatGetInt8'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetInt8;                external ocvWrapper  name 'pCvMatSetInt8'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetSmallint;            external ocvWrapper  name 'pCvMatGetSmallint'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetSmallint;            external ocvWrapper  name 'pCvMatSetSmallint'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatGetWord;                external ocvWrapper  name 'pCvMatGetWord'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+ function   pCvMatSetWord;                external ocvWrapper  name 'pCvMatSetWord'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
+
+
  function   pCvMatGetInt;                 external ocvWrapper  name 'pCvMatGetInt'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
  function   pCvMatSetInt;                 external ocvWrapper  name 'pCvMatSetInt'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};
  function   pCvMatGetFloat;               external ocvWrapper  name 'pCvMatGetFloat'{$IFDEF DELPHIDELAYED} delayed {$ENDIF};

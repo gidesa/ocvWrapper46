@@ -1,9 +1,4 @@
 {
-  Machine Learning classifiers:
-  - Support Vector Machine
-  - K Nearest Neighbours
-
-  NOTE: Require FPC 3.3.1 or greater.
 
   Copyright (C) 2024 Giandomenico De Sanctis gidesay@yahoo.com
 
@@ -22,6 +17,11 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
+{**  Machine Learning classifiers:
+  - Support Vector Machine
+  - K Nearest Neighbours
+
+  NOTE: Require FPC 3.3.1 or greater. }
 unit unOCVMLClassifier;
 
 interface

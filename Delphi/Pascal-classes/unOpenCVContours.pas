@@ -1,6 +1,4 @@
-{ This unit contains classes and methods to manage contours in OpenCV.
-
-
+{
    Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
   This source is free software; you can redistribute it and/or modify it under
@@ -18,6 +16,7 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
+{**  This unit contains classes and methods to manage contours in OpenCV. }
 unit unOpenCVContours;
 {$ifdef FPC}
    {$MODE Delphi}
@@ -246,6 +245,7 @@ var
   cvcolor: PCvScalar_t;
 begin
    Assert(Assigned(img),'extractContours: input image not assigned');
+   // BGR color format
    {$ifdef LCL}
      cvcolor:=CvScalar_(Blue(color), Green(color), Red(color),  0);
    {$else}

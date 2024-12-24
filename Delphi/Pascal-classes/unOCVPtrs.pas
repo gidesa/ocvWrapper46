@@ -1,6 +1,4 @@
-{
-  This unit contains  classes encapsulating the various Ptr Opencv classes.
-
+ {
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
   This source is free software; you can redistribute it and/or modify it under
@@ -20,8 +18,9 @@
 }
 {$IFDEF FPC}
   {$mode Delphi}
-  {$WARN 06018 Off } {Unreachable code}
+  {$WARN 06018 Off } {* Unreachable code *}
 {$ENDIF}
+{** This unit contains  classes encapsulating the various Ptr Opencv classes.  }
 unit unOCVPtrs;
 
 interface
@@ -48,10 +47,12 @@ type
 
        procedure setOcvFunctions();
     public
-       //** Create a new Ptr: T is Opencv Ptr type, U is wrapper struct type pointed by T
-       constructor Create();  overload;
        //** Create a new Ptr from existing  Opencv Ptr of type T
        constructor Create(ocvPtr: T);   overload;
+       //** Create a new Ptr object: T is Opencv Ptr type, U is wrapper struct type pointed by T
+       //** Should not directly invoked. Normally you obtain a Opencv Ptr from a Opencv function,
+       //** and with it invoke the constructor with other signature
+       constructor Create();  overload; deprecated;
        destructor  Destroy; override;
 
        //** Return the internal pointer to Opencv Ptr

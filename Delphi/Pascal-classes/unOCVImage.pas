@@ -1,5 +1,4 @@
 {
-  This unit contains the classes encapsulating the Mat Opencv class.
 
   Copyright (C) 2023 Giandomenico De Sanctis gidesay@yahoo.com
 
@@ -18,12 +17,14 @@
   to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor,
   Boston, MA 02110-1335, USA.
 }
+{**  This unit contains the classes encapsulating the Mat Opencv class.  }
+unit unOCVImage;
 {$IFDEF FPC}
   {$mode Delphi}
   {$WARN 06058 Off } {Call to subroutine "xxx" marked as inline is not inlined}
   {$WARN 06060 Off } {Case statement does not handle all possible cases}
 {$ENDIF}
-unit unOCVImage;
+
 interface
 uses  Classes, Sysutils,
       {$IFDEF LCL}
@@ -32,16 +33,16 @@ uses  Classes, Sysutils,
       Types,
       ExtCtrls,
       {$ELSE}
+      Winapi.Windows,
       Vcl.Graphics,
       Types,
       Vcl.ExtCtrls,
-
       {$ENDIF}
       OPENCVWrapper;
 
 type
   //** Types of data for Opencv Mat
-  TOcvDataType = (cvByte, cvInteger, cvSingle, cvDouble, cvEmpty);
+  TOcvDataType = (cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle, cvDouble, cvEmpty);
   //** This class is an abstraction over generic Opencv Mat class, used as parameter in some functions
   //** For images use instead TOCVImage
   TOcvParamMat = class
@@ -60,11 +61,24 @@ type
     function dataType2NativeDataType(dt: TOcvDataType; nchans: Integer): integer;
 
     procedure setDataType();  inline;
+
+    procedure checkGetTypeCompatibility(requestedType: TOcvDataType);   inline;
+    procedure checkSetTypeCompatibility(requestedType: TOcvDataType);   inline;
   protected
     function  getCellInt(r, c: Integer; ch: Integer): Integer;          inline;
     function  getCellDbl(r, c: Integer; ch: Integer): Double;           inline;
     procedure setCellInt(r, c: Integer;  ch: Integer ; value: Integer); inline;
     procedure setCellDbl(r, c: Integer;  ch: Integer ; value: Double);  inline;
+    function  getDataB(r, c: Integer; ch: Integer ): Byte ;             inline;
+    procedure setDataB(r, c: Integer; ch: Integer ; value: Byte );      inline;
+
+    function  getDataI8(r, c: Integer; ch: Integer ): Int8 ;             inline;
+    procedure setDataI8(r, c: Integer; ch: Integer ; value: Int8 );      inline;
+    function  getDataS(r, c: Integer; ch: Integer ): SmallInt;          inline;
+    procedure setDataS(r, c: Integer; ch: Integer ; value:  SmallInt);  inline;
+    function  getDataW(r, c: Integer; ch: Integer ): Word;              inline;
+    procedure setDataW(r, c: Integer; ch: Integer ; value: Word );      inline;
+
     function  getDataI(r, c: Integer; ch: Integer ): Integer;           inline;
     procedure setDataI(r, c: Integer; ch: Integer ; value: Integer );   inline;
     function  getDataD(r, c: Integer; ch: Integer ): Double;            inline;
@@ -74,9 +88,15 @@ type
   public
        //** Constructor for Mat with assigned width (columns), height (rows), data type, and channel number if > 1
        constructor Create(const width, height: Integer; dataType: TOcvDataType; nchannels: Integer = 1); overload;
-       //** Constructor for Mat with more than 2 dimensions, parameters are: array with list of dimensions; data type;
-       //** optional channels number if > 1; and optional pointer to data bytes
-       constructor Create(const dimArray: array of Integer; dataType: TOcvDataType; nchannels: Integer = 1; dataPtr: Int64 = 0); overload;
+       {** Constructor for Mat with more than 2 dimensions, parameters are: @param(dimArray: array with list of dimensions)
+        @param(dataType: data type of elements) @param(nchannels:  optional channels number if > 1) }
+       constructor Create(const dimArray: array of Integer; dataType: TOcvDataType; nchannels: Integer = 1); overload;
+       {** Constructor for Mat with more than 2 dimensions, and assigned data. Parameters are: @param(dimArray: array with list of dimensions)
+        @param(dataType: data type of elements) @param(nchannels:  optional channels number ) @param(dataPtr:
+        pointer to data bytes) @param(sizesArray: array with row size of every dimension, as default value
+         can be passed an array of length 0 )}
+       constructor Create(const dimArray: array of Integer; dataType: TOcvDataType; nchannels: Integer;
+                  dataPtr: Int64; const sizesArray: array of UInt64); overload;
        //** Constructor for empty Mat. It will be filled by Opencv functions
        constructor CreateEmpty(); overload;
        //** Constructor that load a Mat object named 'matName' from a file in Opencv format (XML, Json, Yaml)
@@ -105,12 +125,19 @@ type
        property nchannels: integer read getNchannels;
        //** The cell at assigned row, column, channel as single
        property at[row: Integer; col: Integer; channel: Integer]:     Single  read getData  write setData;
+       //** The cell at assigned row, column, channel as byte
+       property atByte[row: Integer; col: Integer;  channel: Integer]: Byte read getDataB write setDataB;
+       //** The cell at assigned row, column, channel as Int8
+       property atInt8[row: Integer; col: Integer;  channel: Integer]: Int8 read getDataI8 write setDataI8;
+       //** The cell at assigned row, column, channel as Smallint
+       property atSInt[row: Integer; col: Integer;  channel: Integer]: SmallInt read getDataS write setDataS;
+       //** The cell at assigned row, column, channel as word
+       property atWord[row: Integer; col: Integer;  channel: Integer]: Word read getDataW write setDataW;
        //** The cell at assigned row, column, channel as integer
        property atInt[row: Integer; col: Integer;  channel: Integer]: Integer read getDataI write setDataI;
        //** The cell at assigned row , column, channel as double
        property atDbl[row: Integer; col: Integer; channel: Integer]:  Double  read getDataD write setDataD;
   end;
-
 
   //** Types of flipping image
   TOcvFlipType = (cvFlipHorizontal = 0, cvFlipVertical = 1, cvFlipBoth = -1);
@@ -125,10 +152,13 @@ type
     fROI: TRect;
     fId: Integer;
     fName: string;
+    fPen: TPen;
 
     function  getImagePointer: PCvMat_t;  inline;
     procedure setROI(const ROI: TRect);
     function  getIsGray(): Boolean;
+    procedure initPen();
+    function  getPenOcvColor(): PCvScalar_t; inline;
   protected
   public
           //** Constructor for image with assigned width (columns), height (rows), and channels (colors in images)
@@ -207,7 +237,21 @@ type
           //** Fill the image with the values converted from a Mat having same size and CV32F (single) data type
           procedure convertFromSingle(const img32: TOcvParamMat);
 
-
+          //** Draw a line between points p1 and p2
+          procedure line(const p1: TPoint; const p2: TPoint);  inline;
+          //** Draw a rectangle having point p1 as top-left vertex, and
+          //** point p2 as bottom-right vertex. Draw a filled rectangle if isFilled = true
+          procedure rectangle(const p1: TPoint; const p2: TPoint; isFilled: Boolean = False);  inline;
+          //** Draw a circle with assigned center point and radius, filled if isFilled = true
+          procedure circle(const pcenter: TPoint; radius: Integer; isFilled: Boolean = False);
+          //** Draw an ellipse with parameters: center point, axis 1 lenght, axis 2 length, angle of inclination
+          //** on X axis, in degrees; start and end angles of drawed arc, in degrees;  start = 0
+          //** and end = 360 mean that the entire ellipse is drawn;  the ellipse is filled if isFilled = true
+          procedure ellipse(const pcenter: TPoint; axisLength1: Integer; axisLength2: integer; angle: double;
+                            startAngle: double = 0.0; endAngle: double = 360.0; isFilled: Boolean = False);
+          //** Draw the lines, that connect points passed in input array; if isClosed = true then a closed
+          //** polygon is drawn
+          procedure polylines(const pts: TArray<TPoint>; isClosed: Boolean = True);
 
           //** The pointer to internal Opencv Mat object
           property PCvMatPtr: PCvMat_t read getImagePointer;
@@ -221,6 +265,8 @@ type
           property nchannels: integer read fNchannels;
           //** True if the image is grayscale (1 channel)
           property isGray: Boolean read getIsGray;
+          //** The pen property contains the current color and width used when drawing on image
+          property  pen: TPen read fPen;
           //** It's possible to assign a numeric id to image
           property ID: Integer read FID write FID;
           //** It's possible to assign a name to image
@@ -231,12 +277,13 @@ implementation
 
 uses {$IFDEF FPC}StrUtils{$ELSE}System.StrUtils{$ENDIF} ;
 
+
+
 {******************************************************************************}
 {******************** TOCVParamMat ********************************************}
 {******************************************************************************}
 
 {$REGION 'TOCVParamMat'}
-
 function TOcvParamMat.dataType2NativeDataType(dt: TOcvDataType; nchans: Integer): Integer;
 begin
   Result := CV_8UC1;
@@ -247,6 +294,30 @@ begin
       2: Result:= CV_8UC2;
       3: Result:= CV_8UC3;
       4: Result:= CV_8UC4;
+    end;
+  end;
+  cvInt8:    begin
+    case nchans of
+      1: Result:= CV_8SC1;
+      2: Result:= CV_8SC2;
+      3: Result:= CV_8SC3;
+      4: Result:= CV_8SC4;
+    end;
+  end;
+  cvWord:    begin
+    case nchans of
+      1: Result:= CV_16UC1;
+      2: Result:= CV_16UC2;
+      3: Result:= CV_16UC3;
+      4: Result:= CV_16UC4;
+    end;
+  end;
+  cvSmallint:    begin
+    case nchans of
+      1: Result:= CV_16SC1;
+      2: Result:= CV_16SC2;
+      3: Result:= CV_16SC3;
+      4: Result:= CV_16SC4;
     end;
   end;
   cvInteger: begin
@@ -285,7 +356,7 @@ begin
   inherited Create;
   Assert((nchannels>0) and (nchannels<=4), 'TOCVParamMat: Nchannels must be positive and not greater 4');
   Assert(  ((Low(tocvdatatype)<=dataType) and  (datatype <=High(tocvdatatype))  ),
-                        'TOCVParamMat: data type can be: cvByte, cvInteger, cvSingle, cvDouble');
+                        'TOCVParamMat: data type can be: cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle, cvDouble');
   fDataType:=DataType;
 
   mt:=dataType2NativeDataType(dataType, nchannels);
@@ -295,18 +366,37 @@ begin
   fNChannels:=nchannels;
 end;
 
-constructor TOcvParamMat.Create(const dimArray: array of Integer;
-                dataType: TOcvDataType; nchannels: Integer; dataPtr: Int64);
+constructor TOcvParamMat.Create(const dimArray: array of Integer; dataType: TOcvDataType; nchannels: Integer);
 var
   mt: Integer;
 begin
   inherited Create;
   Assert(  ((Low(tocvdatatype)<=dataType) and  (datatype <=High(tocvdatatype))  ),
-                        'TOCVParamMat: data type can be: cvByte, cvInteger, cvSingle, cvDouble');
+                        'TOCVParamMat: data type can be: cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle, cvDouble');
   Assert( (Length(dimArray)>0), 'TOCVParamMat: array of dimensions is empty');
   fDataType:=DataType;
   mt:=dataType2NativeDataType(dataType, nchannels);
-  internImage:=pCvMatCreate(Length(dimArray), @dimArray[0], mt, dataPtr);
+  internImage:=pCvMatCreate(Length(dimArray), @dimArray[0], mt);
+  fWidth:=-1;
+  fHeight:=-1;
+  fNChannels:=nchannels;
+end;
+
+constructor TOcvParamMat.Create(const dimArray: array of Integer; dataType: TOcvDataType;
+          nchannels: Integer; dataPtr: Int64; const sizesArray: array of UInt64);
+var
+  mt: Integer;
+begin
+  inherited Create;
+  Assert(  ((Low(tocvdatatype)<=dataType) and  (datatype <=High(tocvdatatype))  ),
+                        'TOCVParamMat: data type can be: cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle, cvDouble');
+  Assert( (Length(dimArray)>0), 'TOCVParamMat: array of dimensions is empty');
+  fDataType:=DataType;
+  mt:=dataType2NativeDataType(dataType, nchannels);
+  if Length(sizesArray)>0 then
+      internImage:=pCvMatCreate(Length(dimArray), @dimArray[0], mt, dataPtr, @sizesArray[0])
+  else
+      internImage:=pCvMatCreate(Length(dimArray), @dimArray[0], mt, dataPtr);
   fWidth:=-1;
   fHeight:=-1;
   fNChannels:=nchannels;
@@ -459,8 +549,10 @@ begin
         then Exit;
   cvtype:='';
   CvMatTypeDecode(internImage,  cvtype, fNChannels);
-  if (cvtype ='CV_8U')
-  or (cvtype = 'CV_8S')     then begin fDataType := cvByte;    end
+  if (cvtype ='CV_8U') then      begin fDataType := cvByte;    end
+  else if cvtype = 'CV_8S'  then begin fDataType := cvInt8;    end
+  else if cvtype = 'CV_16U' then begin fDataType := cvWord;    end
+  else if cvtype = 'CV_16S' then begin fDataType := cvSmallint;end
   else if cvtype = 'CV_32S' then begin fDataType := cvInteger; end
   else if cvtype = 'CV_32F' then begin fDataType := cvSingle;  end
   else if cvtype = 'CV_64F' then begin fDataType := cvDouble;  end
@@ -511,36 +603,61 @@ begin
   pCvMatGetDims(internImage, @Result[0]);
 end;
 
+procedure TOcvParamMat.checkGetTypeCompatibility(requestedType: TOcvDataType);
+begin
+  if requestedType=fDataType then Exit;
+
+  if ((requestedType = cvByte) and (fDataType in [cvInt8, cvWord, cvSmallint, cvInteger])) or
+     ((requestedType = cvInt8) and (fDataType in [cvByte, cvWord, cvSmallint, cvInteger])) or
+     ((requestedType = cvSmallint) and (fDataType in [cvByte, cvWord, cvInteger])) or
+     ((requestedType = cvWord) and (fDataType in [cvByte, cvInt8, cvSmallint, cvInteger])) or
+     ((requestedType = cvSingle) and (fDataType = cvDouble))
+  then
+    raise EOverflow.Create('Requested get type incompatible with Mat type: smaller, or signed versus unsigned');
+end;
+
+procedure TOcvParamMat.checkSetTypeCompatibility(requestedType: TOcvDataType);
+begin
+  if requestedType=fDataType then Exit;
+
+  if ((requestedType = cvByte) and (fDataType in [cvInt8, cvWord, cvSmallint, cvInteger])) or
+     ((requestedType = cvInt8) and (fDataType in [cvByte, cvWord, cvSmallint, cvInteger])) or
+     ((requestedType = cvSmallint) and (fDataType in [cvByte, cvWord, cvInteger])) or
+     ((requestedType = cvWord) and (fDataType in [cvByte, cvInt8, cvSmallint, cvInteger])) or
+     ((requestedType = cvInteger) and (fDataType in [cvByte, cvInt8, cvWord, cvSmallint])) or
+     ((requestedType = cvDouble) and (fDataType in [cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle]))
+  then
+    raise EOverflow.Create('Requested set type incompatible with Mat type: smaller, or signed versus unsigned');
+end;
+
 function TOcvParamMat.getCellInt(r: Integer; c: Integer; ch: Integer): Integer;
 begin
   setDataType;
   Result:=0;
   case fDataType of
-    cvByte:    Result:=pCvMatGetByte(internImage, r, c, ch);
     cvInteger: Result:=pCvMatGetInt(internImage, r, c, ch);
     cvSingle:  Result:=Round(pCvMatGetFloat(internImage, r, c, ch));
     cvDouble:  Result:=Round(pCvMatGetDouble(internImage, r, c, ch));
   end;
 end;
 
+
 function TOcvParamMat.getCellDbl(r: Integer; c: Integer; ch: Integer): Double;
 begin
   setDataType;
   Result:=0;
   case fDataType of
-    cvByte:    Result:=pCvMatGetByte(internImage, r, c, ch);
     cvInteger: Result:=pCvMatGetInt(internImage, r, c, ch);
     cvSingle:  Result:=pCvMatGetFloat(internImage, r, c, ch);
     cvDouble:  Result:=pCvMatGetDouble(internImage, r, c, ch);
   end;
 end;
 
-
+{$RANGECHECKS ON}
 procedure TOcvParamMat.setCellInt(r: Integer; c: Integer; ch: Integer; value: Integer);
 begin
   setDataType;
   case fDataType of
-    cvByte:    pCvMatSetByte(internImage, r, c, value, ch);
     cvInteger: pCvMatSetInt(internImage, r, c, value, ch);
     cvSingle:  pCvMatSetFloat(internImage, r, c, value, ch);
     cvDouble:  pCvMatSetDouble(internImage, r, c, value, ch);
@@ -551,23 +668,82 @@ procedure TOcvParamMat.setCellDbl(r: Integer; c: Integer; ch: Integer; value: Do
 begin
   setDataType;
   case fDataType of
-    cvByte:    pCvMatSetByte(internImage, r, c, Round(value), ch);
     cvInteger: pCvMatSetInt(internImage, r, c,  Round(value), ch);
     cvSingle:  pCvMatSetFloat(internImage, r, c, value, ch);
     cvDouble:  pCvMatSetDouble(internImage, r, c, value, ch);
   end;
 end;
 
+{$RANGECHECKS OFF}
 
 
 function TOcvParamMat.getData(r: Integer; c: Integer; ch: Integer): Single;
 begin
+  checkGetTypeCompatibility(cvSingle);
   Result:=getCellDbl(r,c, ch);
 end;
 
+
 procedure TOcvParamMat.setData(r: Integer; c: Integer; ch: Integer; value: Single);
 begin
+  checkSetTypeCompatibility(cvSingle);
   setCellDbl(r, c, ch, value);
+end;
+
+function TOcvParamMat.getDataB(r: Integer; c: Integer; ch: Integer): Byte;
+begin
+  setDataType;
+  checkGetTypeCompatibility(cvByte);
+  Result:=pCvMatGetByte(internImage, r, c, ch);
+end;
+
+procedure TOcvParamMat.setDataB(r: Integer; c: Integer; ch: Integer; value: Byte);
+begin
+  setDataType;
+  checkSetTypeCompatibility(cvByte);
+  pCvMatSetByte(internImage, r, c, value, ch);
+end;
+
+function TOcvParamMat.getDataI8(r: Integer; c: Integer; ch: Integer): Int8;
+begin
+  setDataType;
+  checkGetTypeCompatibility(cvInt8);
+  Result:=pCvMatGetInt8(internImage, r, c, ch);
+end;
+
+procedure TOcvParamMat.setDataI8(r: Integer; c: Integer; ch: Integer; value: Int8);
+begin
+  setDataType;
+  checkSetTypeCompatibility(cvInt8);
+  pCvMatSetInt8(internImage, r, c, value, ch);
+end;
+
+function TOcvParamMat.getDataS(r: Integer; c: Integer; ch: Integer): SmallInt;
+begin
+  setDataType;
+  checkGetTypeCompatibility(cvSmallint);
+  Result:=pCvMatGetSmallint(internImage, r, c, ch);
+end;
+
+procedure TOcvParamMat.setDataS(r: Integer; c: Integer; ch: Integer; value: SmallInt);
+begin
+  setDataType;
+  checkSetTypeCompatibility(cvSmallint);
+  pCvMatSetSmallint(internImage, r, c, value, ch);
+end;
+
+function TOcvParamMat.getDataW(r: Integer; c: Integer; ch: Integer): Word;
+begin
+  setDataType;
+  checkGetTypeCompatibility(cvWord);
+  Result:=pCvMatGetWord(internImage, r, c, ch);
+end;
+
+procedure TOcvParamMat.setDataW(r: Integer; c: Integer; ch: Integer; value: Word);
+begin
+  setDataType;
+  checkSetTypeCompatibility(cvWord);
+  pCvMatSetWord(internImage, r, c, value, ch);
 end;
 
 function TOcvParamMat.getDataI(r: Integer; c: Integer; ch: Integer): Integer;
@@ -577,6 +753,7 @@ end;
 
 procedure TOcvParamMat.setDataI(r: Integer; c: Integer; ch: Integer; value: Integer);
 begin
+  checkSetTypeCompatibility(cvInteger);
   setCellInt(r, c, ch, value);
 end;
 
@@ -587,6 +764,7 @@ end;
 
 procedure TOcvParamMat.setDataD(r: Integer; c: Integer; ch: Integer; value: Double);
 begin
+  checkSetTypeCompatibility(cvDouble);
   setCellDbl(r, c, ch, value);
 end;
 
@@ -624,6 +802,7 @@ begin
   fNchannels:=nchannels;
   fId:=0;
   fName:='';
+  initPen;
 end;
 
 constructor TOCVImage.Create(const filename: string; loadAsGray: Boolean);
@@ -633,6 +812,7 @@ begin
   load(filename, loadAsGray);
   fId:=0;
   fName:='';
+  initPen;
 end;
 
 constructor TOCVImage.Create(const cvMatImg: PCvMat_t);
@@ -655,6 +835,7 @@ begin
   fullImage:=internImage;
   fId:=0;
   fName:='';
+  initPen;
 end;
 
 
@@ -665,7 +846,16 @@ begin
       pCvMatDelete(internImage);
       internImage:=nil;
   end;
+  fPen.Free;
   inherited Destroy;
+end;
+
+procedure TOCVImage.initPen;
+begin
+  fPen:=TPen.Create;
+  fPen.Color:=clBlack;
+  fPen.Style:=psSolid;
+  fPen.Width:=2;
 end;
 
 function TOCVImage.getImagePointer(): PCvMat_t;
@@ -1344,6 +1534,126 @@ procedure TOCVImage.convertFromSingle(const img32: TOcvParamMat);
   END; //try
 
 end;
+
+function TOCVImage.getPenOcvColor(): PCvScalar_t;
+begin
+ // color as BGR
+ {$ifdef LCL}
+   Result:=CvScalar_(Blue(fPen.color), Green(fPen.color), Red(fPen.color),  0);
+ {$else}
+   Result:=CvScalar_(GetBValue(fPen.color), GetGValue(fPen.color), GetRValue(fPen.color), 0);
+ {$endif}
+end;
+
+procedure TOCVImage.line(const p1: TPoint; const p2: TPoint);
+var
+  cvpt1, cvpt2: PCvPoint_t;
+  cvcolor: PCvScalar_t;
+begin
+try
+  cvcolor:=getPenOcvColor();
+  cvpt1:=cvPoint_(p1.X, p1.Y);
+  cvpt2:=cvPoint_(p2.X, p2.Y);
+  pcvLine(internImage, cvpt1, cvpt2, cvcolor, fPen.Width);
+finally
+  pCvPointDelete(cvpt1);
+  pCvPointDelete(cvpt2);
+  pCvScalarDelete(cvcolor);
+end;
+end;
+
+procedure TOCVImage.rectangle(const p1: TPoint; const p2: TPoint; isFilled: Boolean);
+var
+  cvpt1, cvpt2: PCvPoint_t;
+  cvcolor: PCvScalar_t;
+  thick: Integer;
+begin
+try
+  cvcolor:=getPenOcvColor();
+  cvpt1:=cvPoint_(p1.X, p1.Y);
+  cvpt2:=cvPoint_(p2.X, p2.Y);
+  thick:=fPen.Width;
+  if isFilled then
+    thick := OPENCVWrapper.FILLED;
+  pcvRectangle(internImage, cvpt1,cvpt2, cvcolor, thick);
+finally
+  pCvPointDelete(cvpt1);
+  pCvPointDelete(cvpt2);
+  pCvScalarDelete(cvcolor);
+end;
+end;
+
+procedure TOCVImage.circle(const pcenter: TPoint; radius: Integer; isFilled: Boolean);
+var
+  cvpt1: PCvPoint_t;
+  cvcolor: PCvScalar_t;
+  thick: Integer;
+begin
+try
+  cvcolor:=getPenOcvColor();
+  cvpt1:=cvPoint_(pcenter.X, pcenter.Y);
+  thick:=fPen.Width;
+  if isFilled then
+    thick := OPENCVWrapper.FILLED;
+  pCvcircle(internImage, cvpt1,radius, cvcolor, thick);
+finally
+  pCvPointDelete(cvpt1);
+  pCvScalarDelete(cvcolor);
+end;
+end;
+
+procedure TOCVImage.ellipse(const pcenter: TPoint; axisLength1: Integer; axisLength2: Integer; angle: Double;
+          startAngle: Double; endAngle: Double; isFilled: Boolean);
+var
+  cvpt1: PCvPoint_t;
+  axes: PCvSize_t;
+  cvcolor: PCvScalar_t;
+  thick: Integer;
+begin
+try
+  cvcolor:=getPenOcvColor();
+  cvpt1:=cvPoint_(pcenter.X, pcenter.Y);
+  axes:=CvSize_(axisLength1, axisLength2);
+  thick:=fPen.Width;
+  if isFilled then
+    thick := OPENCVWrapper.FILLED;
+  pCvellipse(internImage, cvpt1, axes, angle, startAngle, endAngle,  cvcolor, thick);
+finally
+  pCvPointDelete(cvpt1);
+  pCvSizeDelete(axes);
+  pCvScalarDelete(cvcolor);
+end;
+end;
+
+procedure TOCVImage.polylines(const pts: TArray<TPoint>; isClosed: Boolean = True);
+var
+  i: Integer;
+  cvcolor: PCvScalar_t;
+  cvvecpts: PCvvector_Mat;
+  cvpts: TOcvParamMat;
+begin
+try
+  cvcolor:=getPenOcvColor();
+  // Mat with N rows as number of points; 1 column; integer type; 2 channels
+  cvpts:=TOcvParamMat.Create(1, Length(pts), TOcvDataType.cvInteger, 2);
+  for i:=0 to high(pts) do
+  begin
+    cvpts.atInt[i,0,0]:=pts[i].X;
+    cvpts.atInt[i,0,1]:=pts[i].Y;
+  end;
+  cvvecpts:=pCvVectorMatCreate(1);
+  pCvVectorMatSet(cvvecpts, 0, cvpts.PCvMatPtr);
+
+  pCvpolylines(internImage, cvvecpts, isClosed, cvcolor, fPen.Width);
+finally
+  pCvVectorMatDelete(cvvecpts);
+  pCvScalarDelete(cvcolor);
+
+  cvpts.Free;
+end;
+end;
+
+
 
 {$ENDREGION}
 
