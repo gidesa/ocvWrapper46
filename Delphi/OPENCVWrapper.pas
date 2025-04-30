@@ -934,7 +934,7 @@ end;
 procedure MatImage2Bitmap(matImg: PCvMat_t; var bitmap: TBitmap);
   VAR
     j        :  Integer;
-    offset   :  UInt64;
+    offset   :  NativeUInt;
     dataByte :  PByteArray;
     RowIn    :  pByteArray;
 
@@ -968,7 +968,7 @@ BEGIN
         and (iplimg.Origin = IPL_ORIGIN_BL) then
     begin
 {$ifdef LCL}
-        offset := UInt64(iData) - iWidthStep;
+        offset := NativeUInt(iData) - iWidthStep;
         FOR j := 0 TO Bitmap.Height-1 DO
         BEGIN
           RowIn  := lazImg.GetDataLineStart(bitmap.Height -1 - j);
@@ -991,7 +991,7 @@ BEGIN
       FOR j := 0 TO Bitmap.Height-1 DO
       BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
-        offset := UInt64(iData) + iWidthStep * j;
+        offset := NativeUint(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         {$IFDEF UNIX}
         Move(rowin, dataByte, iWidthStep);
@@ -1003,7 +1003,7 @@ BEGIN
      FOR j := 0 TO Bitmap.Height-1   DO
      BEGIN
         RowIn  := Bitmap.Scanline[j ];
-        offset := longint(iData) + iWidthStep * j;
+        offset := NativeUInt(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         try
          CopyMemory(rowin, dataByte, iWidthStep);
@@ -1041,7 +1041,7 @@ procedure Bitmap2MatImage(matImage: PCvMat_t;  bitmap: TBitmap);
     j        :  Integer;
     dataByte :  PByteArray;
     RowIn    :  pByteArray;
-    offset   :  UInt64;
+    offset   :  NativeUInt;
     iplImg   :  PIplImage;
     iWidthstep: Integer;
     iData    :  Pointer;
@@ -1068,7 +1068,7 @@ BEGIN
       FOR j := 0 TO Bitmap.Height-1 DO
       BEGIN
         RowIn  := lazImg.GetDataLineStart(j );
-        offset := UInt64(iData) + iWidthStep * j;
+        offset := NativeUInt(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         {$IFDEF UNIX}
         Move(dataByte, rowin, iWidthStep);
@@ -1080,7 +1080,7 @@ BEGIN
      FOR j := 0 TO Bitmap.Height-1   DO
      BEGIN
         RowIn  := Bitmap.Scanline[j ];
-        offset := longint(iData) + iWidthStep * j;
+        offset := NativeUInt(iData) + iWidthStep * j;
         dataByte := pbytearray( offset);
         try
          CopyMemory(dataByte, rowin, iWidthStep);

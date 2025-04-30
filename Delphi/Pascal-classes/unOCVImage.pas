@@ -45,6 +45,7 @@ type
   TOcvDataType = (cvByte, cvInt8, cvSmallint, cvWord, cvInteger, cvSingle, cvDouble, cvEmpty);
   //** This class is an abstraction over generic Opencv Mat class, used as parameter in some functions
   //** For images use instead TOCVImage
+
   TOcvParamMat = class
   private
     internImage: PCvMat_t;
@@ -61,6 +62,7 @@ type
     function dataType2NativeDataType(dt: TOcvDataType; nchans: Integer): integer;
 
     procedure setDataType();  inline;
+
 
     procedure checkGetTypeCompatibility(requestedType: TOcvDataType);   inline;
     procedure checkSetTypeCompatibility(requestedType: TOcvDataType);   inline;

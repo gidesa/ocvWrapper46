@@ -20,9 +20,10 @@
 
 {$IFDEF FPC}
   {$mode Delphi}
+  {$WARN 03187 Off } {C arrays are passed by reference}
   {$WARN 05093 Off } // result variable of a managed type does not seem to be initialized
   {$WARN 05094 Off } // result variable of a managed type does not seem to be initialized
-  {$WARN 06018 Off } // Unreachable code}
+  {$WARN 06018 Off } // Unreachable code
 {$ENDIF}
 {**  This unit contains classes encapsulating the various vector Opencv classes.}
 unit unOCVVectors;
@@ -145,7 +146,7 @@ begin
   if Assigned(ocvToArray) then
   begin
       SetLength(Result,  getLength());
-      ocvToArray(internVector, @Result[0]);
+      ocvToArray(internVector, TArray<U>(@Result[0]));
   end;
 end;
 
@@ -154,7 +155,7 @@ begin
   Result:=0;
   if Assigned(ocvToArray) then
   begin
-          ocvFromArray(internVector, @inpar[0]);
+          ocvFromArray(internVector, TArray<U>(@inpar[0]));
           Result:=getLength();
   end;
 end;
