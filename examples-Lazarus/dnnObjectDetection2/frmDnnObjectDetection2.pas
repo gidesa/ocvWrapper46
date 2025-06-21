@@ -148,6 +148,7 @@ var
 
   matdims: TArray<Integer>;
   resDims: TArray<Integer>;
+  defaultArr: TArray<UInt64>;
   nrDetections:   Integer;
   detections:     TList<TDetection>;
   detect:         TDetection;
@@ -219,13 +220,15 @@ try
     THRESHOLD:=StrToInt(txConf.Text) / 100;
     detections:=TObjectList<TDetection>.Create;
 
+    SetLength(defaultArr, 0);
     SetLength(resDims, 2);
     resdims[0]:=1;
     resdims[1]:=outW;
+
     for j:=0 to  nrDetections-1 do
     begin
        // define a 1 x outW mat  over a block of the output matrix
-       netResult:=TOcvParamMat.Create(resdims, cvSingle, 1, dptr);
+       netResult:=TOcvParamMat.Create(resdims, cvSingle, 1, dptr, defaultArr);
        conf:=netResult.at[0, 2, 0];
        if conf>=THRESHOLD then
        begin
