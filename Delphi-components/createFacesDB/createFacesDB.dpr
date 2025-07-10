@@ -8,7 +8,7 @@ program createFacesDB;
 {$R *.res}
 
 uses
-  System.Classes,   System.SysUtils, unOpenCVDelphi46, System.IOUtils,
+  System.Classes,   System.SysUtils, unOCVImage,  unOpenCVDelphi46, System.IOUtils,
   unFileIterator;
 type
   TFaceProcess = class(TFileIteratorBase)
@@ -35,6 +35,7 @@ function TFaceProcess.processFile(filename: string): Boolean;
 var
   ocvimg: TOCVImage;
   detections: TDetectionList;
+  det: TDetection;
 begin
   ocvimg:=TOCVImage.Create(filename);
   ocvimg.ID:=fileNumProgr;
@@ -42,6 +43,9 @@ begin
   detections:=TDetectionList.Create;
   faceDet.process(ocvimg, detections);
   ocvimg.Free;
+  for det in detections do
+    det.Free;
+
   detections.Free;
   Result:=True;
 end;
